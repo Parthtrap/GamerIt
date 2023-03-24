@@ -27,7 +27,7 @@ const App = () => {
               hideProgressBar
               theme="dark"
             />
-            <Navbar isLoggedIn={false} />
+            <Navbar isLoggedIn={true} />
             <Routes>
               <Route
                 exact
