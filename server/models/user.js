@@ -32,7 +32,6 @@ const userSchema = new mongoose.Schema({
 	isAdmin: Boolean,
 	followedCommunities: [String],
 	notes: [NoteSchema],
-	primaryColor: String,
 	theme: String,
 	savedPosts: [String],
 	profilePic: String,
