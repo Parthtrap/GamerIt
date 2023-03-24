@@ -5,6 +5,8 @@ import {
 	deleteCommunity,
 	deleteTag,
 	getAllCommunities,
+	makeModerator,
+	removeModerator,
 	updateCommunityBannerPic,
 	updateCommunityProfilePic,
 } from "../controllers/community.js";
@@ -32,10 +34,10 @@ router.patch("/profilepic", updateCommunityProfilePic);
 router.patch("/bannerpic", updateCommunityBannerPic);
 
 // Make User Moderator
-router.post("/moderator");
+router.post("/moderator", makeModerator);
 
 // Remove User from Moderator
-router.delete("/moderator");
+router.delete("/moderator", removeModerator);
 
 // Pin a Post
 router.post("/pin");

@@ -1,4 +1,5 @@
 import community from "../models/community.js";
+import User from "./../models/user.js";
 const debugMode = true;
 
 // Get All Community or by Name
@@ -278,8 +279,117 @@ export const updateCommunityBannerPic = async (req, res) => {
 };
 
 // Make User Moderator
+export const makeModerator = async (req, res) => {
+	const { name, username } = req.body;
+	let found, founduser;
+	try {
+		founduser = await User.findOne({ username });
+		if (!founduser) {
+			debugMode
+				? console.log("Make Moderator -> User Doesn't Exist")
+				: "";
+			res.status(404).json({ message: "User Doesn't Exist" });
+			return;
+		}
+
+		found = await community.findOne({ name });
+		if (!found) {
+			debugMode
+				? console.log("Make Moderator -> Community Doesn't Exist")
+				: "";
+			res.status(404).json({ message: "Community Doesn't Exist" });
+			return;
+		}
+		let obj = found.moderators.includes(username);
+		if (obj) {
+			debugMode
+				? console.log("Make Moderator -> User is Already Moderator")
+				: "";
+			res.status(400).json({ message: "User is Already Moderator" });
+			return;
+		}
+		found = await community.updateOne(
+			{ name },
+			{ $push: { moderators: username } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Make Moderator -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+
+	if (found.matchedCount == 0) {
+		debugMode ? console.log("Make Moderator -> No Community Exist") : "";
+		res.status(404).json({ message: "Community Not Found !!" });
+		return;
+	} else if (found.modifiedCount == 0) {
+		debugMode
+			? console.log("Make Moderator -> No Community was Updated")
+			: "";
+		res.status(400).json({ message: "No Community was Updated" });
+		return;
+	}
+	debugMode
+		? console.log("Make Moderator -> Moderator Made Sucessfully!!")
+		: "";
+	res.status(201).json({
+		message: "Moderator Made Sucessfully!!",
+	});
+};
 
 // Remove User from Moderator
+export const removeModerator = async (req, res) => {
+	const { name, username } = req.body;
+	let found;
+	try {
+		found = await community.findOne({ name });
+		if (!found) {
+			debugMode
+				? console.log("Remove Moderator -> Community Doesn't Exist")
+				: "";
+			res.status(404).json({ message: "Community Doesn't Exist" });
+			return;
+		}
+		let obj = found.moderators.includes(username);
+		if (!obj) {
+			debugMode
+				? console.log(
+						"Remove Moderator -> User is Already Not a Moderator"
+				  )
+				: "";
+			res.status(400).json({
+				message: "User is Already Not a Moderator",
+			});
+			return;
+		}
+		found = await community.updateOne(
+			{ name },
+			{ $pull: { moderators: username } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Remove Moderator -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+
+	if (found.matchedCount == 0) {
+		debugMode ? console.log("Remove Moderator -> No Community Exist") : "";
+		res.status(404).json({ message: "Community Not Found !!" });
+		return;
+	} else if (found.modifiedCount == 0) {
+		debugMode
+			? console.log("Remove Moderator -> No Community was Updated")
+			: "";
+		res.status(400).json({ message: "No Community was Updated" });
+		return;
+	}
+	debugMode
+		? console.log("Remove Moderator -> Moderator Removed Sucessfully!!")
+		: "";
+	res.status(201).json({
+		message: "Moderator Removed Sucessfully!!",
+	});
+};
 
 // Pin a Post
 
