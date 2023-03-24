@@ -5,6 +5,8 @@ import {
 	deleteCommunity,
 	deleteTag,
 	getAllCommunities,
+	updateCommunityBannerPic,
+	updateCommunityProfilePic,
 } from "../controllers/community.js";
 const router = express.Router();
 
@@ -24,10 +26,10 @@ router.get("/tag", addTag);
 router.delete("/tag", deleteTag);
 
 // Edit Community Profile Pic
-router.patch("/profilepic");
+router.patch("/profilepic", updateCommunityProfilePic);
 
 // Edit Community Banner Pic
-router.get("/bannerpic");
+router.patch("/bannerpic", updateCommunityBannerPic);
 
 // Make User Moderator
 router.post("/moderator");

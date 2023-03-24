@@ -1,7 +1,7 @@
 import community from "../models/community.js";
 const debugMode = true;
 
-// Get All Community
+// Get All Community or by Name
 export const getAllCommunities = async (req, res) => {
 	let communityList;
 	const { name } = req.query;
@@ -180,8 +180,102 @@ export const deleteTag = async (req, res) => {
 };
 
 // Edit Community Profile Pic
+export const updateCommunityProfilePic = async (req, res) => {
+	const { name, profilepic } = req.body;
+	if (!name || !profilepic) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+
+	let foundcommunity;
+	try {
+		foundcommunity = await community.updateOne(
+			{ name: name },
+			{ profilePic: profilepic }
+		);
+	} catch (err) {
+		debugMode
+			? console.log("Update Community Profile Pic -> " + err.message)
+			: "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (foundcommunity.matchedCount == 0) {
+		debugMode
+			? console.log(
+					"Update Community Profile Pic -> No Community with given name exists"
+			  )
+			: "";
+		res.status(404).json({ message: "Community Not Found !!" });
+	} else if (foundcommunity.modifiedCount == 0) {
+		debugMode
+			? console.log(
+					"Update Community Profile Pic -> No Community was Updated"
+			  )
+			: "";
+		res.status(400).json({ message: "No Community was Updated" });
+		return;
+	}
+
+	debugMode
+		? console.log(
+				"Update Community Profile Pic -> Community Profile Pic Updated !!"
+		  )
+		: "";
+	res.status(201).json({
+		message: "Community Profile Pic Updated Sucessfully !!",
+	});
+};
 
 // Edit Community Banner Pic
+export const updateCommunityBannerPic = async (req, res) => {
+	const { name, bannerpic } = req.body;
+	if (!name || !bannerpic) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+
+	let foundcommunity;
+	try {
+		foundcommunity = await community.updateOne(
+			{ name: name },
+			{ bannerPic: bannerpic }
+		);
+	} catch (err) {
+		debugMode
+			? console.log("Update Banner Profile Pic -> " + err.message)
+			: "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (foundcommunity.matchedCount == 0) {
+		debugMode
+			? console.log(
+					"Update Community Banner Pic -> No Community with given name exists"
+			  )
+			: "";
+		res.status(404).json({ message: "Community Not Found !!" });
+	} else if (foundcommunity.modifiedCount == 0) {
+		debugMode
+			? console.log(
+					"Update Community Banner Pic -> No Community was Updated"
+			  )
+			: "";
+		res.status(400).json({ message: "No Community was Updated" });
+		return;
+	}
+
+	debugMode
+		? console.log(
+				"Update Community Banner Pic -> Community Banner Pic Updated !!"
+		  )
+		: "";
+	res.status(201).json({
+		message: "Community Banner Pic Updated Sucessfully !!",
+	});
+};
 
 // Make User Moderator
 
@@ -192,5 +286,3 @@ export const deleteTag = async (req, res) => {
 // Unpin a Post
 
 // Get all Reported Posts
-
-// Get community by name
