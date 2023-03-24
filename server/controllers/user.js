@@ -862,14 +862,174 @@ export const makeNote = async (req, res) => {
 };
 
 // Delete Note
+export const deleteNote = async (req, res) => {
+	const { username, noteID } = req.body;
+	if (!noteID || !username) {
+		debugMode ? console.log("Incomplete Response !!") : "";
+		res.status(400).json({ message: "Incomplete Response !!" });
+		return;
+	}
+	let user;
+	try {
+		user = await User.findOne({ username });
+		if (!user) {
+			debugMode
+				? console.log(
+						"Delete Note -> No User with given username exists"
+				  )
+				: "";
+			res.status(404).json({ message: "User Not Found !!" });
+			return;
+		}
+		console.log(new mongoose.Types.ObjectId(noteID));
+		user = await User.updateOne(
+			{ username },
+			{ $pull: { notes: { _id: new mongoose.Types.ObjectId(noteID) } } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Delete Note -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (user.modifiedCount == 0) {
+		debugMode ? console.log("Delete Note -> Note Not Found") : "";
+		res.status(400).json({ message: "Note not Found" });
+		return;
+	}
+	debugMode ? console.log("Delete Note -> Note Deleted Sucessfully !!") : "";
+	res.status(201).json({
+		message: "Note Deleted Sucessfully !!",
+	});
+};
 
 // Edit Note
+export const editNote = async (req, res) => {
+	const { username, noteID, newNote } = req.body;
+	if (!noteID || !username || !newNote) {
+		debugMode ? console.log("Incomplete Response !!") : "";
+		res.status(400).json({ message: "Incomplete Response !!" });
+		return;
+	}
+	let user;
+	try {
+		user = await User.findOne({ username });
+		if (!user) {
+			debugMode
+				? console.log("Edit Note -> No User with given username exists")
+				: "";
+			res.status(404).json({ message: "User Not Found !!" });
+			return;
+		}
+		console.log(new mongoose.Types.ObjectId(noteID));
+		user = await User.updateOne(
+			{
+				username,
+				notes: {
+					$elemMatch: { _id: new mongoose.Types.ObjectId(noteID) },
+				},
+			},
+			{
+				$set: { "notes.$": newNote },
+			}
+		);
+	} catch (err) {
+		debugMode ? console.log("Edit Note -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (user.modifiedCount == 0) {
+		debugMode ? console.log("Edit Note -> Note Not Found") : "";
+		res.status(400).json({ message: "Note not Found" });
+		return;
+	}
+	debugMode ? console.log("Edit Note -> Note Edit Sucessfully !!") : "";
+	res.status(201).json({
+		message: "Note Edit Sucessfully !!",
+	});
+};
 
 // Make Plan
+export const makePlan = async (req, res) => {
+	const { username, title, time } = req.body;
+	if (!title || !username || !time) {
+		debugMode ? console.log("Incomplete Response !!") : "";
+		res.status(400).json({ message: "Incomplete Response !!" });
+		return;
+	}
+	const newnote = {
+		title,
+		time,
+		createdAt: Date.now(),
+	};
+	let user;
+	try {
+		user = await User.updateOne(
+			{ username },
+			{ $push: { plans: newnote } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Make Plan -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+
+	if (user.matchedCount == 0) {
+		debugMode
+			? console.log("Make Plan -> No User with given username exists")
+			: "";
+		res.status(404).json({ message: "User Not Found !!" });
+		return;
+	} else if (user.modifiedCount == 0) {
+		debugMode ? console.log("Make Plan -> No User was Updated") : "";
+		res.status(400).json({ message: "No user was Updated" });
+		return;
+	}
+	debugMode ? console.log("Make Plan -> Plan Made Sucessfully !!") : "";
+	res.status(201).json({
+		message: "Plan Made Sucessfully !!",
+	});
+};
 
 // Delete Plan
-
-// Edit Plan
+export const deletePlan = async (req, res) => {
+	const { username, planID } = req.body;
+	if (!planID || !username) {
+		debugMode ? console.log("Incomplete Response !!") : "";
+		res.status(400).json({ message: "Incomplete Response !!" });
+		return;
+	}
+	let user;
+	try {
+		user = await User.findOne({ username });
+		if (!user) {
+			debugMode
+				? console.log(
+						"Delete Plan -> No User with given username exists"
+				  )
+				: "";
+			res.status(404).json({ message: "User Not Found !!" });
+			return;
+		}
+		console.log(new mongoose.Types.ObjectId(planID));
+		user = await User.updateOne(
+			{ username },
+			{ $pull: { plans: { _id: new mongoose.Types.ObjectId(planID) } } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Delete Plan -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (user.modifiedCount == 0) {
+		debugMode ? console.log("Delete Plan -> Plan Not Found") : "";
+		res.status(400).json({ message: "Plan not Found" });
+		return;
+	}
+	debugMode ? console.log("Delete Plan -> Plan Deleted Sucessfully !!") : "";
+	res.status(201).json({
+		message: "Plan Deleted Sucessfully !!",
+	});
+};
 
 // Change Theme
 
