@@ -59,7 +59,7 @@ const redirectGoogleEmail = async (req, res, next) => {
   //fetching access token and id token of user form google server with user code
 
   try {
-    function getTokens({ code, clientId, clientSecret, redirectUri }) {
+    async function getTokens({ code, clientId, clientSecret, redirectUri }) {
       const url = "https://oauth2.googleapis.com/token";
       const values = {
         code,
