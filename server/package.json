@@ -3,7 +3,9 @@
 	"version": "1.0.0",
 	"description": "Hack 36 Project",
 	"main": "index.js",
+	"type": "module",
 	"scripts": {
+		"start":"nodemon -r dotenv/config server.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "",
