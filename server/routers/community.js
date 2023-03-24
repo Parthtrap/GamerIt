@@ -1,27 +1,35 @@
 import express from "express";
-import { getAllCommunities } from "../controllers/community.js";
+import {
+	addTag,
+	createCommunity,
+	deleteCommunity,
+	deleteTag,
+	getAllCommunities,
+	updateCommunityBannerPic,
+	updateCommunityProfilePic,
+} from "../controllers/community.js";
 const router = express.Router();
 
 // Get All Community or by name
 router.get("/", getAllCommunities);
 
 // Create a Community
-router.post("/");
+router.post("/", createCommunity);
 
 // Delete a Community
-router.delete("/");
+router.delete("/", deleteCommunity);
 
 // Add tag
-router.get("/tag");
+router.get("/tag", addTag);
 
 // Delete tag
-router.delete("/tag");
+router.delete("/tag", deleteTag);
 
 // Edit Community Profile Pic
-router.patch("/profilepic");
+router.patch("/profilepic", updateCommunityProfilePic);
 
 // Edit Community Banner Pic
-router.get("/bannerpic");
+router.patch("/bannerpic", updateCommunityBannerPic);
 
 // Make User Moderator
 router.post("/moderator");

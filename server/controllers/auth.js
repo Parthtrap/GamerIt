@@ -19,7 +19,7 @@ let transporter = nodemailer.createTransport({
 });
 
 //importing functions and modals
-import { getUserInfo } from "./function.js";
+import { getUserInfo } from "./functions.js";
 import Token from "../models/token.js";
 
 //for getting url of google authentication page
@@ -95,7 +95,7 @@ const redirectGoogleEmail = async (req, res) => {
       code,
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      redirectUri: `${process.env.SERVER_ROOT_URI}/${redirectURI}`,
+      redirectUri: `${process.env.SERVER_ROOT_URI}/api/auth/googleAuth`,
     });
 
     // Fetch the user's profile with the access token and bearer
@@ -202,7 +202,7 @@ const redirectGoogleEmail = async (req, res) => {
 
 //creating otp 
 const createOtp = async (req,res) =>{
-
+    
 }
 
 //verifying otp
