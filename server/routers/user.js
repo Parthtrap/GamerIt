@@ -1,12 +1,14 @@
+/** @format */
+
 import express from "express";
 import { addUser } from "../controllers/user.js";
 const router = express.Router();
 
 //add user
-router.post("/add",addUser);
+router.post("/add", addUser);
 
 // Get User Info
-router.get("/");
+// router.get("/", getUser);
 
 // Update Profile Picture
 router.patch("/profilepic");

@@ -10,7 +10,7 @@ import date from "date-and-time";
 import { removeSpaces } from "./functions.js";
 const debugMode = true;
 
-// Get User Info
+// Make New User
 export const addUser = async (req, res) => {
   console.log("\nadd user api hit");
   //destructuring and storing requested data
