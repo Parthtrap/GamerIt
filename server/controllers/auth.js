@@ -200,32 +200,408 @@ const redirectGoogleEmail = async (req, res) => {
   }
 };
 
-//creating otp 
-const createOtp = async (req,res) =>{
-    
-}
+//creating otp
+const createOtp = async (req, res) => {
+  console.log("\nreceived email for otp");
+  const email = req.query.email;
+  const isCreatingAccount =
+    req.query.isCreatingAccount == "true" ? true : false;
+
+  //received email for otp
+  debugMode ? console.log(req.query) : "";
+
+  //for creating account
+  if (isCreatingAccount) {
+    debugMode ? console.log("\nfor creating account") : "";
+    try {
+      debugMode ? console.log("\n", "checking if the user exist") : "";
+      //check if a user exist with this google email
+      const existingUser = await getUserInfo(email);
+
+      debugMode ? console.log("\n", "existingUser : ", existingUser) : "";
+
+      //if doesn't exist then redirect to create account page
+      if (!existingUser) {
+        debugMode ? console.log("\n", "user is new") : "";
+        const userData = {
+          userEmail: email,
+          isVerified: false,
+          isGoogleVerified: false,
+          isCreatingAccount: true,
+        };
+
+        //creating jwt token
+        debugMode ? console.log("\ncreating email token") : "";
+        const token = jwt.sign(userData, process.env.JWT_SECRET);
+
+        debugMode ? console.log(token) : "";
+
+        try {
+          debugMode ? console.log("\nadding new otp-token in token-list") : "";
+          let otp;
+
+          try {
+            otp = `${Math.floor(999 + Math.random() * 9000)}`;
+            debugMode ? console.log("\ncreated otp") : "";
+
+            //encrypting otp using bcryptjs
+            const saltRounds = 10;
+            const hashedOTP = await bcrypt.hash(otp, saltRounds);
+            debugMode ? console.log("\nhashedOtp", hashedOTP) : "";
+
+            //checking for previous existing otp for the same email
+            const preToken = await Token.deleteMany({ email: email });
+
+            if (preToken) {
+              debugMode
+                ? console.log("\notp-token for this email already exist")
+                : "";
+              debugMode ? console.log(preToken) : "";
+              debugMode ? console.log("\ndeleting existing otp-tokens") : "";
+            }
+            //creating new token
+            debugMode
+              ? console.log("\ncreating new otp-token for this email")
+              : "";
+            const newToken = new Token({
+              email: email,
+              otp: hashedOTP,
+              createdAt: Date.now(),
+              expiresAt: Date.now() + 60 * 60 * 1000,
+            });
+
+            //adding new token in database
+            await newToken.save();
+            debugMode ? console.log("\nToken saved in database") : "";
+            debugMode ? console.log(newToken) : "";
+          } catch (err) {
+            console.log(err.message);
+            res.status(500).json({ error: err.message });
+            return;
+          }
+
+          debugMode
+            ? console.log(
+                "\ncreating mail for email-verification with nodemailer\n"
+              )
+            : "";
+          // send mail with defined transport object
+          transporter.sendMail(
+            {
+              from: process.env.EMAIL_NODEMAILER, // sender address
+              to: email, // list of receivers
+              subject: "Verification for GamerIt", // Subject line
+              html: `<p>Enter <b>${otp}</b> to verify your email for creating your account.</p><p>This code <b>expires in 1 hour.</b></p>`, // html body
+            },
+            (err) => {
+              if (err) {
+                debugMode ? console.log(err) : "";
+                console.log(err.message);
+                res
+                  .status(501)
+                  .json({ error: "Can't send otp for creating account" });
+                return;
+              } else {
+                debugMode ? console.log("\nemail has been sent") : "";
+                debugMode ? console.log(`\nsent otp to ${email}`) : "";
+
+                //sending cookies to client side
+                debugMode
+                  ? console.log("\ncreating and sending email-token")
+                  : "";
+                res.cookie(process.env.EMAIL_COOKIE_NAME, token, {
+                  expires: new Date(Date.now() + 60 * 60 * 1000), //milliseconds
+                  httpOnly: true,
+                  secure: false,
+                });
+                console.log("\nsent email-token for otp verification");
+
+                res.status(200).json({ message: "Sent otp successfully" });
+              }
+            }
+          );
+        } catch (err) {
+            console.log(err.message);
+          res
+            .status(501)
+            .json({ error: "Can't send otp for creating account" });
+        }
+      }
+
+      //if exist then send bad request response
+      else {
+        res.status(400).json({ error: "email already in use" });
+      }
+    } catch (err) {
+      debugMode ? console.log(err.message) : "";
+      res.status(500).json({ error: "Can't send otp for creating account" });
+    }
+  }
+  //for forget-password request
+  else {
+    debugMode ? console.log("\nfor resetting password") : "";
+    try {
+      debugMode ? console.log("\n", "checking if the user exist") : "";
+      //check if a user exist with this google email
+      const existingUser = await getUserInfo(email);
+
+      debugMode ? console.log("\n", "existingUser : ", existingUser) : "";
+
+      //if doesn't exist then redirect to create account page
+      if (!existingUser) {
+        res.status(400).json({ error: "No user exist with this email" });
+        return;
+      } else {
+        const userData = {
+          userEmail: email,
+          isVerified: false,
+          isGoogleVerified: false,
+          isCreatingAccount: false,
+        };
+
+        //creating jwt token
+        debugMode ? console.log("\ncreating email token") : "";
+        const token = jwt.sign(userData, process.env.JWT_SECRET);
+
+        debugMode ? console.log(token) : "";
+        //sending cookies to client side
+        console.log("\ncreating and sending email-token");
+        res.cookie(process.env.EMAIL_COOKIE_NAME, token, {
+          expires: new Date(Date.now() + 60 * 60 * 1000), //milliseconds
+          httpOnly: true,
+          secure: false,
+        });
+        debugMode ? console.log("\nsent email-token for otp verification") : "";
+
+        try {
+          debugMode ? console.log("\nadding new otp-token in token-list") : "";
+          let otp;
+
+          try {
+            otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+            debugMode ? console.log("\ncreated otp") : "";
+
+            //encrypting otp using bcryptjs
+            const saltRounds = 10;
+            const hashedOTP = await bcrypt.hash(otp, saltRounds);
+            debugMode ? console.log("\nhashedOtp", hashedOTP) : "";
+
+            //checking for previous existing otp for the same email
+            const preToken = await Token.deleteMany({ email: email });
+
+            if (preToken) {
+              debugMode
+                ? console.log("\notp-token for this email already exist")
+                : "";
+              debugMode ? console.log(preToken) : "";
+              debugMode ? console.log("\ndeleting existing otp-tokens") : "";
+            }
+            //creating new token
+            debugMode
+              ? console.log("\ncreating new otp-token for this email")
+              : "";
+            const newToken = new Token({
+              email: email,
+              otp: hashedOTP,
+              createdAt: Date.now(),
+              expiresAt: Date.now() + 60 * 60 * 1000,
+            });
+
+            //adding new token in database
+            await newToken.save();
+            debugMode ? console.log("\nToken saved in database") : "";
+            debugMode ? console.log(newToken) : "";
+          } catch (err) {
+            console.log(err.message) ;
+            res.status(500).json({ error: err.message });
+            return;
+          }
+
+          debugMode
+            ? console.log
+            : ""("\ncreating mail for email-verification with nodemailer\n");
+          // send mail with defined transport object
+          transporter.sendMail(
+            {
+              from: process.env.EMAIL_NODEMAILER, // sender address
+              to: email, // list of receivers
+              subject: "Resst password", // Subject line
+              html: `<p>Enter <b>${otp}</b> to verify your email for password reset for Gamer It.</p><p>This code <b>expires in 1 hour.</b></p>`, // html body
+            },
+            (err) => {
+              if (err) {
+                debugMode ? console.log(err) : "";
+                console.log(err.message);
+                res
+                  .status(501)
+                  .json({ error: "Can't send otp for email verification" });
+                return;
+              } else {
+                console.log("\nemail has been sent");
+                debugMode? console.log(`\nsent otp to ${email}`) :"";
+
+                res.status(200).json({ message: "Sent otp successfully" });
+              }
+            }
+          );
+        } catch (err) {
+          console.log(err.message);
+          res
+            .status(501)
+            .json({ error: "Can't send otp for email verification" });
+        }
+      }
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).json({ error: "Can't send otp for email verification" });
+    }
+  }
+};
 
 //verifying otp
-const verifyOtp = async (req,res) =>{
+const verifyOtp = async (req, res, next) => {
+    console.log("\nreceived otp for verification");
+    const receivedOtp = req.body.otp;
+  
+    let email_token;
+  
+    //finding email token
+    try {
+      console.log("\nstoring email token");
+      console.log(req.cookies);
+  
+      email_token = req.cookies[process.env.EMAIL_COOKIE_NAME];
+  
+      if (!email_token) throw Error("\nSession expired");
+    } catch (error) {
+      console.log(error.message);
+      const response = { error: "email-token expired" };
+  
+      res.status(400).json(response);
+      return;
+    }
+  
+    //decoding email token
+    try {
+      console.log("\ndecoding email-token");
+      const decoded_email_token = jwt.verify(email_token, process.env.JWT_SECRET);
+  
+      console.log("\ndecoded", decoded_email_token);
+      let existingToken;
+      //fetching token from token-list with received email
+      try {
+        console.log("\nfinding otp-token for received email");
+        existingToken = await Token.findOne({
+          email: decoded_email_token.userEmail,
+        });
+      } catch (err) {
+        console.log(err.message);
+        res
+          .status(500)
+          .json({ error: "Email verification failed, please try again later" });
+        return;
+      }
+  
+      //when no token found
+      if (!existingToken) {
+        console.log("\nno otp found for this email in database");
+        res
+          .status(400)
+          .json({ error: "OTP not found. Please send an otp request first" });
+        return;
+      }
+  
+      //token found for received
+      console.log("\ntoken", existingToken);
+  
+      //checking expiry
+      if (existingToken.expiresAt < Date.now()) {
+        console.log("\nreceived expired otp");
+        res.status(400).json({ error: "Opt is expired already" });
+        return;
+      }
+  
+      console.log("\ntoken is not expired");
+  
+      //matching otp from saved hashPassword
+      async function checkHashedOtp() {
+        const isMatching = await new Promise((resolve, reject) => {
+          bcrypt.compare(
+            receivedOtp,
+            existingToken.otp,
+            function (error, isMatch) {
+              if (error) reject(error);
+              resolve(isMatch);
+            }
+          );
+        });
+  
+        return isMatching;
+      }
+  
+      console.log("\ncomparing received otp with hashedOtp");
+      const isOtpMatching = await checkHashedOtp();
+  
+      console.log("\nisOtpMatching", isOtpMatching);
+  
+      //when otp didn't matched
+      if (!isOtpMatching) {
+        console.log("\notp didn't matched");
+        res
+          .status(400)
+          .json({ error: "Invalid otp, could not verify your email" });
+        return;
+      }
+  
+      //when otp matched
+      console.log("deleting the otp-token");
+      await Token.deleteMany({ email: decoded_email_token.userEmail });
+  
+      //creating jwt token
+      const userData = {
+        userEmail: decoded_email_token.userEmail,
+        isVerified: true,
+        isGoogleVerified: decoded_email_token.isGoogleVerified,
+        isCreatingAccount: decoded_email_token.isCreatingAccount,
+      };
+      const token = jwt.sign(userData, process.env.JWT_SECRET);
+  
+      //sending cookies to client side
+      console.log("\ncreating new modified email token");
+      console.log("\nsending modified email-token");
+      res.cookie(process.env.EMAIL_COOKIE_NAME, token, {
+        expires: new Date(Date.now() + 60 * 60 * 1000), //milliseconds
+        httpOnly: true,
+        secure: false,
+      });
+  
+      res.status(200).json({
+        message: "otp matched",
+        isCreatingAccount: decoded_email_token.isCreatingAccount,
+        userEmail: decoded_email_token.userEmail,
+      });
+      return;
+    } catch (error) {
+      console.log("\nFailed to authenticate");
+      console.log("\n", error.message);
+      const response = { error: "Failed to authenticate" };
+  
+      res.status(500).json(response);
+    }
+  };
 
-}
-
-//verifying login token 
-const verifyLoginToken = async (req,res) =>{
-
-}
+//verifying login token
+const verifyLoginToken = async (req, res) => {};
 
 //verifying general login request
-const verifyGeneraLogin = async (req,res) =>{
-
-}
+const verifyGeneraLogin = async (req, res) => {};
 
 //exporting auth controllers
 export const authControllers = {
-    googleAuthPage,
-    redirectGoogleEmail,
-    createOtp,
-    verifyOtp,
-    verifyLoginToken,
-    verifyGeneraLogin
-}
+  googleAuthPage,
+  redirectGoogleEmail,
+  createOtp,
+  verifyOtp,
+  verifyLoginToken,
+  verifyGeneraLogin,
+};

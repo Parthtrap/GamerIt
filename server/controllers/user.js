@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 import Post from "./../models/post.js";
 import community from "./../models/community.js";
 import date from "date-and-time";
-import { removeSpaces } from "./function.js";
+import { removeSpaces } from "./functions.js";
 const debugMode = true;
 
 // Get User Info
@@ -151,8 +151,7 @@ export const addUser = async (req, res) => {
     isAdmin: false,
     followedCommunities: [],
     notes: [],
-    primaryColor: "#000000",
-    theme: "#000000",
+    theme: "default",
     savedPosts: [],
     profilePic: "",
     plans: [],
@@ -177,13 +176,14 @@ export const addUser = async (req, res) => {
   }
 };
 
+// Change Password
+
+
 // Update Profile Picture
 
 // Update Email Address
 
 // Update Phone Number
-
-// Change Password
 
 // Follow Community
 

@@ -1,8 +1,9 @@
 import express from "express";
+import { addUser } from "../controllers/user.js";
 const router = express.Router();
 
-// TEMP : MAKE USER
-router.post("/");
+//add user
+router.post("/add",addUser);
 
 // Get User Info
 router.get("/");

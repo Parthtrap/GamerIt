@@ -11,6 +11,7 @@ export const getUserInfo = async (email) => {
     existingUser = await User.findOne({ email: email });
     return existingUser;
   } catch (err) {
+    console.log(err);
     return NULL;
   }
 };

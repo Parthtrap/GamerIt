@@ -23,9 +23,9 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 
 //allowing cors requests
 const corsOptions = {
-	origin: process.env.UI_ROOT_URI, //can't set to '*' when allowing credentials
-	credentials: true, //access-control-allow-credentials:true
-	optionSuccessStatus: 200,
+  origin: process.env.UI_ROOT_URI, //can't set to '*' when allowing credentials
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 
@@ -37,15 +37,15 @@ const port = process.env.PORT;
 // Defining Routes
 app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
-// app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/community", communityRoutes);
 
 mongoose
-	.connect(CONNECTION_URL)
-	.then(() => {
-		console.log("Connected to database");
-	})
-	.catch((error) => console.log(error.message));
+  .connect(CONNECTION_URL)
+  .then(() => {
+    console.log("Connected to database");
+  })
+  .catch((error) => console.log(error.message));
 
 //starting server
 app.listen(port, () => console.log(`Server Running on Port : ${port}`));
