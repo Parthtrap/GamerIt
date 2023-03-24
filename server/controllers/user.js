@@ -1032,15 +1032,96 @@ export const deletePlan = async (req, res) => {
 };
 
 // Change Theme
-
-// Change Color
-
-// Change Font
+export const changeTheme = async (req, res) => {
+	const { username, theme } = req.body;
+	if (!username || !theme) {
+		debugMode ? console.log("Incomplete Request") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	let user;
+	try {
+		user = await User.updateOne({ username }, { theme });
+	} catch (err) {
+		debugMode ? console.log("Change Theme -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (user.matchedCount == 0) {
+		debugMode
+			? console.log("Change Theme -> No User with given username exists")
+			: "";
+		res.status(404).json({ message: "User Not Found !!" });
+		return;
+	} else if (user.modifiedCount == 0) {
+		debugMode ? console.log("Change Theme -> No User was Updated") : "";
+		res.status(400).json({ message: "No user was Updated" });
+		return;
+	}
+	debugMode ? console.log("Change Theme -> Theme Changed !!") : "";
+	res.status(201).json({
+		message: "Theme Changed Sucessfully !!",
+	});
+};
 
 // Save a Post
 
 // Unsave a Post
 
 // Make Admin
+export const makeAdmin = async (req, res) => {
+	const { username } = req.body;
+	let user;
+	try {
+		user = await User.updateOne({ username }, { $set: { isAdmin: true } });
+	} catch (err) {
+		debugMode ? console.log("Make Admin -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (user.matchedCount == 0) {
+		debugMode
+			? console.log("Make Admin -> No User with given username exists")
+			: "";
+		res.status(404).json({ message: "User Not Found !!" });
+		return;
+	} else if (user.modifiedCount == 0) {
+		debugMode ? console.log("Make Admin -> User is already an Admin") : "";
+		res.status(400).json({ message: "User is already an Admin" });
+		return;
+	}
+	debugMode ? console.log("Make Admin -> The User is now an Admin !!") : "";
+	res.status(201).json({
+		message: "The User is now an Admin !!",
+	});
+};
 
 // Remove Admin
+export const removeAdmin = async (req, res) => {
+	const { username } = req.body;
+	let user;
+	try {
+		user = await User.updateOne({ username }, { $set: { isAdmin: false } });
+	} catch (err) {
+		debugMode ? console.log("Make Admin -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (user.matchedCount == 0) {
+		debugMode
+			? console.log("Remove Admin -> No User with given username exists")
+			: "";
+		res.status(404).json({ message: "User Not Found !!" });
+		return;
+	} else if (user.modifiedCount == 0) {
+		debugMode ? console.log("Remove Admin -> User is not an Admin") : "";
+		res.status(400).json({ message: "User is not an Admin" });
+		return;
+	}
+	debugMode
+		? console.log("Remove Admin -> The User is not an Admin Anymore !!")
+		: "";
+	res.status(201).json({
+		message: "The User is not an Admin Anymore !!",
+	});
+};

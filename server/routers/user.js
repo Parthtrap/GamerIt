@@ -3,14 +3,17 @@
 import express from "express";
 import {
 	addUser,
+	changeTheme,
 	deleteNote,
 	deletePlan,
 	editNote,
 	followCommunity,
 	followUser,
 	getUser,
+	makeAdmin,
 	makeNote,
 	makePlan,
+	removeAdmin,
 	unfollowCommunity,
 	unfollowUser,
 	updateUserEmail,
@@ -66,7 +69,7 @@ router.post("/plan", makePlan);
 router.delete("/plan", deletePlan);
 
 // Change Theme
-router.patch("/theme");
+router.patch("/theme", changeTheme);
 
 // Save a Post
 router.post("/save");
@@ -75,9 +78,9 @@ router.post("/save");
 router.delete("/save");
 
 // Make Admin
-router.post("/admin");
+router.post("/admin", makeAdmin);
 
 // Remove Admin
-router.delete("/admin");
+router.delete("/admin", removeAdmin);
 
 export default router;
