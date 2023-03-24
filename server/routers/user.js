@@ -1,38 +1,49 @@
 /** @format */
 
 import express from "express";
-import { addUser, updateUserPassword } from "../controllers/user.js";
+import {
+	addUser,
+	followCommunity,
+	followUser,
+	getUser,
+	unfollowCommunity,
+	unfollowUser,
+	updateUserEmail,
+	updateUserPassword,
+	updateUserPhone,
+	updateUserProfilePic,
+} from "../controllers/user.js";
 const router = express.Router();
 
 //add user
 router.post("/add", addUser);
 
 // Get User Info
-// router.get("/", getUser);
+router.get("/", getUser);
 
 // Update Profile Picture
-router.patch("/profilepic");
+router.patch("/profilepic", updateUserProfilePic);
 
 // Update Email Address
-router.patch("/email");
+router.patch("/email", updateUserEmail);
 
 // Update Phone Number
-router.patch("/phonenumber");
+router.patch("/phonenumber", updateUserPhone);
 
 // Change Password
 router.post("/resetPassword", updateUserPassword);
 
 // Follow Community
-router.post("/followcommunity");
+router.post("/followcommunity", followCommunity);
 
 // Unfollow Community
-router.delete("/followcommunity");
+router.delete("/followcommunity", unfollowCommunity);
 
 // Follow User
-router.post("/followuser");
+router.post("/followuser", followUser);
 
 // Unfollow User
-router.delete("/followuser");
+router.delete("/followuser", unfollowUser);
 
 // Get Note
 router.get("/note");
