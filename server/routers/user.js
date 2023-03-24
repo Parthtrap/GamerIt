@@ -3,9 +3,14 @@
 import express from "express";
 import {
 	addUser,
+	deleteNote,
+	deletePlan,
+	editNote,
 	followCommunity,
 	followUser,
 	getUser,
+	makeNote,
+	makePlan,
 	unfollowCommunity,
 	unfollowUser,
 	updateUserEmail,
@@ -45,35 +50,23 @@ router.post("/followuser", followUser);
 // Unfollow User
 router.delete("/followuser", unfollowUser);
 
-// Get Note
-router.get("/note");
-
 // Make Note
-router.post("/note");
+router.post("/note", makeNote);
 
 // Delete Note
-router.delete("/note");
+router.delete("/note", deleteNote);
 
 // Edit Note
-router.patch("/note");
-
-// Get Plan
-router.get("/plan");
+router.patch("/note", editNote);
 
 // Make Plan
-router.post("/plan");
+router.post("/plan", makePlan);
 
 // Delete Plan
-router.delete("/plan");
-
-// Edit Plan
-router.patch("/plan");
+router.delete("/plan", deletePlan);
 
 // Change Theme
 router.patch("/theme");
-
-// Change Font
-router.patch("/font");
 
 // Save a Post
 router.post("/save");
