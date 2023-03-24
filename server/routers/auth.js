@@ -11,6 +11,7 @@ router.get("/getOtp",authControllers.createOtp);
 router.post("/verifyOtp",authControllers.verifyOtp);
 router.get("/tokenLogin",authControllers.verifyLoginToken);
 router.post("/login",authControllers.verifyGeneraLogin);
+router.post("/logout",authControllers.logout);
 
 export default router;
 
