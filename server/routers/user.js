@@ -1,7 +1,7 @@
 /** @format */
 
 import express from "express";
-import { addUser } from "../controllers/user.js";
+import { addUser, updateUserPassword } from "../controllers/user.js";
 const router = express.Router();
 
 //add user
@@ -20,7 +20,7 @@ router.patch("/email");
 router.patch("/phonenumber");
 
 // Change Password
-router.patch("/password");
+router.post("/resetPassword", updateUserPassword);
 
 // Follow Community
 router.post("/followcommunity");
