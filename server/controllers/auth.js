@@ -19,7 +19,7 @@ let transporter = nodemailer.createTransport({
 });
 
 //importing functions and modals
-import { getUserInfo } from "./function.js";
+import { getUserInfo } from "./functions.js";
 import Token from "../models/token.js";
 
 //for getting url of google authentication page
