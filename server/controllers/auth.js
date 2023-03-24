@@ -21,7 +21,6 @@ let transporter = nodemailer.createTransport({
 //importing functions and modals
 import { getUserInfo } from "./function.js";
 import Token from "../models/token.js";
-const redirectURI = process.env.GOOGLE_AUTH_REDIRECT_URI;
 
 //for getting url of google authentication page
 const googleAuthPage = async (req, res) => {
@@ -31,7 +30,7 @@ const googleAuthPage = async (req, res) => {
   function getGoogleAuthURL() {
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
     const options = {
-      redirect_uri: `${process.env.SERVER_ROOT_URI}/${redirectURI}`,
+      redirect_uri: `${process.env.SERVER_ROOT_URI}/api/auth/googleAuth`,
       client_id: process.env.GOOGLE_CLIENT_ID,
       access_type: "offline",
       response_type: "code",
@@ -221,6 +220,7 @@ const verifyGeneraLogin = async (req,res) =>{
 
 }
 
+//exporting auth controllers
 export const authControllers = {
     googleAuthPage,
     redirectGoogleEmail,
