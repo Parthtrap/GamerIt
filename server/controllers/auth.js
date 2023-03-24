@@ -321,7 +321,7 @@ const createOtp = async (req, res) => {
             }
           );
         } catch (err) {
-            console.log(err.message);
+          console.log(err.message);
           res
             .status(501)
             .json({ error: "Can't send otp for creating account" });
@@ -412,7 +412,7 @@ const createOtp = async (req, res) => {
             debugMode ? console.log("\nToken saved in database") : "";
             debugMode ? console.log(newToken) : "";
           } catch (err) {
-            console.log(err.message) ;
+            console.log(err.message);
             res.status(500).json({ error: err.message });
             return;
           }
@@ -438,7 +438,7 @@ const createOtp = async (req, res) => {
                 return;
               } else {
                 console.log("\nemail has been sent");
-                debugMode? console.log(`\nsent otp to ${email}`) :"";
+                debugMode ? console.log(`\nsent otp to ${email}`) : "";
 
                 res.status(200).json({ message: "Sent otp successfully" });
               }
@@ -460,141 +460,309 @@ const createOtp = async (req, res) => {
 
 //verifying otp
 const verifyOtp = async (req, res, next) => {
-    console.log("\nreceived otp for verification");
-    const receivedOtp = req.body.otp;
-  
-    let email_token;
-  
-    //finding email token
+  console.log("\nreceived otp for verification");
+  const receivedOtp = req.body.otp;
+
+  let email_token;
+
+  //finding email token
+  try {
+    debugMode ? console.log("\nstoring email token") : "";
+    debugMode ? console.log(req.cookies) : "";
+
+    email_token = req.cookies[process.env.EMAIL_COOKIE_NAME];
+
+    if (!email_token) throw Error("\nSession expired");
+  } catch (error) {
+    debugMode ? console.log(error.message) : "";
+    const response = { error: "email-token expired" };
+
+    res.status(400).json(response);
+    return;
+  }
+
+  //decoding email token
+  try {
+    debugMode ? console.log("\ndecoding email-token") : "";
+    const decoded_email_token = jwt.verify(email_token, process.env.JWT_SECRET);
+
+    debugMode ? console.log("\ndecoded", decoded_email_token) : "";
+    let existingToken;
+    //fetching token from token-list with received email
     try {
-      console.log("\nstoring email token");
-      console.log(req.cookies);
-  
-      email_token = req.cookies[process.env.EMAIL_COOKIE_NAME];
-  
-      if (!email_token) throw Error("\nSession expired");
-    } catch (error) {
-      console.log(error.message);
-      const response = { error: "email-token expired" };
-  
-      res.status(400).json(response);
+      debugMode ? console.log("\nfinding otp-token for received email") : "";
+      existingToken = await Token.findOne({
+        email: decoded_email_token.userEmail,
+      });
+    } catch (err) {
+      debugMode ? console.log(err.message) : "";
+      res
+        .status(500)
+        .json({ error: "Email verification failed, please try again later" });
       return;
     }
-  
-    //decoding email token
-    try {
-      console.log("\ndecoding email-token");
-      const decoded_email_token = jwt.verify(email_token, process.env.JWT_SECRET);
-  
-      console.log("\ndecoded", decoded_email_token);
-      let existingToken;
-      //fetching token from token-list with received email
-      try {
-        console.log("\nfinding otp-token for received email");
-        existingToken = await Token.findOne({
-          email: decoded_email_token.userEmail,
-        });
-      } catch (err) {
-        console.log(err.message);
-        res
-          .status(500)
-          .json({ error: "Email verification failed, please try again later" });
-        return;
-      }
-  
-      //when no token found
-      if (!existingToken) {
-        console.log("\nno otp found for this email in database");
-        res
-          .status(400)
-          .json({ error: "OTP not found. Please send an otp request first" });
-        return;
-      }
-  
-      //token found for received
-      console.log("\ntoken", existingToken);
-  
-      //checking expiry
-      if (existingToken.expiresAt < Date.now()) {
-        console.log("\nreceived expired otp");
-        res.status(400).json({ error: "Opt is expired already" });
-        return;
-      }
-  
-      console.log("\ntoken is not expired");
-  
-      //matching otp from saved hashPassword
-      async function checkHashedOtp() {
-        const isMatching = await new Promise((resolve, reject) => {
-          bcrypt.compare(
-            receivedOtp,
-            existingToken.otp,
-            function (error, isMatch) {
-              if (error) reject(error);
-              resolve(isMatch);
-            }
-          );
-        });
-  
-        return isMatching;
-      }
-  
-      console.log("\ncomparing received otp with hashedOtp");
-      const isOtpMatching = await checkHashedOtp();
-  
-      console.log("\nisOtpMatching", isOtpMatching);
-  
-      //when otp didn't matched
-      if (!isOtpMatching) {
-        console.log("\notp didn't matched");
-        res
-          .status(400)
-          .json({ error: "Invalid otp, could not verify your email" });
-        return;
-      }
-  
-      //when otp matched
-      console.log("deleting the otp-token");
-      await Token.deleteMany({ email: decoded_email_token.userEmail });
-  
-      //creating jwt token
-      const userData = {
-        userEmail: decoded_email_token.userEmail,
-        isVerified: true,
-        isGoogleVerified: decoded_email_token.isGoogleVerified,
-        isCreatingAccount: decoded_email_token.isCreatingAccount,
-      };
-      const token = jwt.sign(userData, process.env.JWT_SECRET);
-  
-      //sending cookies to client side
-      console.log("\ncreating new modified email token");
-      console.log("\nsending modified email-token");
-      res.cookie(process.env.EMAIL_COOKIE_NAME, token, {
-        expires: new Date(Date.now() + 60 * 60 * 1000), //milliseconds
-        httpOnly: true,
-        secure: false,
-      });
-  
-      res.status(200).json({
-        message: "otp matched",
-        isCreatingAccount: decoded_email_token.isCreatingAccount,
-        userEmail: decoded_email_token.userEmail,
-      });
+
+    //when no token found
+    if (!existingToken) {
+      debugMode ? console.log("\nno otp found for this email in database") : "";
+      res
+        .status(400)
+        .json({ error: "OTP not found. Please send an otp request first" });
       return;
-    } catch (error) {
-      console.log("\nFailed to authenticate");
-      console.log("\n", error.message);
-      const response = { error: "Failed to authenticate" };
-  
-      res.status(500).json(response);
     }
-  };
 
-//verifying login token
-const verifyLoginToken = async (req, res) => {};
+    //token found for received
+    debugMode ? console.log("\ntoken", existingToken) : "";
 
-//verifying general login request
-const verifyGeneraLogin = async (req, res) => {};
+    //checking expiry
+    if (existingToken.expiresAt < Date.now()) {
+      debugMode ? console.log("\nreceived expired otp") : "";
+      res.status(400).json({ error: "Opt is expired already" });
+      return;
+    }
+
+    debugMode ? console.log("\ntoken is not expired") : "";
+
+    //matching otp from saved hashPassword
+    async function checkHashedOtp() {
+      const isMatching = await new Promise((resolve, reject) => {
+        bcrypt.compare(
+          receivedOtp,
+          existingToken.otp,
+          function (error, isMatch) {
+            if (error) reject(error);
+            resolve(isMatch);
+          }
+        );
+      });
+
+      return isMatching;
+    }
+
+    debugMode ? console.log("\ncomparing received otp with hashedOtp") : "";
+    const isOtpMatching = await checkHashedOtp();
+
+    debugMode ? console.log("\nisOtpMatching", isOtpMatching) : "";
+
+    //when otp didn't matched
+    if (!isOtpMatching) {
+      debugMode ? console.log("\notp didn't matched") : "";
+      res
+        .status(400)
+        .json({ error: "Invalid otp, could not verify your email" });
+      return;
+    }
+
+    //when otp matched
+    debugMode ? console.log("deleting the otp-token") : "";
+    await Token.deleteMany({ email: decoded_email_token.userEmail });
+
+    //creating jwt token
+    const userData = {
+      userEmail: decoded_email_token.userEmail,
+      isVerified: true,
+      isGoogleVerified: decoded_email_token.isGoogleVerified,
+      isCreatingAccount: decoded_email_token.isCreatingAccount,
+    };
+    const token = jwt.sign(userData, process.env.JWT_SECRET);
+
+    //sending cookies to client side
+    debugMode ? console.log("\ncreating new modified email token") : "";
+    debugMode ? console.log("\nsending modified email-token") : "";
+    res.cookie(process.env.EMAIL_COOKIE_NAME, token, {
+      expires: new Date(Date.now() + 60 * 60 * 1000), //milliseconds
+      httpOnly: true,
+      secure: false,
+    });
+
+    res.status(200).json({
+      message: "otp matched",
+      isCreatingAccount: decoded_email_token.isCreatingAccount,
+      userEmail: decoded_email_token.userEmail,
+    });
+    return;
+  } catch (error) {
+    debugMode ? console.log("\nFailed to authenticate") : "";
+    console.log("\n", error.message);
+    const response = { error: "Failed to authenticate" };
+
+    res.status(500).json(response);
+  }
+};
+
+//verify login token whenever recieved
+const verifyLoginToken = async (req, res, next) => {
+  console.log("\nverify login-token api hit");
+  let login_token;
+
+  //access login token
+  try {
+    console.log("\nstoring access token");
+    console.log(req.cookies);
+    login_token = req.cookies[process.env.LOGIN_COOKIE_NAME];
+
+    if (!login_token) throw Error("\nSession expired");
+  } catch (error) {
+    console.log(error.message);
+    const response = { error: "login token expired" };
+
+    res.status(400).json(response);
+    return;
+  }
+
+  //decoding login token received as cookie
+  try {
+    console.log("\ndecoding login token");
+    const decoded_login_token = jwt.verify(login_token, process.env.JWT_SECRET);
+
+    console.log("\ndecoded", decoded_login_token);
+
+    const email = decoded_login_token.userEmail;
+
+    console.log("\n", "checking if the user exist");
+
+    //check if a user exist with this email
+    let existingUser;
+
+    try {
+      existingUser = await getUserInfo(email);
+    } catch (err) {
+      console.log(err.message);
+      res
+        .status(500)
+        .json({ error: "Loggin in failed, please try again later" });
+      return;
+    }
+
+    //when no user exist
+    if (!existingUser) {
+      console.log("\nNo user exists with this email");
+      res
+        .status(400)
+        .json({ error: "Authentication error. Please log in again" });
+      return;
+    }
+
+    //sending response with userData
+    const userData = {
+      userEmail: decoded_login_token.userEmail,
+      userName: decoded_login_token.userName,
+    };
+    console.log("\nsending userData");
+
+    res.status(200).json({ userData: userData });
+  } catch (error) {
+    console.log("\nFailed to decode login token");
+    console.log("\n", error.message);
+    const response = { error: "Failed to authenticate" };
+
+    res.status(500).json(response);
+  }
+};
+
+//api for checking the basic login
+const verifyGeneraLogin = async (req, res, next) => {  
+  console.log("\nverifyUser login api hit");
+  const { email, password } = req.body;
+
+  debugMode ? console.log(req.body) : "";
+
+  let existingUser;
+
+  try {
+    existingUser = await getUserInfo(email);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: "Loggin in failed, please try again later" });
+    return;
+  }
+
+  //when no user exist
+  if (!existingUser) {
+    console.log("\nNo user exists with this email, please sign up");
+    res
+      .status(400)
+      .json({ error: "No user exists with this email, please sign up" });
+    return;
+  }
+
+  try {
+    //when user exist then check for password
+    async function checkHashPassword() {
+      const isMatching = await new Promise((resolve, reject) => {
+        debugMode ? console.log(password, existingUser.password) : "";
+        bcrypt.compare(
+          password,
+          existingUser.password,
+          function (error, isMatch) {
+            if (error) reject(error);
+            resolve(isMatch);
+          }
+        );
+      });
+
+      return isMatching;
+    }
+
+    debugMode ? console.log("\nchecking password") : "";
+    const isPassMatching = await checkHashPassword();
+    debugMode ? console.log("\nisPassMatching", isPassMatching) : "";
+
+    //when password doesn't matches
+    if (!isPassMatching) {
+      debugMode ? console.log("\nInvalid credentials, could not log you in.") : "";
+      res
+        .status(400)
+        .json({ error: "Invalid credentials, could not log you in" });
+      return;
+    }
+
+    //when user matches
+    debugMode ? console.log("\nUser found") : "";
+    debugMode ? console.log(existingUser) : "";
+
+    const userData = {
+      userEmail: existingUser.email,
+      userName: existingUser.username,
+    };
+
+    //creating jwt token
+    const token = jwt.sign(userData, process.env.JWT_SECRET);
+
+    //sending cookies to client side
+    debugMode ? console.log("\nCreating login token") : "";
+    res.cookie(process.env.LOGIN_COOKIE_NAME, token, {
+      maxAge: 10 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: false,
+    });
+    debugMode ? console.log("\nsent login token") : "";
+
+    res.status(200).json({
+      message: "Logged in!",
+      userData: userData,
+    });
+    return;
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: err.message });
+    return;
+  }
+};
+
+//logout function
+const logout = async (req, res, next) => {
+  //remove login token
+  console.log("\nlogout api hit");
+  try {
+    res.clearCookie(process.env.LOGIN_COOKIE_NAME);
+    console.log("\nremoved login token");
+    res.status(200).json({ message: "logged out" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: err.message });
+  }
+};
 
 //exporting auth controllers
 export const authControllers = {
@@ -604,4 +772,5 @@ export const authControllers = {
   verifyOtp,
   verifyLoginToken,
   verifyGeneraLogin,
+  logout
 };
