@@ -1,8 +1,9 @@
 import express from "express";
+import { getAllCommunities } from "../controllers/community.js";
 const router = express.Router();
 
 // Get All Community or by name
-router.get("/");
+router.get("/", getAllCommunities);
 
 // Create a Community
 router.post("/");
