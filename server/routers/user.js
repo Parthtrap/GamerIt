@@ -1,11 +1,12 @@
 import express from "express";
+import { addUser, getUser } from "../controllers/user.js";
 const router = express.Router();
 
 // TEMP : MAKE USER
-router.post("/");
+router.post("/", addUser);
 
 // Get User Info
-router.get("/");
+router.get("/", getUser);
 
 // Update Profile Picture
 router.patch("/profilepic");
