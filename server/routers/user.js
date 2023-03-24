@@ -4,8 +4,10 @@ import express from "express";
 import {
 	addUser,
 	followCommunity,
+	followUser,
 	getUser,
 	unfollowCommunity,
+	unfollowUser,
 	updateUserEmail,
 	updateUserPassword,
 	updateUserPhone,
@@ -38,10 +40,10 @@ router.post("/followcommunity", followCommunity);
 router.delete("/followcommunity", unfollowCommunity);
 
 // Follow User
-router.post("/followuser");
+router.post("/followuser", followUser);
 
 // Unfollow User
-router.delete("/followuser");
+router.delete("/followuser", unfollowUser);
 
 // Get Note
 router.get("/note");

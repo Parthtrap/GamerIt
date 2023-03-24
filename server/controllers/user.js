@@ -620,10 +620,246 @@ export const unfollowCommunity = async (req, res) => {
 };
 
 // Follow User
+export const followUser = async (req, res) => {
+	const { username, followingUser } = req.body;
+	if (!username || !followingUser) {
+		debugMode ? console.log("Incomplete Request") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	let user1, user2;
+	try {
+		user1 = await User.findOne({ username });
+		if (user1.followingUsers.includes(followingUser)) {
+			debugMode
+				? console.log("Follow User -> User is Already Following")
+				: "";
+			res.status(400).json({ message: "Already Following" });
+			return;
+		}
+		user1 = await User.updateOne(
+			{ username },
+			{ $push: { followingUsers: followingUser } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Follow User -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (user1.matchedCount == 0) {
+		debugMode
+			? console.log("Follow User -> No User with given username1 exists")
+			: "";
+		res.status(404).json({ message: "User1 Not Found !!" });
+		return;
+	}
+	if (user1.modifiedCount == 0) {
+		debugMode ? console.log("Follow User -> No User was Updated") : "";
+		res.status(400).json({ message: "No user1 was Updated" });
+		return;
+	}
+
+	try {
+		user2 = await User.updateOne(
+			{ username: followingUser },
+			{ $inc: { followsCount: 1 } }
+		);
+	} catch (err) {
+		try {
+			user1 = await User.updateOne(
+				{ username },
+				{ $pull: { followingUsers: followingUser } }
+			);
+		} catch (err) {
+			debugMode ? console.log("Follow User -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+		debugMode ? console.log("Follow User -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (user2.matchedCount == 0) {
+		debugMode
+			? console.log("Follow User -> No User with given username1 exists")
+			: "";
+		res.status(404).json({ message: "User2 Not Found !!" });
+		try {
+			user1 = await User.updateOne(
+				{ username },
+				{ $pull: { followingUsers: followingUser } }
+			);
+		} catch (err) {
+			debugMode ? console.log("Follow User -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+		return;
+	}
+	if (user2.modifiedCount == 0) {
+		debugMode ? console.log("Follow User -> No User was Updated") : "";
+		res.status(400).json({ message: "No user2 was Updated" });
+		try {
+			user1 = await User.updateOne(
+				{ username },
+				{ $pull: { followingUsers: followingUser } }
+			);
+		} catch (err) {
+			debugMode ? console.log("Follow User -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+		return;
+	}
+	debugMode ? console.log("Follow User -> User Followed Sucessfully !!") : "";
+	res.status(200).json({
+		message: "User Followed Sucessfully !!",
+	});
+};
 
 // Unfollow User
+export const unfollowUser = async (req, res) => {
+	const { username, unfollowingUser } = req.body;
+	if (!username || !unfollowingUser) {
+		debugMode ? console.log("Incomplete Request") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	let user1, user2;
+	try {
+		user1 = await User.findOne({ username });
+		if (!user1.followingUsers.includes(unfollowingUser)) {
+			debugMode
+				? console.log("Unfollow User -> User is not Following")
+				: "";
+			res.status(500).json({ message: "Already Unfollowing" });
+			return;
+		}
+		user1 = await User.updateOne(
+			{ username },
+			{ $pull: { followingUsers: unfollowingUser } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Unfollow User -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (user1.matchedCount == 0) {
+		debugMode
+			? console.log(
+					"Unfollow User -> No User with given username1 exists"
+			  )
+			: "";
+		res.status(404).json({ message: "User1 Not Found !!" });
+		return;
+	}
+	if (user1.modifiedCount == 0) {
+		debugMode ? console.log("Unfollow User -> No User was Updated") : "";
+		res.status(400).json({ message: "No user1 was Updated" });
+		return;
+	}
+
+	try {
+		user2 = await User.updateOne(
+			{ username: unfollowingUser },
+			{ $inc: { followsCount: -1 } }
+		);
+	} catch (err) {
+		try {
+			user1 = await User.updateOne(
+				{ username },
+				{ $push: { followingUsers: unfollowingUser } }
+			);
+		} catch (err) {
+			debugMode ? console.log("Unfollow User -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+		debugMode ? console.log("Unfollow User -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (user2.matchedCount == 0) {
+		debugMode
+			? console.log(
+					"Unfollow User -> No User with given username1 exists"
+			  )
+			: "";
+		res.status(404).json({ message: "User2 Not Found !!" });
+		try {
+			user1 = await User.updateOne(
+				{ username },
+				{ $push: { followingUsers: unfollowingUser } }
+			);
+		} catch (err) {
+			debugMode ? console.log("Unfollow User -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+		return;
+	}
+	if (user2.modifiedCount == 0) {
+		debugMode ? console.log("Unfollow User -> No User was Updated") : "";
+		res.status(400).json({ message: "No user2 was Updated" });
+		try {
+			user1 = await User.updateOne(
+				{ username },
+				{ $push: { followingUsers: unfollowingUser } }
+			);
+		} catch (err) {
+			debugMode ? console.log("Unfollow User -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+		return;
+	}
+	debugMode
+		? console.log("Unfollow User -> User Unfollowed Sucessfully !!")
+		: "";
+	res.status(201).json({
+		message: "User Unfollowed Sucessfully !!",
+	});
+};
 
 // Make Note
+export const makeNote = async (req, res) => {
+	const { username, title } = req.body;
+	if (!title || !username) {
+		debugMode ? console.log("Incomplete Response !!") : "";
+		res.status(400).json({ message: "Incomplete Response !!" });
+		return;
+	}
+	const note = {
+		title,
+		content: [],
+		color: "#FFFF88",
+		createdAt: Date.now(),
+	};
+	let user;
+	try {
+		user = await User.updateOne({ username }, { $push: { notes: note } });
+	} catch (err) {
+		debugMode ? console.log("Make Note -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+
+	if (user.matchedCount == 0) {
+		debugMode
+			? console.log("Make Note -> No User with given username exists")
+			: "";
+		res.status(404).json({ message: "User Not Found !!" });
+		return;
+	} else if (user.modifiedCount == 0) {
+		debugMode ? console.log("Make Note -> No User was Updated") : "";
+		res.status(400).json({ message: "No user was Updated" });
+		return;
+	}
+	debugMode ? console.log("Make Note -> Note Made Sucessfully !!") : "";
+	res.status(201).json({
+		message: "Note Made Sucessfully !!",
+	});
+};
 
 // Delete Note
 
