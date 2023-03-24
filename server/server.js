@@ -15,12 +15,13 @@ app.use(cookieParser());
 //parsering json and url encoded requests
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+
+//allowing cors requests
 const corsOptions = {
   origin: process.env.UI_ROOT_URI, //can't set to '*' when allowing credentials
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
-
 app.use(cors(corsOptions));
 
 
