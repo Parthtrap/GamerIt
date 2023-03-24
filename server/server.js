@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 // Import Routes from Routes Folder
 import userRoutes from "./routers/user.js";
 import postRoutes from "./routers/post.js";
-// import authRoutes from "./routers/auth.js";
+import authRoutes from "./routers/auth.js";
 import communityRoutes from "./routers/community.js";
 
 const app = express();
