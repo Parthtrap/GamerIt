@@ -1,10 +1,9 @@
-import logo from './logo.svg';
-import './App.css';
+import './index.css';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      Hello world!
+    <div>
+      Hello world
     </div>
   );
 }
