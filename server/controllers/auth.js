@@ -21,17 +21,16 @@ let transporter = nodemailer.createTransport({
 //importing functions and modals
 import { getUserInfo } from "./function.js";
 import Token from "../models/token.js";
-const redirectURI = process.env.GOOGLE_AUTH_REDIRECT_URI;
 
 //for getting url of google authentication page
-const googleAuthPage = async (req, res, next) => {
+const googleAuthPage = async (req, res) => {
   console.log("\n", "google auth page request hit");
 
   //return google auth link
   function getGoogleAuthURL() {
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
     const options = {
-      redirect_uri: `${process.env.SERVER_ROOT_URI}/${redirectURI}`,
+      redirect_uri: `${process.env.SERVER_ROOT_URI}/api/auth/googleAuth`,
       client_id: process.env.GOOGLE_CLIENT_ID,
       access_type: "offline",
       response_type: "code",
@@ -49,7 +48,7 @@ const googleAuthPage = async (req, res, next) => {
 };
 
 //fetching google user data (for login and creating account)
-const redirectGoogleEmail = async (req, res, next) => {
+const redirectGoogleEmail = async (req, res) => {
   console.log("\n", "redirect api hit");
   debugMode ? console.log("\n", "got the user code of the google user") : "";
 
@@ -200,3 +199,33 @@ const redirectGoogleEmail = async (req, res, next) => {
     return;
   }
 };
+
+//creating otp 
+const createOtp = async (req,res) =>{
+
+}
+
+//verifying otp
+const verifyOtp = async (req,res) =>{
+
+}
+
+//verifying login token 
+const verifyLoginToken = async (req,res) =>{
+
+}
+
+//verifying general login request
+const verifyGeneraLogin = async (req,res) =>{
+
+}
+
+//exporting auth controllers
+export const authControllers = {
+    googleAuthPage,
+    redirectGoogleEmail,
+    createOtp,
+    verifyOtp,
+    verifyLoginToken,
+    verifyGeneraLogin
+}
