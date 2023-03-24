@@ -47,6 +47,16 @@ const App = () => {
                   </div>
                 }
               />
+              <Route
+                exact
+                path="/profile/:id"
+                element={
+                  <div className="flex ">
+                    <ProfilePage />
+                    <Sidebar />
+                  </div>
+                }
+              />
               <Route exact path="*" element={<Navigate to="/" />} />
             </Routes>
           </>
