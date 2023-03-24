@@ -1,9 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../../Context/AuthContext";
 
 function Navbar() {
   const [navbar, setNavbar] = useState(false);
   const [sidebar, setSidebar] = useState(false);
+  const auth = useContext(AuthContext);
 
   return (
     <nav className="bg-fill shadow-base fixed top-0 z-50 w-full shadow-sm ">
@@ -107,30 +109,75 @@ function Navbar() {
             }`}
           >
             <ul className="items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0">
-              <li className="text-tprimary hover:text-tmuted">
-                <Link to="/login">Login</Link>
-              </li>
-              <li className="text-tprimary hover:text-tmuted">
-                <Link to="/help">Help</Link>
-              </li>
-              </ul>
-              </div>
+            {auth.isLoggedIn ? (
+                <>
+                  <li className="text-tprimary hover:text-tmuted">
+                    <Link to="#" onClick={auth.logout}>
+                      Logout
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="text-tprimary hover:text-tmuted">
+                    <Link to="/login">Login</Link>
+                  </li>
+                  <li className="text-tprimary hover:text-tmuted">
+                    <Link to="/help">Help</Link>
+                  </li>
+                </>
+              )}
               {/* {auth.isLoggedIn ? (
                 <>
                   <li className="text-tprimary hover:text-tmuted">
-                    <Link to={"/profile/" + auth.userEmail} onClick={() => { setNavbar(false) }}>Profile</Link>
+                    <Link
+                      to={"/profile/" + auth.userEmail}
+                      onClick={() => {
+                        setNavbar(false);
+                      }}
+                    >
+                      Profile
+                    </Link>
                   </li>
                   <li className="text-tprimary hover:text-tmuted">
-                    <Link to="/post/new" onClick={() => { setNavbar(false) }}>New Post</Link>
+                    <Link
+                      to="/post/new"
+                      onClick={() => {
+                        setNavbar(false);
+                      }}
+                    >
+                      New Post
+                    </Link>
                   </li>
                   <li className="text-tprimary hover:text-tmuted">
-                    <Link to="/notes" onClick={() => { setNavbar(false) }}>Notes</Link>
+                    <Link
+                      to="/notes"
+                      onClick={() => {
+                        setNavbar(false);
+                      }}
+                    >
+                      Notes
+                    </Link>
                   </li>
                   <li className="text-tprimary hover:text-tmuted">
-                    <Link to="/todo" onClick={() => { setNavbar(false) }}>To-Do List</Link>
+                    <Link
+                      to="/todo"
+                      onClick={() => {
+                        setNavbar(false);
+                      }}
+                    >
+                      To-Do List
+                    </Link>
                   </li>
                   <li className="text-tprimary hover:text-tmuted">
-                    <Link to="/help" onClick={() => { setNavbar(false) }}>Help</Link>
+                    <Link
+                      to="/help"
+                      onClick={() => {
+                        setNavbar(false);
+                      }}
+                    >
+                      Help
+                    </Link>
                   </li>
                   <li className="text-tprimary hover:text-tmuted">
                     <Link to="/" onClick={auth.logout}>
@@ -147,7 +194,7 @@ function Navbar() {
                     <Link to="/help">Help</Link>
                   </li>
                 </>
-              )} 
+              )} */}
             </ul>
           </div>
 
