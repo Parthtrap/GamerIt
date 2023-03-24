@@ -17,12 +17,6 @@ const app = express();
 //parsering cookies
 app.use(cookieParser());
 
-// Defining Routes
-app.use("/api/user", userRoutes);
-app.use("/api/post", postRoutes);
-// app.use("/api/auth", authRoutes);
-app.use("/api/community", communityRoutes);
-
 //parsering json and url encoded requests
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
@@ -39,6 +33,12 @@ app.use(cors(corsOptions));
 const CONNECTION_URL = `mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@cluster1.iktpdhw.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
 
 const port = process.env.PORT;
+
+// Defining Routes
+app.use("/api/user", userRoutes);
+app.use("/api/post", postRoutes);
+// app.use("/api/auth", authRoutes);
+app.use("/api/community", communityRoutes);
 
 mongoose
 	.connect(CONNECTION_URL)
