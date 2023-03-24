@@ -1,20 +1,26 @@
 /** @format */
 
 import express from "express";
-import { addUser, updateUserPassword } from "../controllers/user.js";
+import {
+	addUser,
+	getUser,
+	updateUserEmail,
+	updateUserPassword,
+	updateUserProfilePic,
+} from "../controllers/user.js";
 const router = express.Router();
 
 //add user
 router.post("/add", addUser);
 
 // Get User Info
-// router.get("/", getUser);
+router.get("/", getUser);
 
 // Update Profile Picture
-router.patch("/profilepic");
+router.patch("/profilepic", updateUserProfilePic);
 
 // Update Email Address
-router.patch("/email");
+router.patch("/email", updateUserEmail);
 
 // Update Phone Number
 router.patch("/phonenumber");
