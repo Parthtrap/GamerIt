@@ -378,11 +378,246 @@ export const updateUserEmail = async (req, res) => {
 		message: "User Email Changed Sucessfully !!",
 	});
 };
+
 // Update Phone Number
+export const updateUserPhone = async (req, res) => {
+	const { username, phonenumber } = req.body;
+	if (!username || !phonenumber) {
+		debugMode ? console.log("Incomplete Request") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	let user;
+	try {
+		user = await User.updateOne({ username }, { phoneNumber: phonenumber });
+	} catch (err) {
+		debugMode
+			? console.log("Update User Phone Number -> " + err.message)
+			: "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (user.matchedCount == 0) {
+		debugMode
+			? console.log(
+					"Update User Phone Number -> No User with given username exists"
+			  )
+			: "";
+		res.status(404).json({ message: "User Not Found !!" });
+		return;
+	} else if (user.modifiedCount == 0) {
+		debugMode
+			? console.log("Update User Phone Number -> No User was Updated")
+			: "";
+		res.status(400).json({ message: "No user was Updated" });
+		return;
+	}
+	debugMode
+		? console.log(
+				"Update User Phone Number -> User Phone Number Changed Sucessfully !!"
+		  )
+		: "";
+	res.status(201).json({
+		message: "User Phone Number Changed Sucessfully !!",
+	});
+};
 
 // Follow Community
+export const followCommunity = async (req, res) => {
+	const { name, username } = req.body;
+	if (!name || !username) {
+		debugMode ? console.log("Follow Community -> Incomplete Request") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	let founduser, foundcommunity;
+	try {
+		founduser = await User.findOne({ username });
+		if (!founduser) {
+			debugMode ? console.log("Follow Community -> User Not Found") : "";
+			res.status(404).json({ message: "User Not Found" });
+			return;
+		}
+		if (founduser.followedCommunities.includes(name)) {
+			debugMode
+				? console.log("Follow Community -> Community already followed")
+				: "";
+			res.status(400).json({ message: "Community already followed" });
+			return;
+		}
+		founduser.followedCommunities.push(name);
+		founduser.save();
+	} catch (err) {
+		debugMode ? console.log("Follow Community -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (founduser.matchedCount == 0) {
+		debugMode ? console.log("Follow Community -> User Not Found") : "";
+		res.status(404).json({ message: "User Not Found" });
+		return;
+	}
+	if (founduser.modifiedCount == 0) {
+		debugMode ? console.log("Follow Community -> User Not Changed") : "";
+		res.status(400).json({ message: "User Not Changed" });
+		return;
+	}
+	try {
+		foundcommunity = await community.updateOne(
+			{ name },
+			{ $inc: { followerCount: 1 } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Follow Community -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (foundcommunity.matchedCount == 0) {
+		debugMode ? console.log("Follow Community -> Community Not Found") : "";
+		res.status(404).json({ message: "Community Not Found" });
+		try {
+			founduser = await User.findOne({ username });
+			const index = founduser.followedCommunities.indexOf(name);
+			if (index > -1) {
+				founduser.followedCommunities.splice(index, 1);
+			}
+			founduser.save();
+		} catch (err) {
+			debugMode ? console.log("Follow Community -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+		return;
+	}
+	if (foundcommunity.modifiedCount == 0) {
+		debugMode
+			? console.log("Follow Community -> No Community was updated")
+			: "";
+		res.status(400).json({ message: "No Community was updated" });
+		try {
+			founduser = await User.findOne({ username });
+			const index = founduser.followedCommunities.indexOf(name);
+			if (index > -1) {
+				founduser.followedCommunities.splice(index, 1);
+			}
+			founduser.save();
+		} catch (err) {
+			debugMode ? console.log("Follow Community -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+		return;
+	}
+
+	debugMode
+		? console.log("Follow Community -> Successfully Followed the community")
+		: "";
+	res.status(200).json({ message: "Successfully Followed the community" });
+	return;
+};
 
 // Unfollow Community
+export const unfollowCommunity = async (req, res) => {
+	const { name, username } = req.body;
+	if (!name || !username) {
+		debugMode
+			? console.log("Unfollow Community -> Incomplete Request")
+			: "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	let founduser, foundcommunity;
+	try {
+		founduser = await User.findOne({ username });
+		if (!founduser) {
+			debugMode ? console.log("Follow Community -> User Not Found") : "";
+			res.status(404).json({ message: "User Not Found" });
+			return;
+		}
+		if (!founduser.followedCommunities.includes(name)) {
+			debugMode
+				? console.log(
+						"Follow Community -> Community already unfollowed"
+				  )
+				: "";
+			res.status(400).json({ message: "Community already unfollowed" });
+			return;
+		}
+		const index = founduser.followedCommunities.indexOf(name);
+		if (index > -1) {
+			founduser.followedCommunities.splice(index, 1);
+		}
+		founduser.save();
+	} catch (err) {
+		debugMode ? console.log("Unfollow Community -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (founduser.matchedCount == 0) {
+		debugMode ? console.log("Unfollow Community -> User Not Found") : "";
+		res.status(404).json({ message: "User Not Found" });
+		return;
+	}
+	if (founduser.modifiedCount == 0) {
+		debugMode ? console.log("Unfollow Community -> User Not Changed") : "";
+		res.status(400).json({ message: "User Not Changed" });
+		return;
+	}
+	try {
+		foundcommunity = await community.updateOne(
+			{ name },
+			{ $inc: { followerCount: -1 } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Unfollow Community -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (foundcommunity.matchedCount == 0) {
+		debugMode
+			? console.log("Unfollow Community -> Community Not Found")
+			: "";
+		res.status(404).json({ message: "Community Not Found" });
+		try {
+			founduser = await User.findOne({ username });
+			founduser.followedCommunities.push(name);
+			founduser.save();
+		} catch (err) {
+			debugMode
+				? console.log("Unfollow Community -> " + err.message)
+				: "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+		return;
+	}
+	if (foundcommunity.modifiedCount == 0) {
+		debugMode
+			? console.log("Unfollow Community -> No Community was updated")
+			: "";
+		res.status(400).json({ message: "No Community was updated" });
+		try {
+			founduser = await User.findOne({ username });
+			founduser.followedCommunities.push(name);
+			founduser.save();
+		} catch (err) {
+			debugMode
+				? console.log("Unfollow Community -> " + err.message)
+				: "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+		return;
+	}
+
+	debugMode
+		? console.log(
+				"Unfollow Community -> Successfully Unfollowed the community"
+		  )
+		: "";
+	res.status(200).json({ message: "Successfully Unfollowed the community" });
+	return;
+};
 
 // Follow User
 

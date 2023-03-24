@@ -3,9 +3,12 @@
 import express from "express";
 import {
 	addUser,
+	followCommunity,
 	getUser,
+	unfollowCommunity,
 	updateUserEmail,
 	updateUserPassword,
+	updateUserPhone,
 	updateUserProfilePic,
 } from "../controllers/user.js";
 const router = express.Router();
@@ -23,16 +26,16 @@ router.patch("/profilepic", updateUserProfilePic);
 router.patch("/email", updateUserEmail);
 
 // Update Phone Number
-router.patch("/phonenumber");
+router.patch("/phonenumber", updateUserPhone);
 
 // Change Password
 router.post("/resetPassword", updateUserPassword);
 
 // Follow Community
-router.post("/followcommunity");
+router.post("/followcommunity", followCommunity);
 
 // Unfollow Community
-router.delete("/followcommunity");
+router.delete("/followcommunity", unfollowCommunity);
 
 // Follow User
 router.post("/followuser");
