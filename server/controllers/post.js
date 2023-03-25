@@ -83,13 +83,31 @@ export const deletePost = async (req, res) => {
 	return;
 };
 
-// Comment on a Post
-
-// Delete Comment
-
-// Like a Comment
-
-// Unlike a Comment
+// Comment on a Post / Delete Comment / Like a Comment / Dislike a Comment
+export const updateComment = async (req, res) => {
+	const { comments, postId } = req.body;
+	if (!comments || !postId) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	let found;
+	try {
+		found = await post.updateOne(
+			{ _id: new mongoose.Types.ObjectId(postId) },
+			{ comments: comments }
+		);
+	} catch (err) {
+		debugMode ? console.log("Update Comment -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	debugMode
+		? console.log("Update Comment -> Comment Updated Sucessfully")
+		: "";
+	res.status(200).json({ message: "Comment Updated Sucessfully" });
+	return;
+};
 
 // Like a Post
 

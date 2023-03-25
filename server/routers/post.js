@@ -1,5 +1,5 @@
 import express from "express";
-import { createPost, deletePost } from "../controllers/post.js";
+import { createPost, deletePost, updateComment } from "../controllers/post.js";
 const router = express.Router();
 
 // Create a Post
@@ -8,17 +8,8 @@ router.post("/", createPost);
 // Delete a Post
 router.delete("/", deletePost);
 
-// Comment on a Post
-router.post("/comment");
-
-// Delete Comment
-router.delete("/comment");
-
-// Like a Comment
-router.post("/likecomment");
-
-// Unlike a Comment
-router.delete("/likecomment");
+// Update Comments
+router.post("/comment", updateComment);
 
 // Like a Post
 router.post("/like");
