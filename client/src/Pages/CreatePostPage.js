@@ -7,9 +7,11 @@ import AuthContext from "../Context/AuthContext";
 import { storage } from "./../Helper/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
+import CreatePostTag from "./Components/CreatePostTag";
+
 function CreatePostPage() {
   const [communityList, setCommunityList] = useState([]);
-  const [selectedCommunity, setSelectedCommunity] = useState({});
+  const [selectedCommunity, setSelectedCommunity] = useState({tags:[]});
   const [inputValue, setInputValue] = useState("");
   const [fileInputValue, setFileInputValue] = useState(null);
   const [open, setOpen] = useState(false);
@@ -241,6 +243,10 @@ function CreatePostPage() {
                         : selectedCommunity.name
                       : "Select Communtiy"}
                   </div>
+
+                  
+                  
+
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -341,6 +347,14 @@ function CreatePostPage() {
                   <video src={fileInputValue.url} />
                 </>
               )}
+
+                  {(selectedCommunity)?
+                  <div className="flex gap-3 my-4">
+                    {selectedCommunity.tags.map((tag) =>{
+                      return <CreatePostTag key={tag._id} tag={tag}/>;
+                    })}
+                  </div>:"" }
+
               {/* bottom row*/}
               <div className="flex items-center justify-between px-3 py-2 border-t border-gray-600 bg-divcol">
                 {/*post comment buttton*/}
