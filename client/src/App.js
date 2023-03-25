@@ -50,7 +50,7 @@ const App = () => {
               <Route exact path="/createPost" element={<CreatePostPage />} />
               <Route
                 exact
-                path="/community/:id"
+                path="/community/:name"
                 element={
                   <div className="flex ">
                     <Communitypage/>
@@ -60,7 +60,7 @@ const App = () => {
               />
               <Route
                 exact
-                path="/profile/:id"
+                path="/profile/:name"
                 element={
                   <div className="flex ">
                     <Profilepage />

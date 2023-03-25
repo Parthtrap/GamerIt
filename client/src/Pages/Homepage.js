@@ -72,7 +72,7 @@ export default function Homepage() {
           </div>
         </div>
 
-        {toggle
+        {!toggle
           ? PostList.map((post) => {
             console.log(post);
               return <PostListCard key={post._id} post={post} />;

@@ -166,6 +166,10 @@ const redirectGoogleEmail = async (req, res) => {
         const userData = {
           userEmail: existingUser.email,
           userName: existingUser.username,
+          idAdmin: existingUser.isAdmin,
+          followedCommunities:existingUser.followedCommunities,
+          theme: existingUser.theme,
+          notifications: existingUser.notifications
         };
 
         //creating jwt token
@@ -645,9 +649,13 @@ const verifyLoginToken = async (req, res, next) => {
 
     //sending response with userData
     const userData = {
-      userEmail: decoded_login_token.userEmail,
-      userName: decoded_login_token.userName,
-    };
+        userEmail: existingUser.email,
+        userName: existingUser.username,
+        idAdmin: existingUser.isAdmin,
+        followedCommunities:existingUser.followedCommunities,
+        theme: existingUser.theme,
+        notifications: existingUser.notifications
+      };
     console.log("\nsending userData");
 
     res.status(200).json({ userData: userData });
@@ -722,9 +730,13 @@ const verifyGeneraLogin = async (req, res, next) => {
     debugMode ? console.log(existingUser) : "";
 
     const userData = {
-      userEmail: existingUser.email,
-      userName: existingUser.username,
-    };
+        userEmail: existingUser.email,
+        userName: existingUser.username,
+        idAdmin: existingUser.isAdmin,
+        followedCommunities:existingUser.followedCommunities,
+        theme: existingUser.theme,
+        notifications: existingUser.notifications
+      };
 
     //creating jwt token
     const token = jwt.sign(userData, process.env.JWT_SECRET);
