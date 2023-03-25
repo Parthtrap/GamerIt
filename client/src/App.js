@@ -88,7 +88,6 @@ const App = () => {
 							element={
 								<div className="flex theme-dark">
 									<Notes />
-									<Sidebar />
 								</div>
 							}
 						/>

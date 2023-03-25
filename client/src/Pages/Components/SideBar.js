@@ -67,6 +67,7 @@ function Sidebar() {
 		<div className="text-tprimary hidden p-1 mt-16  bg-background md:block md:w-1/4">
 			<div className="border-base RightIn my-2 border rounded-lg  px-2">
 				<h1 className="m-2">All Communities</h1>
+				
 				<div className="relative w-full">
 					<input
 						// onKeyDown={_handleKeyDown}
@@ -74,7 +75,7 @@ function Sidebar() {
 						ref={searchRef}
 						id="search-dropdown"
 						className="bg-fill text-tprimary border-l-base border-background  placeholder-tmuted 
-                    block p-2.5 w-full z-20 text-sm 
+                    block p-2.5 w-full text-sm 
                     rounded-r-lg focus:outline-none   "
 						placeholder="Search Mockups, Logos, Design Templates..."
 						required=""

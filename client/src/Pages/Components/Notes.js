@@ -14,9 +14,9 @@ const Notes = () => {
 	}
 
 	return (
-		<div>
-			<div className="bg-background mx-auto container py-20 px-6 h-screen">
-				<div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+		<div> 
+			<div className="bg-background mx-auto  py-20 px-6 min-h-screen w-max-[500px]">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 					{note.map((props) => (
 						<Note
 							title={props.title}
@@ -30,11 +30,11 @@ const Notes = () => {
 				<button
 					type="button"
 					onClick={() => setRequest(true)}
-					className="flex gap-2 text-tprimary bg-base hover:bg-background
-        focus:outline-none focus:ring-2 
-        focus:ring-tmuted
-        font-medium rounded-full t
-        ext-sm px-5 py-2.5 text-center mr-2 mb-2 "
+					className="flex gap-2 text-tprimary bg-base hover:bg-background mt-10
+								focus:outline-none focus:ring-2 
+								focus:ring-tmuted
+								font-medium rounded-full t
+								ext-sm px-5 py-2.5 text-center mr-2 mb-2 "
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
