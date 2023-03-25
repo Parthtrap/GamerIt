@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../Context/AuthContext";
@@ -55,7 +57,7 @@ function Navbar() {
 
             {/*LOGO*/}
             <Link to="/">
-              <h2 className="text-tprimary text-2xl font-bold ">GAMEIT</h2>
+              <h2 className="text-tprimary text-2xl font-bold ">GAMERIT</h2>
             </Link>
 
             {/* right side dropdown button*/}

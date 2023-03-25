@@ -17,6 +17,7 @@ import Profilepage from "./Pages/Profilepage";
 import Homepage from "./Pages/Homepage";
 import Sidebar from "./Pages/Components/SideBar";
 import Communitypage from "./Pages/Communitypage";
+import CreatePostPage from "./Pages/CreatePostPage";
 
 const App = () => {
   const auth = useContext(AuthContext);
@@ -43,6 +44,7 @@ const App = () => {
                   </div>
                 }
               />
+              <Route exact path="/createPost" element={<CreatePostPage />} />
               <Route
                 exact
                 path="/community/:id"
