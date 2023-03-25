@@ -58,6 +58,11 @@ export const getAllCommunities = async (req, res) => {
 export const createCommunity = async (req, res) => {
 	// console.log(req);
 	const { name } = req.body;
+	if (!name) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
 	const newCommunity = new community({
 		name,
 		profilePic: "",
@@ -99,7 +104,11 @@ export const createCommunity = async (req, res) => {
 // Delete a Community
 export const deleteCommunity = async (req, res) => {
 	const { name } = req.body;
-
+	if (!name) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
 	try {
 		let found = await community.findOne({ name });
 		if (!found) {
@@ -125,6 +134,11 @@ export const deleteCommunity = async (req, res) => {
 // Add tag
 export const addTag = async (req, res) => {
 	const { communityname, name, color } = req.body;
+	if (!communityname || !name || !color) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
 	let found;
 	try {
 		found = await community.findOne({ name: communityname });
@@ -167,6 +181,11 @@ export const addTag = async (req, res) => {
 // Delete tag
 export const deleteTag = async (req, res) => {
 	const { communityname, name } = req.body;
+	if (!communityname || !name) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
 	let found;
 	try {
 		found = await community.findOne({ name: communityname });
@@ -738,4 +757,3 @@ export const matchMaking = async (req, res) => {
 		return;
 	}
 };
-// router.post("/match");
