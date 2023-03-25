@@ -182,6 +182,7 @@ export default function Profilepage() {
                         </svg>
                         Edit Profile
                     </button> 
+                    
 
                 </div>
 
