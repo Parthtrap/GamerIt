@@ -11,27 +11,23 @@ function CreatePostPage() {
   const [communityList, setCommunityList] = useState([]);
   const [selectedCommunity, setSelectedCommunity] = useState({});
   const [inputValue, setInputValue] = useState("");
+  const [fileInputValue,setFileInputValue]=useState(null);
   const [open, setOpen] = useState(false);
   const [userInfo, setUserInfo] = useState({ username: "" });
   const titleRef = useRef(document.createElement("imput"));
   const contentRef = useRef(document.createElement("imput"));
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
+  const fileInputRef = useRef();
 
   const [progress, setProgress] = useState(0);
-  const formhandler = (e) => {
-    e.preventDefault();
-    const file = e.target[0].files[0];
-    uploadFiles(file);
-  };
 
   const uploadFiles = async (file) => {
     if (!file) return;
 
     try {
-
       const storageRef = ref(storage, `/files/${file.name}`);
-      console.log(file,storageRef);
+      console.log(file, storageRef);
 
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -46,9 +42,12 @@ function CreatePostPage() {
       });
 
       const url = await getDownloadURL(uploadTask.snapshot.ref);
-      console.log(url);  
+      console.log("file uploaded");
+      console.log(url);
+      return url;
     } catch (err) {
       console.log(err);
+      return false;
     }
   };
 
@@ -63,15 +62,31 @@ function CreatePostPage() {
       toast.error("Please Select a Community");
     } else {
       try {
+        let fileUrl,type;
+        fileUrl = "";
+        type = "";
+        if(fileInputValue){
+          fileUrl = await uploadFiles(fileInputValue.file);
+          if(!fileUrl){
+            toast.error("Can't able to upload file");
+            return;
+          }
+          type = fileInputValue.type;
+        }
         const postData = JSON.stringify({
+          username : auth.userName,
           title: title,
           content: content,
+          fileSrc: fileUrl,
+          type,
           community: selectedCommunity.name,
-          ownerId: auth.userEmail,
-          ownerUserName: userInfo.username,
+          tags: []
         });
 
-        const response = await fetch("http://localhost:5000/api/post/new", {
+        console.log(postData);
+        return;
+
+        const response = await fetch( `${process.env.REACT_APP_SERVER_ROOT_URI}/api/post`, {
           method: "POST",
           headers: {
             "Content-type": "application/json",
@@ -94,6 +109,20 @@ function CreatePostPage() {
         return;
       }
     }
+  }
+  console.log(fileInputValue);
+
+  const displayFile = async (e)=>{
+      e.preventDefault();
+      const file = fileInputRef.current.files[0];
+      const type = file.type.split("/")[0];
+      const fileObj = {
+        file,
+        url: window.URL.createObjectURL(file),
+        type
+      }
+      setFileInputValue(fileObj);
+      
   }
 
   useEffect(() => {
@@ -158,7 +187,7 @@ function CreatePostPage() {
   }, []);
 
   return (
-    <div className=" p-6 pt-16 min-h-[91vh] bg-black grow ">
+    <div className=" p-6 pt-16 min-h-[100vh] bg-black grow ">
       <div className="container mx-auto tofade md:max-w-2xl">
         {/* Heading */}
         <div className="">
@@ -189,7 +218,7 @@ function CreatePostPage() {
                 rows="4"
               />
               {/* add the dreop down here */}
-              <div className="mt-4 font-medium w-72 h-80 ">
+              <div className="mt-4 font-medium w-full  ">
                 <div
                   onClick={() => setOpen(!open)}
                   className={`bg-gr w-full p-2 flex items-center justify-between text-purple-100 rounded ${
@@ -254,11 +283,10 @@ function CreatePostPage() {
                     />
                   </div>
                   {communityList.map((community) => {
-                    console.log(community);
                     return (
                       <div key={community._id}>
-                      <li
-                      className={`p-2 text-sm text-white hover:bg-purple-800 
+                        <li
+                          className={`p-2 text-sm text-white hover:bg-purple-800 
                                         ${
                                           community.name?.toLowerCase() ===
                                             selectedCommunity.name?.toLowerCase() &&
@@ -271,32 +299,42 @@ function CreatePostPage() {
                                             ? "block"
                                             : "hidden"
                                         }`}
-                      onClick={() => {
-                        if (
-                          community.name?.toLowerCase() !==
-                          selectedCommunity.name?.toLowerCase()
-                        ) {
-                          setSelectedCommunity(community);
-                          setOpen(false);
-                          setInputValue("");
-                        }
-                      }}
-                    >
-                      <div className="flex items-center">
-                        <img
-                          className="object-cover w-10 h-10 mr-2 rounded-full"
-                          src={community?.profilePic}
-                        ></img>
-                        {community?.name}
-                      </div>
-                    </li>;
+                          onClick={() => {
+                            if (
+                              community.name?.toLowerCase() !==
+                              selectedCommunity.name?.toLowerCase()
+                            ) {
+                              setSelectedCommunity(community);
+                              setOpen(false);
+                              setInputValue("");
+                            }
+                          }}
+                        >
+                          <div className="flex items-center">
+                            <img
+                              className="object-cover w-10 h-10 mr-2 rounded-full"
+                              src={community?.profilePic}
+                            ></img>
+                            {community?.name}
+                          </div>
+                        </li>
+                        ;
                       </div>
                     );
-                    
                   })}
                 </ul>
               </div>
+              {
+                  fileInputValue === null ? (
+                  <>
 
+                  </>):(fileInputValue.type === "image" ? <>
+                  <img src={fileInputValue.url}/>
+                  </>: <>
+                  {console.log(fileInputValue.type)}
+                  <video src={fileInputValue.url} />
+                  </>)
+                }
               {/* bottom row*/}
               <div className="flex items-center justify-between px-3 py-2 border-t border-gray-600 bg-divcol">
                 {/*post comment buttton*/}
@@ -316,9 +354,17 @@ function CreatePostPage() {
 
                 {/*add atachment button*/}
                 <div className="flex pl-0 space-x-1 sm:pl-2">
-                <input type="file" className="hidden" required />
-                  <button
-                    type="button"
+                  <input type="file" className="hidden" required />
+                  <input
+                    id="fileInput"
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={displayFile}
+                    className="hidden"
+                    accept="video/*,video/x-matroska,image/*"
+                  />
+                  <label
+                    htmlFor="fileInput"
                     className="inline-flex justify-center p-2 text-gray-400 rounded cursor-pointer hover:text-white hover:bg-pur"
                   >
                     <svg
@@ -335,9 +381,12 @@ function CreatePostPage() {
                         clipRule="evenodd"
                       ></path>
                     </svg>
-                  </button>
+                  </label>
                 </div>
+        
+                
               </div>
+              
             </div>
           </form>
         </div>
