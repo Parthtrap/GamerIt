@@ -1,5 +1,10 @@
 import express from "express";
-import { createPost, deletePost, updateComment } from "../controllers/post.js";
+import {
+	createPost,
+	deletePost,
+	getPosts,
+	updateComment,
+} from "../controllers/post.js";
 const router = express.Router();
 
 // Create a Post
@@ -26,6 +31,6 @@ router.delete("/report");
 // Search a Post by Title
 // Search a Post by User
 // Search a Post by Tag
-router.get("/");
+router.get("/", getPosts);
 
 export default router;
