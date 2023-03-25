@@ -49,16 +49,16 @@ function Communitypage() {
 
                   <div className="flex items-center space-x-4">
                       <div className="bg-cover bg-no-repeat bg-top bg-[url(https://i.imgur.com/nkH4gCV.png)] w-20 h-20 rounded-full" />
-                      <div className="text-tprimary text-4xl font-medium ">
-                          <div>Jese Leos</div>
+                      <div className=" text-4xl font-medium ">
+                          <div className="text-tprimary">Jese Leos</div>
                           <div className="text-tmuted text-lg">Joined in 9/11</div>
                       </div>
                   </div>
 
-                  <div className="flex">
+                  <div className="flex text-tlink ">
                       <button type="button" 
 
-                      className="flex gap-2 text-tprimary bg-base hover:bg-background
+                      className="flex gap-2 bg-base hover:bg-background
                       focus:outline-none focus:ring-2 
                       focus:ring-tmuted
                       font-medium rounded-full t
@@ -71,7 +71,7 @@ function Communitypage() {
 
                       <button type="button" 
                         onClick={() => (setRequest(true))}
-                      className="flex gap-2 text-tprimary bg-base hover:bg-background
+                      className="flex gap-2 bg-base hover:bg-background
                       focus:outline-none focus:ring-2 
                       focus:ring-tmuted
                       font-medium rounded-full t
