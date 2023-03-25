@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 export default function NewNotificationModel(props) {
     return(
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 z-100 backdrop-blur-sm ">
+        <div className="fixed -z-10 right-5 top-0 flex items-center justify-center bg-black bg-opacity-25 z-100 backdrop-sm ">
             <div className="container p-2 mx-auto mt-16 border border-gray-700 rounded-lg shadow-md bg-fill md:max-w-xl">
                 <div className="flex ml-4 items-center justify-between">
 
-                    <p className="text-primary text-2xl  ">Notifications</p>
+                    <p className="text-tprimary text-2xl  ">Notifications</p>
                     <button type="button"
                             onClick={props.onCloseNotificationClick}
                             className="text-tprimary bg-transparent hover:bg-background hover:text-tmuted  rounded-lg text-sm p-1.5 inline-flex items-center" data-modal-toggle="defaultModal">
@@ -26,10 +26,10 @@ export default function NewNotificationModel(props) {
                         </svg>
                     </div>
                     <div className="pl-3">
-                        <p className="text-sm leading-none">
-                            <Link to='/profile/21' className="font-bold text-link hover:text-tlink ">James Doe</Link> is a Match!!
+                        <p className="text-tprimary text-sm leading-none">
+                            <Link to='/profile/21' className="text-tlink">James Doe</Link> is a Match!!
                         </p>
-                        <p className="text-muted text-xs leading-3 pt-1">2 hours ago</p>
+                        <p className="text-tprimary text-xs leading-3 pt-1">2 hours ago</p>
                     </div>
                 </div>
             

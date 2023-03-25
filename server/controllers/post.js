@@ -8,8 +8,9 @@ const debugMode = true;
 
 // Create a Post
 export const createPost = async (req, res) => {
-	const { username, title, content, fileSrc, type, community } = req.body;
-	if (!username || !title || !content || !fileSrc || !community) {
+	const { username, title, content, fileSrc, type, community, tags } =
+		req.body;
+	if (!username || !title || !content || !community || !tags) {
 		debugMode ? console.log("Incomplete Request !!") : "";
 		res.status(400).json({ message: "Incomplete Request !!" });
 		return;
@@ -22,7 +23,7 @@ export const createPost = async (req, res) => {
 		type,
 		likeUsers: [],
 		community: community,
-		tags: [],
+		tags,
 		comments: [],
 		reports: [],
 		createdAt: Date.now(),
@@ -125,9 +126,11 @@ export const getPosts = async (req, res) => {
 		}
 	} else if (field == "post") {
 		try {
+			const query = ".*" + value + ".*";
 			postList = await post
-				.find({ title: { $regex: "/.*" + value + ".*/" } })
+				.find({ title: { $regex: query } })
 				.sort({ createdAt: 1 });
+			console.log(postList);
 		} catch (err) {
 			debugMode ? console.log("Get All Posts -> " + err.message) : "";
 			res.status(500).json({ message: err.message });
@@ -135,8 +138,8 @@ export const getPosts = async (req, res) => {
 		}
 	} else if (field == "community") {
 		try {
-			postList = await community
-				.find({ name: { $regex: "/.*" + value + ".*/" } })
+			postList = await post
+				.find({ community: { $regex: ".*" + value + ".*" } })
 				.sort({ createdAt: 1 });
 		} catch (err) {
 			debugMode ? console.log("Get All Posts -> " + err.message) : "";

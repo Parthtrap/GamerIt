@@ -33,10 +33,10 @@ const notificationSchema = new mongoose.Schema({
 
 // Schema for User
 const userSchema = new mongoose.Schema({
-	username: { type: String, required: true, unique: true },
+	username: { type: String, required: true, unique: true, trim: true },
 	password: { type: String, required: true },
-	email: { type: String, required: true, unique: true },
-	phoneNumber: { type: String, unique: true },
+	email: { type: String, required: true, unique: true, trim: true },
+	phoneNumber: { type: String, unique: true, trim: true },
 	isAdmin: Boolean,
 	followedCommunities: [String],
 	notes: [NoteSchema],
