@@ -20,6 +20,7 @@ import Communitypage from "./Pages/Communitypage";
 import CreatePostPage from "./Pages/CreatePostPage";
 import MatchPage from "./Pages/Components/NewRequestmodel";
 import Notes from "./Pages/Components/Notes";
+import Postpage from "./Pages/Postpage";
 
 const App = () => {
   const auth = useContext(AuthContext);
@@ -83,6 +84,16 @@ const App = () => {
                 element={
                   <div className="flex ">
                     <Notes />
+                    <Sidebar />
+                  </div>
+                }
+              />
+              <Route
+                exact
+                path="/post/:id"
+                element={
+                  <div className="flex ">
+                    <Postpage />
                     <Sidebar />
                   </div>
                 }
