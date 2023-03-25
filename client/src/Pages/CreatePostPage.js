@@ -4,24 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-function Signup() {
+function CreatePostPage() {
+  const navigate = useNavigate();
+
   const usernameRef = useRef();
   const passwordRef = useRef();
   const confirmpasswordRef = useRef();
   const phonenumref = useRef();
-  const [userEmail,setUserEmail] = useState(localStorage.getItem("userEmail"));
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (Cookies.get("email")) {
-      localStorage.setItem("userEmail", Cookies.get("email"));
-      setUserEmail(localStorage.getItem("userEmail"));
-    }
-
-    if (!userEmail) {
-      navigate("/verifyEmail");
-    }
-  }, []);
+  useEffect(() => {}, []);
 
   const submitButtonHandler = async (event) => {
     event.preventDefault();
@@ -90,12 +81,12 @@ function Signup() {
     }
   };
 
-  const goToLoginPageButtonHandler = async ()=>{
+  const goToLoginPageButtonHandler = async () => {
     console.log("sfds");
-    Cookies.remove('email');
+    Cookies.remove("email");
     navigate("/login");
     return;
-  }
+  };
 
   return (
     <>
@@ -189,4 +180,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default CreatePostPage;

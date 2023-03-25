@@ -1,11 +1,12 @@
 /** @format */
 
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../Context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ValidateEmail } from "../../Helper/functions";
+import Cookies from "js-cookie";
 
 // Get average runtime of successful runs in seconds
 
@@ -13,6 +14,12 @@ function LoginPage() {
   console.log("login page");
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (Cookies.get("email")) {
+  //     navigate("/signup");
+  //   }
+  // }, []);
 
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
