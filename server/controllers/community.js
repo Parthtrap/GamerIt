@@ -40,6 +40,8 @@ export const createCommunity = async (req, res) => {
 		followerCount: 0,
 		moderators: [],
 		pinnedPosts: [],
+		parameters: [],
+		queue: [],
 		tags: [],
 		createdAt: Date.now(),
 	});
@@ -281,6 +283,11 @@ export const updateCommunityBannerPic = async (req, res) => {
 // Make User Moderator
 export const makeModerator = async (req, res) => {
 	const { name, username } = req.body;
+	if (!name || !username) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
 	let found, founduser;
 	try {
 		founduser = await User.findOne({ username });
@@ -340,6 +347,11 @@ export const makeModerator = async (req, res) => {
 // Remove User from Moderator
 export const removeModerator = async (req, res) => {
 	const { name, username } = req.body;
+	if (!name || !username) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
 	let found;
 	try {
 		found = await community.findOne({ name });
@@ -396,3 +408,65 @@ export const removeModerator = async (req, res) => {
 // Unpin a Post
 
 // Get all Reported Posts
+
+// Set Parameter
+export const addParameter = async (req, res) => {
+	const { communityName, name, type, offset, value, same } = req.body;
+	console.log({ communityName, name, type, offset, value, same });
+	if (
+		!communityName ||
+		!name ||
+		!type ||
+		offset == null ||
+		!value ||
+		same == null
+	) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	let found;
+	try {
+		found = await community.findOne({ name: communityName });
+		if (!found) {
+			debugMode
+				? console.log("Add Parameter -> No Such Community Exists")
+				: "";
+			res.status(404).json({ message: "No Such Community Exists" });
+			return;
+		}
+		let obj = found.parameters.find((o) => o.name == name);
+		if (obj) {
+			debugMode ? console.log("Add tag -> Tag Already Exists") : "";
+			res.status(400).json({ message: "Tag Already Exists" });
+			return;
+		}
+		found = await community.updateOne(
+			{ name: communityName },
+			{ $push: { parameters: { name, type, offset, value, same } } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Add Parameter -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (found.matchedCount == 0) {
+		debugMode
+			? console.log("Add Parameter -> Community Doesn't Exist")
+			: "";
+		res.status(404).json({ message: "Community Doesn't Exist" });
+		return;
+	}
+	debugMode
+		? console.log("Add Paramater -> Parameter Added Sucessfully")
+		: "";
+	res.status(201).json({ message: "Parameter Added Sucessfully" });
+	return;
+};
+
+// Delete Parameter
+
+// router.delete("/parameter");
+
+// Co-op MatchMaking Request
+// router.post("/match");
