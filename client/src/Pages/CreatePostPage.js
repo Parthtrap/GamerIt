@@ -11,7 +11,7 @@ function CreatePostPage() {
   const [communityList, setCommunityList] = useState([]);
   const [selectedCommunity, setSelectedCommunity] = useState({});
   const [inputValue, setInputValue] = useState("");
-  const [fileInputValue,setFileInputValue]=useState(null);
+  const [fileInputValue, setFileInputValue] = useState(null);
   const [open, setOpen] = useState(false);
   const [userInfo, setUserInfo] = useState({ username: "" });
   const titleRef = useRef(document.createElement("imput"));
@@ -62,40 +62,43 @@ function CreatePostPage() {
       toast.error("Please Select a Community");
     } else {
       try {
-        let fileUrl,type;
+        let fileUrl, type;
         fileUrl = "";
         type = "";
-        if(fileInputValue){
-          if(fileInputValue.file.size > 10485760){
+        if (fileInputValue) {
+          if (fileInputValue.file.size > 10485760) {
             toast.error("File size should be less then 10 MB");
             return;
           }
           fileUrl = await uploadFiles(fileInputValue.file);
-          if(!fileUrl){
+          if (!fileUrl) {
             toast.error("Failed to upload file. Try again");
             return;
           }
           type = fileInputValue.type;
         }
         const postData = JSON.stringify({
-          username : auth.userName,
+          username: auth.userName,
           title: title,
           content: content,
           fileSrc: fileUrl,
           type,
           community: selectedCommunity.name,
-          tags: []
+          tags: [],
         });
         console.log("here");
         console.log(postData);
 
-        const response = await fetch( `${process.env.REACT_APP_SERVER_ROOT_URI}/api/post`, {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: postData,
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_SERVER_ROOT_URI}/api/post`,
+          {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
+            },
+            body: postData,
+          }
+        );
 
         const responseData = await response.json();
 
@@ -115,18 +118,17 @@ function CreatePostPage() {
     }
   }
 
-  const displayFile = async (e)=>{
-      e.preventDefault();
-      const file = fileInputRef.current.files[0];
-      const type = file.type.split("/")[0];
-      const fileObj = {
-        file,
-        url: window.URL.createObjectURL(file),
-        type
-      }
-      setFileInputValue(fileObj);
-      
-  }
+  const displayFile = async (e) => {
+    e.preventDefault();
+    const file = fileInputRef.current.files[0];
+    const type = file.type.split("/")[0];
+    const fileObj = {
+      file,
+      url: window.URL.createObjectURL(file),
+      type,
+    };
+    setFileInputValue(fileObj);
+  };
 
   useEffect(() => {
     const fetchCommunites = async () => {
@@ -327,17 +329,18 @@ function CreatePostPage() {
                   })}
                 </ul>
               </div>
-              {
-                  fileInputValue === null ? (
-                  <>
-
-                  </>):(fileInputValue.type === "image" ? <>
-                  <img src={fileInputValue.url}/>
-                  </>: <>
+              {fileInputValue === null ? (
+                <></>
+              ) : fileInputValue.type === "image" ? (
+                <>
+                  <img src={fileInputValue.url} />
+                </>
+              ) : (
+                <>
                   {console.log(fileInputValue.type)}
                   <video src={fileInputValue.url} />
-                  </>)
-                }
+                </>
+              )}
               {/* bottom row*/}
               <div className="flex items-center justify-between px-3 py-2 border-t border-gray-600 bg-divcol">
                 {/*post comment buttton*/}
@@ -386,10 +389,7 @@ function CreatePostPage() {
                     </svg>
                   </label>
                 </div>
-        
-                
               </div>
-              
             </div>
           </form>
         </div>

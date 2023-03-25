@@ -9,7 +9,7 @@ export default function Homepage() {
 
   const [PostList, setPostList] = useState([]);
 
-  //fething all posts
+  // fething all posts
   useEffect(()=>{
     const findAllPosts = async ()=>{
 
