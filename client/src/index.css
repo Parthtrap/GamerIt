@@ -16,7 +16,7 @@
     --color-button-accent-hover: #d5b4c1; /*button hover colour*/
   }
 
-  theme-dark {
+  .theme-dark {
     --color-fill: #1B1D2A; /*navbar*/
     --color-fill-base: #1B1D2A; /*post-bg*/
     --color-fill-bg: #0a0909; /*bg*/
@@ -29,7 +29,7 @@
     --color-button-accent-hover: #363F7E; /*button hover colour*/
   }
 
-  theme-red {
+  .theme-red {
     --color-fill: #111111; /*navbar*/
     --color-fill-base: #C7F459; /*post-bg*/
     --color-fill-bg: #7C37E8; /*bg*/
@@ -42,7 +42,7 @@
     --color-button-accent-hover: #0F1923; /*button hover colour*/
   }
 
-  theme-light {
+  .theme-light {
     --color-fill: #454545; /*navbar*/
     --color-fill-base: #F5F5F7; /*post-bg*/
     --color-fill-bg: #FFFFFF; /*bg*/
@@ -55,7 +55,7 @@
     --color-button-accent-hover: #F8FAFC; /*button hover colour*/
   }
 
-  theme-green {
+  .theme-green {
     --color-fill: #F8FAFC; /*navbar*/
     --color-fill-base: #EF036C; /*post-bg*/
     --color-fill-bg: #31EC56; /*bg*/
@@ -156,5 +156,16 @@
     box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
     border-radius: 50px;
     overflow: hidden;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Works for Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
   

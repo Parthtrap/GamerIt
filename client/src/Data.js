@@ -1,3 +1,32 @@
+export const note = [
+    {
+        _id: 1,
+        title: "Note 1",
+        description: "This is a note",
+        Date: "March 28, 2020",
+    },
+    {
+        _id: 2,
+        title: "Note 2 Note 2 Note 2Note 2Note 2 Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2Note 2",
+        description: "This is a note",
+        Date: "March 28, 2020",
+    },
+    {
+        _id: 3,
+        title: "Note 1",
+        description: "This is a note",
+        Date: "March 28, 2020",
+    },
+    {
+        _id: 4,
+        title: "Note 1",
+        description: "This is a note",
+        Date: "March 28, 2020",
+    },
+    
+];
+
+
 // const postSchema = new mongoose.Schema({
 // 	userId: { type: String, required: true },
 // 	title: { type: String, required: true },
