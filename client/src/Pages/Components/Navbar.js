@@ -4,17 +4,29 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../Context/AuthContext";
 
+import NewCommunityModel from "./NewCommunityModel";
+
 function Navbar() {
   const [navbar, setNavbar] = useState(false);
   const [sidebar, setSidebar] = useState(false);
   const auth = useContext(AuthContext);
 
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [request, setRequest] = useState(false);
+
+  function onClose(e) {
+    e.preventDefault();
+    setRequest(false);
+  }
+
   return (
     <nav className="bg-fill shadow-base fixed top-0 z-50 w-full shadow-sm ">
       <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex ">
         <div className="">
+        {request ? <NewCommunityModel onClose={onClose}/> : <></>}
           <div className="flex items-center justify-between py-4 md:block">
             <div className="md:hidden">
+            
               <button
                 className="text-tprimary focus:border-gray-400 p-2 rounded-md outline-none  focus:border"
                 onClick={() => {
@@ -113,6 +125,16 @@ function Navbar() {
             <ul className="items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0">
               {auth.isLoggedIn ? (
                 <>
+                  {isAdmin ? 
+                  <li  className="text-tprimary hover:text-tmuted">
+                    <Link onClick={() => (setRequest(true))} >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                    </svg>
+                    </Link>
+                  </li> 
+                  : <></>}
+                  
                   <li className="text-tprimary hover:text-tmuted">
                     <Link to="#" onClick={auth.logout}>
                       Logout
