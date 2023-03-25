@@ -114,7 +114,6 @@ function CreatePostPage() {
       }
     }
   }
-  console.log(fileInputValue);
 
   const displayFile = async (e)=>{
       e.preventDefault();
