@@ -17,10 +17,11 @@ export default function Search(){
             <div className="relative">
 
                 {/*flter selector button*/}
-                <button className={`flex items-center justify-between py-2.5 px-4 w-40
-                text-sm font-medium text-center text-white
-                bg-gr border border-gr
-                ${dropdown? "rounded-tl-lg " : "rounded-l-lg hover:bg-gray-600"} `}
+                <button className={`bg-fill text-tprimary
+                flex items-center justify-between py-2.5 px-4 w-40 mr-[0.05rem]
+                text-sm font-medium text-center 
+                outline outline-1 outline-base
+                ${dropdown? "rounded-tl-lg " : "rounded-l-lg hover:bg-base"} `}
                 onClick={(e) => {
                     e.preventDefault();
                     setDropdown(!dropdown);
@@ -49,12 +50,12 @@ export default function Search(){
                 absolute top-10 left-0
                 rounded-b-lg
                 shadow
-                bg-gr 
+                bg-fill 
                 ${dropdown ? "block" : "hidden"}`}>
-                    <ul className="py-1 text-sm text-gray-200">
+                    <ul className="text-tprimary py-1 text-sm ">
 
                         <li>
-                        <button className="inline-flex w-full px-4 py-2 hover:bg-gray-600 "
+                        <button className="hover:bg-base inline-flex w-full px-4 py-2  "
                         onClick={(e) => {
                             e.preventDefault();
                             setType("Community");
@@ -71,7 +72,7 @@ export default function Search(){
                             setType("Post");
                             setDropdown(false);
                         }}
-                        className="inline-flex w-full px-4 py-2 rounded-b-lg hover:bg-gray-600 ">
+                        className="hover:bg-base inline-flex w-full px-4 py-2 rounded-b-lg  ">
                             Post
                         </button>
                         </li>
@@ -89,9 +90,9 @@ export default function Search(){
                     type="search"
                     ref={searchRef}
                     id="search-dropdown"
-                    className="block p-2.5 w-full z-20 text-sm bg-gr
-                     rounded-r-lg 
-                     border-l-2 border border-l-pur border-gr placeholder-gray-400 text-white "
+                    className="bg-fill text-tprimary border-l-base border-background  placeholder-tmuted 
+                    block p-2.5 w-full z-20 text-sm 
+                    rounded-r-lg focus:outline-none   "
                     placeholder="Search Mockups, Logos, Design Templates..."
                     required=""
                 />
@@ -99,7 +100,7 @@ export default function Search(){
 
                 <button 
                     // onClick={onSearch}
-                    className="absolute top-0 right-0 p-2.5 text-sm font-medium text-white rounded-r-lg border border-[#2a024a] :outline-none bg-[#3F0071] hover:bg-[#2a024a] ">
+                    className="text-tprimary bg-base border-tmuted hover:bg-fill  absolute top-0 right-0 p-2.5 text-sm font-medium  rounded-r-lg border  :outline-none  ">
                             
                     <svg
                     aria-hidden="true"

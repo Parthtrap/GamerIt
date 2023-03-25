@@ -1,8 +1,4 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import { useParams } from "react-router-dom";
-import AuthContext from "../../Context/AuthContext";
 
 
 export default function MatchPage(props) {
