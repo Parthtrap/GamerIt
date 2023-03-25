@@ -163,6 +163,7 @@ export const addUser = async (req, res) => {
 		followingUsers: [],
 		followsCount: 0,
 		font: "Arial",
+        notifications: [],
 		createdAt: creationTime,
 	});
 

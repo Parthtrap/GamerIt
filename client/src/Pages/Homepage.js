@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import PostListCard from "./Components/PostListCard";
 import Search from "./Components/Search";
 
-function Homepage() {
+export default function Homepage() {
 
   const [PostList, setPostList] = useState([]);
 
@@ -22,4 +22,3 @@ function Homepage() {
   );
 }
 
-export default Homepage;

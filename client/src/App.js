@@ -13,6 +13,10 @@ import EmailVerifyPage from "./Pages/Authentication/EmailVerifyPage";
 import VerifyOtpPage from "./Pages/Authentication/verifyOtpPage";
 import NotFound from "./Pages/NotFound";
 import ResetPassPage from "./Pages/Authentication/ResetPassPage";
+import Profilepage from "./Pages/Profilepage";
+import Homepage from "./Pages/Homepage";
+import Sidebar from "./Pages/Components/SideBar";
+import Communitypage from "./Pages/Communitypage";
 
 const App = () => {
   const auth = useContext(AuthContext);
@@ -34,7 +38,8 @@ const App = () => {
                 path="/"
                 element={
                   <div className="flex">
-                    Homepage
+                    <Homepage/>
+                    <Sidebar />
                   </div>
                 }
               />
@@ -43,7 +48,8 @@ const App = () => {
                 path="/community/:id"
                 element={
                   <div className="flex ">
-                    community page
+                    <Communitypage/>
+                    <Sidebar/>
                   </div>
                 }
               />
@@ -52,7 +58,7 @@ const App = () => {
                 path="/profile/:id"
                 element={
                   <div className="flex ">
-                    <ProfilePage />
+                    <Profilepage />
                     <Sidebar />
                   </div>
                 }
@@ -75,7 +81,8 @@ const App = () => {
                 path="/"
                 element={
                   <div className="flex">
-                    Homepage
+                    <Homepage/>
+                    <Sidebar />
                   </div>
                 }
               />
@@ -89,7 +96,8 @@ const App = () => {
                 path="/community/:id"
                 element={
                   <div className="flex ">
-                    community page
+                    <Communitypage/>
+                    <Sidebar/>
                   </div>
                 }
               />
