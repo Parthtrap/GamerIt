@@ -59,6 +59,7 @@ const VerifyOtpPage = () => {
         } else if (response.status === 400) {
           console.log(responseData.error);
           alert(responseData.error);
+          navigate("/verifyEmail");
           return;
         } else {
           console.log(responseData.error);
@@ -75,52 +76,38 @@ const VerifyOtpPage = () => {
 
   return (
     <>
-      <div className="container mx-auto">
-        <div className="flex justify-center mb-2 px-6 my-12 ">
-          {/* <!-- Col --> */}
-          <div className="w-1/2 bg-white p-5 mb-2 rounded-lg border ">
-            <div className="mb-4">
-              <h1 className=" text-center text-xl pt-4 mb-2">Verify OTP</h1>
-            </div>
-
-            <div className="px-8 pt-6 pb-8 bg-white rounded mb-2 d-flex flex-column">
-              <h2 className="pt-4 mb-2 text-sm">
-                Enter 4 digit code sent to your email
-              </h2>
-              <div className="mb-4">
-                <label
-                  className="block text-sm font-bold text-gray-700"
-                  htmlFor="password"
-                ></label>
-                <input
-                  ref={otpInputRef}
-                  type="text"
-                  required
-                  className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                  id="otp"
-                  placeholder="Enter OTP..."
-                />
-              </div>
-
-              <div className="mb-2 text-center">
-                <button
-                  onClick={submitButtonHandler}
-                  className="w-full px-4 py-2 font-bold text-white bg-red-500 rounded-full hover:bg-red-700 focus:outline-none focus:shadow-outline"
-                  type="button"
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-            <p className="mt-8 text-xs font-light text-center text-purple-50">
-              <Link
-                to="/verifyEmail"
-                className="font-medium text-purple-600 hover:underline"
-              >
-                Enter Email again
-              </Link>
-            </p>
+      <div className="relative flex flex-col justify-center min-h-screen overflow-hidden bg-black">
+        <div className="w-full p-6 m-auto rounded-md shadow-md bg-divcol md:max-w-xl">
+          <h1 className="text-3xl font-semibold text-center text-purple-700 underline">
+            Verify OTP
+          </h1>
+          <div className="mb-2">
+            <label className="block text-sm font-semibold text-purple-50">
+              Enter 4 digit OTP sent to your email
+            </label>
+            <input
+              type="text"
+              ref={otpInputRef}
+              className="block w-full px-4 py-2 mt-2 text-purple-300 border rounded-md bg-gr focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            />
           </div>
+          <div className="mt-6">
+            <button
+              onClick={submitButtonHandler}
+              // disabled={LoginButtonIsDisabled}
+              className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600"
+            >
+              Submit
+            </button>
+          </div>
+          <p className="mt-8 text-xs font-light text-center text-purple-50">
+            <Link
+              to="/verifyEmail"
+              className="font-medium text-purple-600 hover:underline"
+            >
+              Enter Email again
+            </Link>
+          </p>
         </div>
       </div>
     </>

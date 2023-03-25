@@ -3,7 +3,9 @@
 import User from "./../models/user.js";
 import jwt from "jsonwebtoken";
 
-//find user using only email
+const debugMode = true;
+
+ //find user using only email
 export const getUserInfo = async (email) => {
   //finding user with email;
   let existingUser;
@@ -39,59 +41,57 @@ export const removeSpaces = (data) => {
   return updatedData;
 };
 
-export const checkLoginToken = async (req, res, next) => {
-    console.log("\nverifying login-token");
-    let login_token;
-  
-    //access login token
+
+//checking login token
+export const checkLoginToken = async (req, res) => {
+  debugMode ? console.log("\nverifying login-token") : "";
+  let login_token;
+
+  //access login token
+  try {
+    debugMode ? console.log("\nstoring access token") : "";
+    debugMode ? console.log(req.cookies) : "";
+    login_token = req.cookies[process.env.LOGIN_COOKIE_NAME];
+
+    if (!login_token) throw Error("\nSession expired");
+  } catch (error) {
+    debugMode ? console.log(error.message) : "";
+    return { isValid: false };
+  }
+  //decoding login token received as cookie
+  try {
+    debugMode ? console.log("\ndecoding login token") : "";
+    const decoded_login_token = jwt.verify(login_token, process.env.JWT_SECRET);
+
+    debugMode ? console.log("\ndecoded", decoded_login_token) : "";
+
+    const email = decoded_login_token.userEmail;
+
+    //check if a user exist with this email
+    let existingUser;
+
     try {
-      console.log("\nstoring access token");
-      console.log(req.cookies);
-      login_token = req.cookies[process.env.LOGIN_COOKIE_NAME];
-  
-      if (!login_token) throw Error("\nSession expired");
-    } catch (error) {
-      console.log(error.message);
-      next(req, res, { isValid: false });
-      return;
+      existingUser = await getUserInfo(email);
+    } catch (err) {
+      debugMode ? console.log(err.message) : "";
+      return { isValid: false };
     }
-    //decoding login token received as cookie
-    try {
-      console.log("\ndecoding login token");
-      const decoded_login_token = jwt.verify(login_token, process.env.JWT_SECRET);
-  
-      console.log("\ndecoded", decoded_login_token);
-  
-      const email = decoded_login_token.userEmail;
-  
-      //check if a user exist with this email
-      let existingUser;
-  
-      try {
-        existingUser = await getUserInfo(email);
-      } catch (err) {
-        console.log(err.message);
-        next(req, res, { isValid: false });
-        return;
-      }
-  
-      //when no user exist
-      if (!existingUser) {
-        console.log("\nNo user exists with this email");
-        next(req, res, { isValid: false });
-        return;
-      }
-  
-      //sending response with userData
-      const userData = {
-        userEmail: decoded_login_token.userEmail,
-        userName: decoded_login_token.userName,
-      };
-  
-      next(req, res, { isValid: true, userData });
-    } catch (error) {
-      console.log("\nFailed to decode login token");
-      console.log("\n", error.message);
-      next(req, res, { isValid: false });
+
+    //when no user exist
+    if (!existingUser) {
+      debugMode ? console.log("\nNo user exists with this email") : "";
+      return { isValid: false };
     }
-  };
+
+    //sending response with userData
+    const userData = {
+      userEmail: decoded_login_token.userEmail,
+      userName: decoded_login_token.userName,
+    };
+    debugMode ? console.log(userData) : "";
+    return { isValid: true, userData };
+  } catch (error) {
+    console.log("\nFailed to decode login token");
+    return { isValid: false };
+  }
+};
