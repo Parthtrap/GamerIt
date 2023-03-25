@@ -13,14 +13,11 @@ function CreatePostPage() {
   const [inputValue, setInputValue] = useState("");
   const [fileInputValue, setFileInputValue] = useState(null);
   const [open, setOpen] = useState(false);
-  const [userInfo, setUserInfo] = useState({ username: "" });
   const titleRef = useRef(document.createElement("imput"));
   const contentRef = useRef(document.createElement("imput"));
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const fileInputRef = useRef();
-
-  const [progress, setProgress] = useState(0);
 
   const uploadFiles = async (file) => {
     if (!file) return;
@@ -156,37 +153,7 @@ function CreatePostPage() {
         return;
       }
     };
-    const getUserInfo = async () => {
-      console.log("here 2");
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_SERVER_ROOT_URI}/api/user?username=${auth.userName}`,
-          {
-            credentials: "include",
-          }
-        );
-        const responseData = await response.json();
-        if (response.status === 500) {
-          console.log(responseData.message);
-        } else if (response.status === 400) {
-          alert(responseData.message);
-          return;
-        }
-        if (response.status === 200) {
-          setUserInfo(responseData);
-          return;
-        } else {
-          console.log(responseData.error);
-          return;
-        }
-      } catch (err) {
-        toast.error("Unable to connect to the server");
-        console.log(err.message);
-        return;
-      }
-    };
     fetchCommunites();
-    getUserInfo();
 
     // setCommunityList(CommList);
   }, []);
@@ -360,7 +327,6 @@ function CreatePostPage() {
 
                 {/*add atachment button*/}
                 <div className="flex pl-0 space-x-1 sm:pl-2">
-                  <input type="file" className="hidden" required />
                   <input
                     id="fileInput"
                     type="file"

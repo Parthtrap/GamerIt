@@ -1,14 +1,15 @@
 /** @format */
 
 import { useContext, useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthContext from "../Context/AuthContext";
 import PostListCard from "./Components/PostListCard";
 import PostListCardBig from "./Components/PostListCardBig";
 import NewMyModal from "./Components/NewRequestmodel";
 import CreatePostSearchBar from "./Components/CreatePostSearchBar";
-
+import { storage } from "./../Helper/firebase";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 function Communitypage() {
   const auth = useContext(AuthContext);
 
@@ -21,13 +22,17 @@ function Communitypage() {
 
   const [toggle, setToggle] = useState(false);
   const [request, setRequest] = useState(false);
+  const [isModerator, setisModerator] = useState(false);
+  const [reload, setReload] = useState(false);
 
   function onClose(e) {
     e.preventDefault();
     setRequest(false);
   }
-
   const communityName = useParams().name;
+
+  const fileInputRef = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const findCommunityDetails = async () => {
@@ -42,6 +47,11 @@ function Communitypage() {
 
         if (response.status === 200) {
           console.log(responseData);
+          const checkModerator = responseData.moderators.filter((user) => {
+            return user == auth.userName;
+          });
+
+          if (checkModerator.length) setisModerator(true);
           setCommunityDetails(responseData);
           return;
         } else if (response.status === 400) {
@@ -87,14 +97,120 @@ function Communitypage() {
     };
     findCommunityDetails();
     findCommunityPosts();
-  }, []);
+  }, [communityName, reload]);
+
+  const uploadFiles = async (file) => {
+    if (!file) return;
+
+    try {
+      const storageRef = ref(storage, `/files/${file.name}`);
+      console.log(file, storageRef);
+
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      console.log(uploadTask);
+      let url = null;
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          console.log(snapshot);
+          const prog = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(
+            (downUrl) => {
+              console.log("file uploaded");
+              url = downUrl;
+            }
+          );
+        }
+      );
+      return url;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
+  };
+
+  const displayFile = async (e) => {
+    e.preventDefault();
+    const file = fileInputRef.current.files[0];
+    console.log(file);
+    setProfilePic(file);
+  };
+
+  const setProfilePic = async (file) => {
+    if (file.size > 10485760 / 10) {
+      toast.error("File size should be less then 2.5 MB");
+      return;
+    }
+    const fileUrl = await uploadFiles(file);
+    console.log(fileUrl);
+    if (!fileUrl) {
+      toast.error("Failed to upload file. Try again");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_ROOT_URI}/api/community/profilepic`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            name: communityName,
+            profilepic: fileUrl,
+          }),
+        }
+      );
+
+      const responseData = await response.json();
+      if (response.status === 200) {
+        toast.success("Updated profile pic");
+        setReload(!reload);
+      } else {
+        console.log(responseData.message);
+        fileInputRef.current.value = null;
+        alert("Someting went wrong. Try again.");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Unable to connect to the server");
+    }
+  };
 
   return (
     <div className="bg-background w-full min-h-[41rem] mt-16">
       <div className="bg-fill flex flex-col gap-2 p-10 md:m-16 tofade w-10%">
         <div className="flex items-center justify-between space-x-4">
           <div className="flex items-center space-x-4">
-            <div className="bg-cover bg-no-repeat bg-top bg-[url(https://i.imgur.com/nkH4gCV.png)] w-20 h-20 rounded-full" />
+            <div />
+            <label for="profilePic">
+              <img
+                className="w-20 h-20 rounded-full "
+                src={communityDetails.profilePic}
+              />
+              {isModerator ? (
+                <>
+                  <input
+                    id="profilePic"
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={displayFile}
+                    className="hidden"
+                    accept="image/*"
+                  />
+                </>
+              ) : (
+                <></>
+              )}
+            </label>
+
             <div className=" text-4xl font-medium ">
               <div className="text-tprimary">{communityDetails.name}</div>
             </div>
