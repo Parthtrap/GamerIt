@@ -53,7 +53,7 @@ export default function Editenotemodel(props) {
 
                         <div class="mb-6">
                             <label for="large-input" class="text-tprimary block mb-2 text-sm font-medium  ">Edit Note Title</label>
-                            <input defaultValue={props.propstitle} type="text" id="large-input" class="text-tprimary block w-full p-4 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500"/>
+                            <input defaultValue={props.propstitle} type="text" id="large-input" class="bg-fill text-tprimary block w-full p-4 border border-gray-300 rounded-lg  sm:text-md focus:ring-blue-500 focus:border-blue-500"/>
                         </div>
 
                         <div className="flex gap-4">
@@ -80,7 +80,7 @@ export default function Editenotemodel(props) {
                             return(
                             <div className="mt-5 flex">
                                 {subnote.isCheckBox ? <input id="default-checkbox" type="checkbox" value="" class="w-6 h-6 my-auto mr-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"></input> :<></> }
-                                <input defaultValue={subnote.text} onChange={(event)=>{subnote.text=event.target.value}} type="text" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 "/>
+                                <input defaultValue={subnote.text} onChange={(event)=>{subnote.text=event.target.value}} type="text" id="small-input" class="bg-fill block w-full p-2 text-tprimary border border-gray-300 rounded-lg  sm:text-xs focus:ring-blue-500 focus:border-blue-500 "/>
                             </div>);
                         })}
 

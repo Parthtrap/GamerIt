@@ -49,6 +49,11 @@ const App = () => {
 						/>
 						<Route
 							exact
+							path="/calender"
+							element={<calenderApp />}
+						/>
+						<Route
+							exact
 							path="/createPost"
 							element={<CreatePostPage />}
 						/>
