@@ -18,6 +18,8 @@ import Homepage from "./Pages/Homepage";
 import Sidebar from "./Pages/Components/SideBar";
 import Communitypage from "./Pages/Communitypage";
 import CreatePostPage from "./Pages/CreatePostPage";
+import MatchPage from "./Pages/Components/NewRequestmodel";
+import Notes from "./Pages/Components/Notes";
 
 const App = () => {
   const auth = useContext(AuthContext);
