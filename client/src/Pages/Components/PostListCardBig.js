@@ -6,7 +6,7 @@ export default function PostListCardBig(props) {
     return(
         <Link to={"/post/" + props.post._id}>
         <div className=" my-4 bg-base border border-gray-200 rounded-lg shadow ">
-            <Link to='/'>
+            <Link to={"/post/" + props.post._id}>
                 <div className="bg-contain bg-no-repeat bg-black bg-opacity-30 bg-center min-w-full h-[25vw] rounded-t-lg bg-[url(https://i.imgur.com/kiXnCWU.jpeg)] " />
             </Link>
             <div className="p-5">

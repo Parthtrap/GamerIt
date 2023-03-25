@@ -208,11 +208,11 @@ export default function Postpage() {
   }, [params, a])
 
   return (
-    <div className="flex justify-center w-full min-h-[91vh] mt-16 bg-black">
-      <div className="w-full p-8 m-12 rounded-lg tofade md:max-w-2xl shadow-fb bg-divcol">
+    <div className="bg-background flex justify-center w-full min-h-[91vh] mt-16 ">
+      <div className="bg-fill w-full p-8 m-12 rounded-lg tofade md:max-w-2xl shadow-fb">
 
         {/* reddit name and posted by and like button */}
-        <div className="flex items-center gap-3 pl-1 rounded-lg outline outline-1 outline-offset-4 outline-purple-500/50">
+        <div className="outline-tmuted flex items-center gap-3 pl-1 rounded-lg outline outline-1 outline-offset-4 ">
 
           {/* like button */}
           <button

@@ -25,7 +25,7 @@ import Postpage from "./Pages/Postpage";
 const App = () => {
   const auth = useContext(AuthContext);
   return auth.isFetched ? (
-    <>
+    <div className="theme-dark">
       {
         auth.isLoggedIn ? (
           <>
@@ -41,8 +41,8 @@ const App = () => {
                 exact
                 path="/"
                 element={
-                  <div className="flex">
-                    <Homepage/>
+                  <div className="flex ">
+                    <Homepage />
                     <Sidebar />
                   </div>
                 }
@@ -141,7 +141,7 @@ const App = () => {
           </>
         )
       }
-    </>
+    </div>
   ) : (
     <>
       Loading

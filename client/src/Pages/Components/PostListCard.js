@@ -47,7 +47,7 @@ function PostListCard(props) {
             <div className="text-sm text-tlink">g/{props.post.community}</div>
             <div className="text-xs text-tmuted">u/{props.post.ownerUserName}</div>
             <div className="text-xl font-bold text-tprimary">{props.post.title}</div>
-            <div className="text-text-tprimary truncate">{props.post.content}</div>
+            <div className="text-tprimary truncate">{props.post.content}</div>
           </div>
         </div>
       </div>
