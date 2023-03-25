@@ -22,9 +22,11 @@ import MatchPage from "./Pages/Components/NewRequestmodel";
 import Notes from "./Pages/Components/Notes";
 import Postpage from "./Pages/Postpage";
 import NewNotificationModel from "./Pages/Components/NewNotificationModel";
+import Example from "./Pages/Components/CalenderApp";
 
 const App = () => {
   const auth = useContext(AuthContext);
+  console.log(auth);
   return auth.isFetched ? (
     <div className="theme-dark">
       {
@@ -101,6 +103,7 @@ const App = () => {
               />
               <Route exact path="*" element={<Navigate to="/" />} />
               <Route exact path="/notifications" element={<NewNotificationModel />} />
+              <Route exact path="/calender" element={<Example />} />
             </Routes>
           </>
         ) : (
