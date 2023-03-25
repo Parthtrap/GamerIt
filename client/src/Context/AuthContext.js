@@ -6,6 +6,10 @@ import { createContext, useEffect, useState } from "react";
 const AuthContext = createContext({
   isLoggedIn: false,
   isFetched: false,
+  isAdmin: false,
+  followedCommunities: [],
+  theme : "default",
+  notifications: [],
   userName: null,
   userEmail: null,
   login: (user) => {},
@@ -16,14 +20,22 @@ const AuthContext = createContext({
 export const AuthContextProvider = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isFetched, setIsFetched] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [userName, setUserName] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
+  const [followedCommunities,setFollowedCommunities] = useState([]);
+  const [theme,setTheme] = useState();
+  const [notifications,setNotifications] = useState([]);
 
   const login = (user) => {
     setUserName(user.userName);
     setUserEmail(user.userEmail);
     setIsLoggedIn(true);
     setIsFetched(true);
+    setIsAdmin(user.isAdmin);
+    setTheme(user.theme);
+    setFollowedCommunities(user.followedCommunities);
+    setNotifications(user.notifications);
   };
 
   const logout = async () => {
@@ -49,14 +61,19 @@ export const AuthContextProvider = (props) => {
     setUserName(null);
     setUserEmail(null);
     setIsFetched(true);
+    if(isAdmin)
+        setIsAdmin(false);
+    setNotifications([]);
+    setFollowedCommunities([]);
     window.location.replace(`${process.env.REACT_APP_CLIENT_ROOT_URI}`);
   };
 
   console.log("userName:", userName);
   console.log("userEmail:", userEmail);
-
   console.log("isLogin:", isLoggedIn);
   console.log("isFetched:", isFetched);
+  console.log("isAdmin: ",isAdmin);
+  console.log("")
   useEffect(() => {
     const authTokenLogin = async () => {
       console.log("sending request to access token check api");
@@ -105,8 +122,12 @@ export const AuthContextProvider = (props) => {
   const context = {
     isLoggedIn: isLoggedIn,
     isFetched: isFetched,
+    isAdmin: isAdmin,
     userName: userName,
     userEmail: userEmail,
+    theme: theme,
+    followedCommunities: followedCommunities,
+    notifications: notifications,
     login: login,
     logout: logout,
   };
