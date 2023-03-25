@@ -4,12 +4,14 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ValidateEmail } from "../../Helper/functions";
 // import Container from "../../Components/Shared/Container";
+import Cookies from "js-cookie";
 
 const EmailVerifyPage = () => {
   console.log("Email Verification Page");
 
   const navigate = useNavigate();
   useEffect(() => {
+    Cookies.remove('email');
     if (!localStorage.getItem("isCreatingAccount")) {
       navigate("/login");
     }
