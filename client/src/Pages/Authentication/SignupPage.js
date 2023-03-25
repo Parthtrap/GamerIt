@@ -104,7 +104,7 @@ function Signup() {
           <h1 className="text-3xl font-semibold text-center text-purple-300 underline">
             Sign Up
           </h1>
-          <form className="mt-6">
+          <form className="mt-6" onSubmit={submitButtonHandler}>
             <div className="mb-2">
               <label className="block text-sm font-semibold text-purple-50">
                 Username
@@ -113,6 +113,7 @@ function Signup() {
                 type="text"
                 ref={usernameRef}
                 className="block w-full px-4 py-2 mt-2 text-purple-300 border rounded-md bg-gr focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                required
               />
             </div>
             <div className="mb-2">
@@ -132,6 +133,7 @@ function Signup() {
                 ref={passwordRef}
                 autoComplete="password"
                 className="block w-full px-4 py-2 mt-2 text-purple-300 border rounded-md bg-gr focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                required
               />
             </div>
             <div className="mb-2">
@@ -143,6 +145,7 @@ function Signup() {
                 ref={confirmpasswordRef}
                 autoComplete="password"
                 className="block w-full px-4 py-2 mt-2 text-purple-300 border rounded-md bg-gr focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                required
               />
             </div>
             <div className="mb-2">
@@ -153,12 +156,13 @@ function Signup() {
                 type="number"
                 ref={phonenumref}
                 className="block w-full px-4 py-2 mt-2 text-purple-300 border rounded-md bg-gr focus:border-purple-400 appearance-none focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                required
               />
             </div>
 
             <div className="mt-6">
               <button
-                onClick={submitButtonHandler}
+                type="submit"
                 // disabled={SignupButtonIsDisabled}
                 className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600"
               >

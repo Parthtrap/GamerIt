@@ -26,7 +26,7 @@ import NewNotificationModel from "./Pages/Components/NewNotificationModel";
 const App = () => {
   const auth = useContext(AuthContext);
   return auth.isFetched ? (
-    <>
+    <div className="theme-dark">
       {
         auth.isLoggedIn ? (
           <>
@@ -42,8 +42,8 @@ const App = () => {
                 exact
                 path="/"
                 element={
-                  <div className="flex theme-dark">
-                    <Homepage/>
+                  <div className="flex  theme-dark">
+                    <Homepage />
                     <Sidebar />
                   </div>
                 }
@@ -51,7 +51,7 @@ const App = () => {
               <Route exact path="/createPost" element={<CreatePostPage />} />
               <Route
                 exact
-                path="/community/:id"
+                path="/community/:name"
                 element={
                   <div className="flex theme-dark">
                     <Communitypage/>
@@ -61,7 +61,7 @@ const App = () => {
               />
               <Route
                 exact
-                path="/profile/:id"
+                path="/profile/:name"
                 element={
                   <div className="flex theme-dark">
                     <Profilepage />
@@ -143,7 +143,7 @@ const App = () => {
           </>
         )
       }
-    </>
+    </div>
   ) : (
     <>
       Loading
