@@ -27,6 +27,7 @@ const NoteSchema = new mongoose.Schema({
 const notificationSchema = new mongoose.Schema({
 	title: String,
 	communityName: String,
+	linkedUsername: String,
 	createdAt: Date,
 });
 

@@ -55,6 +55,7 @@ export const createCommunity = async (req, res) => {
 			res.status(404).json({ message: "Community Already Exists" });
 			return;
 		}
+		console.log("Debug");
 		await newCommunity.save();
 	} catch (err) {
 		debugMode ? console.log("Creating Community -> " + err.message) : "";
@@ -537,6 +538,29 @@ export const matchMaking = async (req, res) => {
 		res.status(500).json({ message: err.message });
 		return;
 	}
+	let obj = found.queue.find((o) => o.username === username);
+	if (obj) {
+		try {
+			found = await community.updateOne(
+				{ name: communityName, queue: { $elemMatch: { username } } },
+				{
+					$set: {
+						"queue.$.parameters": userParameters,
+					},
+				}
+			);
+			console.log(found);
+			debugMode ? console.log("Match Making -> Updated Old Entry") : "";
+			res.status(200).json({
+				message: "Updated Old Entry",
+			});
+			return;
+		} catch (err) {
+			debugMode ? console.log("Match Making -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+	}
 	if (found.queue.length == 0) {
 		try {
 			found = await community.updateOne(
@@ -613,9 +637,52 @@ export const matchMaking = async (req, res) => {
 		}
 	});
 	if (matchFound) {
-		
+		console.log(userMatched, username);
+		let temp;
+		try {
+			temp = await User.updateOne(
+				{ username: userMatched.username },
+				{
+					$push: {
+						notifications: {
+							title: username + " Matched Your Request",
+							linkedUsername: username,
+							communityName: communityName,
+							createdAt: Date.now(),
+						},
+					},
+				}
+			);
+			temp = await User.updateOne(
+				{ username: username },
+				{
+					$push: {
+						notifications: {
+							title:
+								userMatched.username + " Matched Your Request",
+							linkedUsername: userMatched.username,
+							communityName: communityName,
+							createdAt: Date.now(),
+						},
+					},
+				}
+			);
+			temp = await community.updateOne(
+				{ name: communityName },
+				{
+					$pull: { queue: { username: userMatched.username } },
+				}
+			);
+		} catch (err) {
+			debugMode ? console.log("Match Making -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+
 		debugMode ? console.log("Match Making -> Match Found !!") : "";
-		res.status(200).json({ message: "Match Found !!" });
+		res.status(200).json({
+			message: "Match Found !! Check Your Notifications",
+		});
 		return;
 	} else {
 		try {
