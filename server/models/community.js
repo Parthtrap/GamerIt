@@ -7,6 +7,21 @@ const tagSchema = new mongoose.Schema({
 	color: String,
 });
 
+// Schema of Parameter
+const parameterSchema = new mongoose.Schema({
+	name: String,
+	type: String,
+	offset: Number,
+	value: [String],
+	same: Boolean,
+});
+
+// Schema of Queue
+const queueSchema = new mongoose.Schema({
+	username: { type: String, required: true },
+	parameters: { type: Object },
+});
+
 // Schema for Community
 const communitySchema = new mongoose.Schema({
 	name: { type: String, required: true, unique: true },
@@ -15,6 +30,8 @@ const communitySchema = new mongoose.Schema({
 	followerCount: Number,
 	moderators: [String],
 	pinnedPosts: [String],
+	parameters: [parameterSchema],
+	queue: [queueSchema],
 	tags: [tagSchema],
 	createdAt: Date,
 });

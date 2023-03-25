@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 function Signup() {
@@ -90,6 +90,13 @@ function Signup() {
     }
   };
 
+  const goToLoginPageButtonHandler = async ()=>{
+    console.log("sfds");
+    Cookies.remove('email');
+    navigate("/login");
+    return;
+  }
+
   return (
     <>
       <div className="relative flex flex-col justify-center min-h-screen overflow-hidden bg-black">
@@ -161,12 +168,20 @@ function Signup() {
           </form>
           <p className="mt-8 text-xs font-light text-center text-purple-50">
             Already have an account?{" "}
-            <a
-              href="/login"
+            <button
+              onClick={goToLoginPageButtonHandler}
               className="font-medium text-purple-600 hover:underline"
             >
               Log In
-            </a>
+            </button>
+          </p>
+          <p className="mt-8 text-xs font-light text-center text-purple-50">
+            <Link
+              to="/verifyEmail"
+              className="font-medium text-purple-600 hover:underline"
+            >
+              Enter Email again
+            </Link>
           </p>
         </div>
       </div>

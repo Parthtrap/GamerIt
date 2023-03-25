@@ -163,6 +163,7 @@ export const addUser = async (req, res) => {
 		followingUsers: [],
 		followsCount: 0,
 		font: "Arial",
+        notifications: [],
 		createdAt: creationTime,
 	});
 
@@ -203,7 +204,7 @@ export const getUser = async (req, res) => {
 		debugMode
 			? console.log("Get User Details -> No Such user Exists !!")
 			: "";
-		res.status(404).json({ message: "No Such user Exists !!" });
+		res.status(400).json({ message: "No Such user Exists !!" });
 		return;
 	} else {
 		debugMode ? console.log("Get User Details -> User Found !!") : "";

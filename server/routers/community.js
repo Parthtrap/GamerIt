@@ -1,11 +1,14 @@
 import express from "express";
 import {
+	addParameter,
 	addTag,
 	createCommunity,
 	deleteCommunity,
+	deleteParameter,
 	deleteTag,
 	getAllCommunities,
 	makeModerator,
+	matchMaking,
 	removeModerator,
 	updateCommunityBannerPic,
 	updateCommunityProfilePic,
@@ -47,5 +50,14 @@ router.delete("/pin");
 
 // Get all Reported Posts
 router.get("/report");
+
+// Set Parameter
+router.post("/parameter", addParameter);
+
+// Delete Parameter
+router.delete("/parameter", deleteParameter);
+
+// Co-op MatchMaking Request
+router.post("/match", matchMaking);
 
 export default router;
