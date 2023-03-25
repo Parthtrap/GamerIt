@@ -137,8 +137,8 @@ export const getPosts = async (req, res) => {
 		}
 	} else if (field == "community") {
 		try {
-			postList = await community
-				.find({ name: { $regex: "/.*" + value + ".*/" } })
+			postList = await post
+				.find({ community: { $regex: ".*" + value + ".*" } })
 				.sort({ createdAt: 1 });
 		} catch (err) {
 			debugMode ? console.log("Get All Posts -> " + err.message) : "";
