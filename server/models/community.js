@@ -20,6 +20,7 @@ const parameterSchema = new mongoose.Schema({
 const queueSchema = new mongoose.Schema({
 	username: { type: String, required: true },
 	name: { type: String, required: true },
+	type: { type: String, required: true },
 	value: { type: String, required: true },
 });
 

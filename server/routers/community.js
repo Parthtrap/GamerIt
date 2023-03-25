@@ -8,6 +8,7 @@ import {
 	deleteTag,
 	getAllCommunities,
 	makeModerator,
+	matchMaking,
 	removeModerator,
 	updateCommunityBannerPic,
 	updateCommunityProfilePic,
@@ -57,6 +58,6 @@ router.post("/parameter", addParameter);
 router.delete("/parameter", deleteParameter);
 
 // Co-op MatchMaking Request
-router.post("/match");
+router.post("/match", matchMaking);
 
 export default router;

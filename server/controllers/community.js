@@ -437,8 +437,10 @@ export const addParameter = async (req, res) => {
 		}
 		let obj = found.parameters.find((o) => o.name == name);
 		if (obj) {
-			debugMode ? console.log("Add tag -> Tag Already Exists") : "";
-			res.status(400).json({ message: "Tag Already Exists" });
+			debugMode
+				? console.log("Add Parameter -> Parameter Already Exists")
+				: "";
+			res.status(400).json({ message: "Parameter Already Exists" });
 			return;
 		}
 		found = await community.updateOne(
@@ -465,8 +467,117 @@ export const addParameter = async (req, res) => {
 };
 
 // Delete Parameter
-
-// router.delete("/parameter");
-
+export const deleteParameter = async (req, res) => {
+	const { communityName, name } = req.body;
+	if (!communityName || !name) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	let found;
+	try {
+		found = await community.findOne({ name: communityName });
+		if (!found) {
+			debugMode
+				? console.log("Delete Parameter -> No Such Community Exists")
+				: "";
+			res.status(404).json({ message: "No Such Community Exists" });
+			return;
+		}
+		let obj = found.parameters.find((o) => o.name == name);
+		if (!obj) {
+			debugMode
+				? console.log("Delete Parameter -> Parameter Doesn't Exists")
+				: "";
+			res.status(400).json({ message: "Parameter Doesn't Exists" });
+			return;
+		}
+		found = await community.updateOne(
+			{ name: communityName },
+			{ $pull: { parameters: { name } } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Delete Parameter -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	debugMode
+		? console.log("Delete Paramater -> Parameter Deleted Sucessfully")
+		: "";
+	res.status(201).json({ message: "Parameter Deleted Sucessfully" });
+	return;
+};
+/*
+params = {
+	username: String
+	name: String
+	value: String
+}
+*/
 // Co-op MatchMaking Request
+export const matchMaking = async (req, res) => {
+	const { communityName, username, userParameters } = req.body;
+	if (!communityName || !username || !userParameters) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	let found;
+	try {
+		found = await community.findOne({ name: communityName });
+		if (!found) {
+			debugMode
+				? console.log("Match Making -> No Such Community Exists")
+				: "";
+			res.status(404).json({ message: "No Such Community Exists" });
+			return;
+		}
+	} catch (err) {
+		debugMode ? console.log("Match Making -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (found.queue.length == 0) {
+		try {
+			found = await community.updateOne(
+				{ name: communityName },
+				{
+					$push: {
+						queue: {
+							username: username,
+							parameters: userParameters,
+						},
+					},
+				}
+			);
+			debugMode
+				? console.log(
+						"Match Making -> Added to Queue, Will notify when match made."
+				  )
+				: "";
+			res.status(200).json({
+				message: "Added to Queue, Will notify when match made.",
+			});
+			return;
+		} catch (err) {
+			debugMode ? console.log("Match Making -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+	}
+
+	let matchFound = true;
+	let userMatched = null;
+
+	// found.queue.forEach((waitingUser) => {
+	// 	found.parameters.forEach((parameter) => {
+	// 		if(parameter.type == "num"){
+	// 			if(waitingUser.parameters[parameter.name] )
+	// 		}
+	// 		else {
+
+	// 		}
+	// 	});
+	// });
+};
 // router.post("/match");
