@@ -2,6 +2,7 @@ import express from "express";
 import {
 	createPost,
 	deletePost,
+	getCommunityPosts,
 	getPosts,
 	likePost,
 	reportPost,
@@ -27,6 +28,9 @@ router.delete("/like", unlikePost);
 
 // Report a Post
 router.post("/report", reportPost);
+
+// Community Posts
+router.get("/community", getCommunityPosts);
 
 // Search a Post by Title
 // Search a Post by User

@@ -262,8 +262,33 @@ export const reportPost = async (req, res) => {
 	return;
 };
 
-// Search a Post by Title
-
-// Search a Post by Tag
-
-// Search a Post by User
+// Community Posts
+export const getCommunityPosts = async (req, res) => {
+	let postList;
+	const { name, value } = req.query;
+	if (!value) {
+		try {
+			postList = await post
+				.find({ community: name })
+				.sort({ createdAt: 1 });
+		} catch (err) {
+			debugMode ? console.log("Get All Posts -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+	} else {
+		try {
+			const query = ".*" + value + ".*";
+			postList = await post
+				.find({ community: name, title: { $regex: query } })
+				.sort({ createdAt: 1 });
+			console.log(postList);
+		} catch (err) {
+			debugMode ? console.log("Get All Posts -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+	}
+	debugMode ? console.log("Get All Posts -> Got all Posts !!") : "";
+	res.status(200).json(postList);
+};
