@@ -7,8 +7,8 @@ const debugMode = true;
 
 // Create a Post
 export const createPost = async (req, res) => {
-	const { username, title, content, imgSrc, community, tags } = req.body;
-	if (!username || !title || !content || !imgSrc || !community || !tags) {
+	const { username, title, content, fileSrc,type, community } = req.body;
+	if (!username || !title || !content || !fileSrc || !community) {
 		debugMode ? console.log("Incomplete Request !!") : "";
 		res.status(400).json({ message: "Incomplete Request !!" });
 		return;
@@ -17,10 +17,11 @@ export const createPost = async (req, res) => {
 		username,
 		title,
 		content,
-		imgSrc,
+		fileSrc,
+        type,
 		likeUsers: [],
 		community: community,
-		tags,
+		tags : [],
 		comments: [],
 		reports: [],
 		createdAt: Date.now(),
@@ -37,7 +38,7 @@ export const createPost = async (req, res) => {
 	debugMode
 		? console.log("Creating Post -> Post Created Successsfully !!")
 		: "";
-	res.status(201).json({ message: "Post Created Successsfully !!" });
+	res.status(200).json({ message: "Post Created Successsfully !!" });
 };
 
 // Delete a Post
