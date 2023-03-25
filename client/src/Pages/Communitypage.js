@@ -28,6 +28,7 @@ function Communitypage() {
     likedcommunities: [],
     likedposts: [],
     isadmin: false,
+    createdAt: Date.now(),
 });
   const [followed, setFollowed] = useState(false);
 
@@ -46,24 +47,24 @@ function Communitypage() {
 
   return (
     <div className="bg-background w-full min-h-[41rem] mt-16">
-          <div className="bg-fill flex flex-col gap-6 p-10 md:m-16 tofade w-10%">
+          <div className="bg-fill flex flex-col gap-2 p-10 md:m-16 tofade w-10%">
               
               <div className="flex items-center justify-between space-x-4">
 
                   <div className="flex items-center space-x-4">
                       <div className="bg-cover bg-no-repeat bg-top bg-[url(https://i.imgur.com/nkH4gCV.png)] w-20 h-20 rounded-full" />
                       <div className=" text-4xl font-medium ">
-                          <div className="text-tprimary">Jese Leos</div>
-                          <div className="text-tmuted text-lg">Joined in 9/11</div>
+                          <div onChange={(e) => {userData.username = e.target.value}} contentEditable={editable} className={` text-tprimary ${editable ? "outline outline-1 outline-tmuted":"" }`}>{userData.username}</div>
+                          <div className="text-tmuted text-lg">{userData.createdAt}</div>
                       </div>
                   </div>
 
                   <div className="flex">
 
                     {isAdmin ? 
-                        editable ? 
+                         
                         <button type="button" 
-                        onClick={() =>{setEditable(true)}}
+                        onClick={() =>{setEditable(!editable)}}
                         className="flex gap-2 text-tprimary bg-base hover:bg-background
                         focus:outline-none focus:ring-2 
                         focus:ring-tmuted
@@ -72,21 +73,9 @@ function Communitypage() {
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                             </svg>
-                            Edit Community
+                            {editable ? "Save Changes" : "Edit Community"}
                         </button> 
-                        :
-                        <button type="button" 
-                        onClick={() =>{setEditable(false)}}
-                        className="flex gap-2 text-tprimary bg-base hover:bg-background
-                        focus:outline-none focus:ring-2 
-                        focus:ring-tmuted
-                        font-medium rounded-full t
-                        ext-sm px-5 py-2.5 text-center mr-2 mb-2 ">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                            </svg>
-                            Save Changes
-                        </button>
+                        
                     : <></>}
                       
 
@@ -108,14 +97,10 @@ function Communitypage() {
 
               {/*random text in the profile*/}
               <div>
-                  <div className="text-tprimary font-medium text-lg">
-                      <p>You learn something new every day; what did you learn today?</p>
-                      <p>Submit interesting and specific facts that you just found out 
-                      (not broad information you looked up, Today Learned is not /r/wikipedia).</p>
-                      <p className="mt-4 text-tmuted">Followed Community: {userData.likedcommunities.length}</p>
+                  <div className={`text-tprimary font-medium text-lg `}>
+                      <p className="text-tmuted">Followed Community: {userData.likedcommunities.length}</p>
                       <p className="text-tmuted">Posts: {CommunityPostList.length}</p>
                   </div>
-
               </div>
               
           </div>
