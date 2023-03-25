@@ -362,7 +362,7 @@ export default function Postpage() {
           <div>{postDetails.comments.length} Comments</div>
         </div>
 
-        {/* {auth.isLoggedIn ? */}
+        {/* {auth.isLoggedIn ?    RISHAV ADD A CHECK FOR ISLOGED IN OR NOT   ------------------------------------------------------------------------------ */}
         <div className="relative flex my-4">
           {/*commont input field*/}
           <input
@@ -372,7 +372,7 @@ export default function Postpage() {
             placeholder="Write something to Roland…"
           />
 
-          {/*commont button  RISHAV ADD A CHECK FOR ISLOGED IN OR NOT*/}
+          {/*commont button */}
           <button
             onClick={onComment}
             className=" bg-fill border-tmuted hover:bg-base text-tprimary absolute top-0 right-0 
