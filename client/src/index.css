@@ -17,7 +17,7 @@
   }
 
   .theme-dark {
-    --color-fill: #1B1D2A; /*navbar*/
+    --color-fill: #111111; /*navbar*/
     --color-fill-base: #1B1D2A; /*post-bg*/
     --color-fill-bg: #0a0909; /*bg*/
 

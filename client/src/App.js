@@ -41,7 +41,7 @@ const App = () => {
                 exact
                 path="/"
                 element={
-                  <div className="flex">
+                  <div className="flex theme-dark">
                     <Homepage/>
                     <Sidebar />
                   </div>
@@ -52,7 +52,7 @@ const App = () => {
                 exact
                 path="/community/:id"
                 element={
-                  <div className="flex ">
+                  <div className="flex theme-dark">
                     <Communitypage/>
                     <Sidebar/>
                   </div>
@@ -62,7 +62,7 @@ const App = () => {
                 exact
                 path="/profile/:id"
                 element={
-                  <div className="flex ">
+                  <div className="flex theme-dark">
                     <Profilepage />
                     <Sidebar />
                   </div>
@@ -72,7 +72,7 @@ const App = () => {
                 exact
                 path="/match/:id"
                 element={
-                  <div className="flex ">
+                  <div className="flex theme-dark">
                     <MatchPage />
                     <Sidebar />
                   </div>
@@ -82,7 +82,7 @@ const App = () => {
                 exact
                 path="/notes/:id"
                 element={
-                  <div className="flex ">
+                  <div className="flex theme-dark">
                     <Notes />
                     <Sidebar />
                   </div>
@@ -92,7 +92,7 @@ const App = () => {
                 exact
                 path="/post/:id"
                 element={
-                  <div className="flex ">
+                  <div className="flex theme-dark">
                     <Postpage />
                     <Sidebar />
                   </div>
