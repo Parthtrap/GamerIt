@@ -12,7 +12,6 @@ function Navbar() {
   const [sidebar, setSidebar] = useState(false);
   const auth = useContext(AuthContext);
 
-  const [isAdmin, setIsAdmin] = useState(true);
   const [request, setRequest] = useState(false);
 
   const [notificationHandler, setNotificationHandler] = useState(false);
@@ -23,7 +22,7 @@ function Navbar() {
   }
 
   function onCloseNotificationClick(e) {
-  
+    e.preventDefault();
     setNotificationHandler(false);
   }
   
@@ -33,7 +32,7 @@ function Navbar() {
       <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex ">
         <div className="">
         {request ? <NewCommunityModel onClose={onClose}/> : <></>}
-        
+        {notificationHandler ? <NewNotificationModel onCloseNotificationClick={onCloseNotificationClick}/> : <></>}
           <div className="flex items-center justify-between py-4 md:block">
             <div className="md:hidden">
               <button
@@ -134,7 +133,7 @@ function Navbar() {
             <ul className="items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0">
               {auth.isLoggedIn ? (
                 <>
-                {isAdmin ? 
+                {auth.isAdmin ? 
                   <li  className="text-tprimary hover:text-tmuted">
                     <Link onClick={() => (setRequest(true))} >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -153,8 +152,8 @@ function Navbar() {
                     <Link to="/todos">To-do List</Link>
                   </li>
                   <li className="text-tprimary hover:text-tmuted">
-                    <Link onClick={() => (setNotificationHandler(true))} >
-                      <Link to="/notifications">Notifications</Link>
+                    <Link onClick={() => (setNotificationHandler(!notificationHandler))} >
+                      Notifications
                     </Link>
                   </li>
                   <li className="text-tprimary hover:text-tmuted">
