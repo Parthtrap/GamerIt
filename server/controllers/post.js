@@ -7,7 +7,7 @@ const debugMode = true;
 
 // Create a Post
 export const createPost = async (req, res) => {
-	const { username, title, content, fileSrc,type, community } = req.body;
+	const { username, title, content, fileSrc, type, community } = req.body;
 	if (!username || !title || !content || !fileSrc || !community) {
 		debugMode ? console.log("Incomplete Request !!") : "";
 		res.status(400).json({ message: "Incomplete Request !!" });
@@ -18,10 +18,10 @@ export const createPost = async (req, res) => {
 		title,
 		content,
 		fileSrc,
-        type,
+		type,
 		likeUsers: [],
 		community: community,
-		tags : [],
+		tags: [],
 		comments: [],
 		reports: [],
 		createdAt: Date.now(),
@@ -111,13 +111,13 @@ export const updateComment = async (req, res) => {
 };
 
 // Get all Post
-export const getPosts = async (req, res) => {};
+export const likePost = async (req, res) => {};
 
 // Like a Post
-export const likePost = async (req, res) => {
+export const getPosts = async (req, res) => {
 	let postList;
-	const { title, user, tag } = req.query;
-	if (!title && !user && !tag) {
+	const { field, value } = req.query;
+	if (!field && !value) {
 		try {
 			postList = await community.find().sort({ createdAt: 1 });
 		} catch (err) {
