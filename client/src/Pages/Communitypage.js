@@ -55,14 +55,14 @@ function Communitypage() {
                   <div className="flex items-center space-x-4">
                       <div className="bg-cover bg-no-repeat bg-top bg-[url(https://i.imgur.com/nkH4gCV.png)] w-20 h-20 rounded-full" />
                       <div className=" text-4xl font-medium ">
-                          <div onChange={(e) => {userData.username = e.target.value}} contentEditable={editable} className={` text-tprimary ${editable ? "outline outline-1 outline-tmuted":"" }`}>{userData.username}</div>
+                          <div onChange={(e) => {communityDetails.name = e.target.value}} contentEditable={editable} className={` text-tprimary ${editable ? "outline outline-1 outline-tmuted":"" }`}>{communityDetails.name}</div>
                           <div className="text-tmuted text-lg">{userData.createdAt}</div>
                       </div>
                   </div>
 
                   <div className="flex">
 
-                    {isAdmin ? 
+                    {!auth.isAdmin ? 
                          
                         <button type="button" 
                         onClick={() =>{setEditable(!editable)}}
