@@ -110,7 +110,33 @@ export const updateComment = async (req, res) => {
 	return;
 };
 
+// Get all Post
+export const getPosts = async (req, res) => {};
+
 // Like a Post
+export const likePost = async (req, res) => {
+	let postList;
+	const { title, user, tag } = req.query;
+	if (!title && !user && !tag) {
+		try {
+			postList = await community.find().sort({ createdAt: 1 });
+		} catch (err) {
+			debugMode ? console.log("Get All Posts -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+	} else if (title && !user && !tag) {
+		try {
+			postList = await community.find({});
+		} catch (err) {
+			debugMode ? console.log("Get All Posts -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+	}
+	debugMode ? console.log("Get All Posts -> Got all Posts !!") : "";
+	res.status(200).json(postList);
+};
 
 // Unlike a Post
 
