@@ -9,8 +9,8 @@ const tagSchema = new mongoose.Schema({
 
 // Schema of Parameter
 const parameterSchema = new mongoose.Schema({
-	name: { type: String, required: true, unique: true },
-	type: { type: String, required: true },
+	name: String,
+	type: String,
 	offset: Number,
 	value: [String],
 	same: Boolean,
@@ -19,7 +19,7 @@ const parameterSchema = new mongoose.Schema({
 // Schema of Queue
 const queueSchema = new mongoose.Schema({
 	username: { type: String, required: true },
-	parameters: {},
+	parameters: { type: Object },
 });
 
 // Schema for Community
