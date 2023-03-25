@@ -1,11 +1,12 @@
 import express from "express";
+import { createPost, deletePost } from "../controllers/post.js";
 const router = express.Router();
 
 // Create a Post
-router.post("/");
+router.post("/", createPost);
 
 // Delete a Post
-router.delete("/");
+router.delete("/", deletePost);
 
 // Comment on a Post
 router.post("/comment");
