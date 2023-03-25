@@ -123,9 +123,21 @@ export const getPosts = async (req, res) => {
 			res.status(500).json({ message: err.message });
 			return;
 		}
-	} else if (title && !user && !tag) {
+	} else if (field == "post") {
 		try {
-			postList = await post.find({});
+			postList = await post
+				.find({ title: { $regex: "/.*" + value + ".*/" } })
+				.sort({ createdAt: 1 });
+		} catch (err) {
+			debugMode ? console.log("Get All Posts -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+	} else if (field == "community") {
+		try {
+			postList = await community
+				.find({ name: { $regex: "/.*" + value + ".*/" } })
+				.sort({ createdAt: 1 });
 		} catch (err) {
 			debugMode ? console.log("Get All Posts -> " + err.message) : "";
 			res.status(500).json({ message: err.message });
