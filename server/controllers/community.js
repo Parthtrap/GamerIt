@@ -569,15 +569,81 @@ export const matchMaking = async (req, res) => {
 	let matchFound = true;
 	let userMatched = null;
 
-	// found.queue.forEach((waitingUser) => {
-	// 	found.parameters.forEach((parameter) => {
-	// 		if(parameter.type == "num"){
-	// 			if(waitingUser.parameters[parameter.name] )
-	// 		}
-	// 		else {
-
-	// 		}
-	// 	});
-	// });
+	found.queue.forEach((waitingUser) => {
+		matchFound = true;
+		found.parameters.forEach((parameter) => {
+			if (parameter.type == "num") {
+				if (
+					Math.abs(
+						parseInt(waitingUser.parameters[parameter.name]) -
+							parseInt(userParameters[parameter.name])
+					) > parameter.offset
+				) {
+					if (parameter.same) {
+						matchFound = false;
+						return;
+					}
+				} else {
+					if (!parameter.same) {
+						matchFound = false;
+						return;
+					}
+				}
+			} else {
+				if (
+					waitingUser.parameters[parameter.name] ==
+					userParameters[parameter.name]
+				) {
+					if (!parameter.same) {
+						matchFound = false;
+						return;
+					}
+				} else {
+					if (parameter.same) {
+						matchFound = false;
+						return;
+					}
+				}
+			}
+		});
+		console.log(matchFound);
+		if (matchFound) {
+			userMatched = waitingUser;
+			return;
+		}
+	});
+	if (matchFound) {
+		
+		debugMode ? console.log("Match Making -> Match Found !!") : "";
+		res.status(200).json({ message: "Match Found !!" });
+		return;
+	} else {
+		try {
+			found = await community.updateOne(
+				{ name: communityName },
+				{
+					$push: {
+						queue: {
+							username: username,
+							parameters: userParameters,
+						},
+					},
+				}
+			);
+		} catch (err) {
+			debugMode ? console.log("Match Making -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+		debugMode
+			? console.log(
+					"Match Making -> Added you to Queue, Will notify when match made."
+			  )
+			: "";
+		res.status(200).json({
+			message: "Added you to Queue, Will notify when match made.",
+		});
+		return;
+	}
 };
 // router.post("/match");
