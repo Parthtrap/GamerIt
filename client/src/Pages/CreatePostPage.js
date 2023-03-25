@@ -33,13 +33,13 @@ function CreatePostPage() {
 
       console.log(uploadTask);
 
-      uploadTask.on("state_changed", (snapshot) => {
-        console.log(snapshot);
-        const prog = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgress(prog);
-      });
+      // uploadTask.on("state_changed", (snapshot) => {
+      //   console.log(snapshot);
+      //   const prog = Math.round(
+      //     (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      //   );
+      //   setProgress(prog);
+      // });
 
       const url = await getDownloadURL(uploadTask.snapshot.ref);
       console.log("file uploaded");
@@ -66,9 +66,13 @@ function CreatePostPage() {
         fileUrl = "";
         type = "";
         if(fileInputValue){
+          if(fileInputValue.file.size > 10485760){
+            toast.error("File size should be less then 10 MB");
+            return;
+          }
           fileUrl = await uploadFiles(fileInputValue.file);
           if(!fileUrl){
-            toast.error("Can't able to upload file");
+            toast.error("Failed to upload file. Try again");
             return;
           }
           type = fileInputValue.type;
@@ -82,9 +86,8 @@ function CreatePostPage() {
           community: selectedCommunity.name,
           tags: []
         });
-
+        console.log("here");
         console.log(postData);
-        return;
 
         const response = await fetch( `${process.env.REACT_APP_SERVER_ROOT_URI}/api/post`, {
           method: "POST",
@@ -101,7 +104,8 @@ function CreatePostPage() {
           toast.success("Post Made Successfully", { theme: "dark" });
           navigate("/");
         } else {
-          console.log(responseData.error);
+          console.log(responseData.message);
+          alert("Someting went wrong. Try again.");
         }
       } catch (err) {
         toast.error("Unable to connect to the server");
