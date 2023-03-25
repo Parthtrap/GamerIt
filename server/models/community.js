@@ -19,9 +19,7 @@ const parameterSchema = new mongoose.Schema({
 // Schema of Queue
 const queueSchema = new mongoose.Schema({
 	username: { type: String, required: true },
-	name: { type: String, required: true },
-	type: { type: String, required: true },
-	value: { type: String, required: true },
+	parameters: {},
 });
 
 // Schema for Community

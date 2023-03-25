@@ -517,66 +517,134 @@ params = {
 */
 // Co-op MatchMaking Request
 export const matchMaking = async (req, res) => {
-  const { communityName, username, userParameters } = req.body;
-  if (!communityName || !username || !userParameters) {
-    debugMode ? console.log("Incomplete Request !!") : "";
-    res.status(400).json({ message: "Incomplete Request !!" });
-    return;
-  }
-  let found;
-  try {
-    found = await community.findOne({ name: communityName });
-    if (!found) {
-      debugMode ? console.log("Match Making -> No Such Community Exists") : "";
-      res.status(404).json({ message: "No Such Community Exists" });
-      return;
-    }
-  } catch (err) {
-    debugMode ? console.log("Match Making -> " + err.message) : "";
-    res.status(500).json({ message: err.message });
-    return;
-  }
-  if (found.queue.length == 0) {
-    try {
-      found = await community.updateOne(
-        { name: communityName },
-        {
-          $push: {
-            queue: {
-              username: username,
-              parameters: userParameters,
-            },
-          },
-        }
-      );
-      debugMode
-        ? console.log(
-            "Match Making -> Added to Queue, Will notify when match made."
-          )
-        : "";
-      res.status(200).json({
-        message: "Added to Queue, Will notify when match made.",
-      });
-      return;
-    } catch (err) {
-      debugMode ? console.log("Match Making -> " + err.message) : "";
-      res.status(500).json({ message: err.message });
-      return;
-    }
-  }
+	const { communityName, username, userParameters } = req.body;
+	if (!communityName || !username || !userParameters) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	let found;
+	try {
+		found = await community.findOne({ name: communityName });
+		if (!found) {
+			debugMode
+				? console.log("Match Making -> No Such Community Exists")
+				: "";
+			res.status(404).json({ message: "No Such Community Exists" });
+			return;
+		}
+	} catch (err) {
+		debugMode ? console.log("Match Making -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	if (found.queue.length == 0) {
+		try {
+			found = await community.updateOne(
+				{ name: communityName },
+				{
+					$push: {
+						queue: {
+							username: username,
+							parameters: userParameters,
+						},
+					},
+				}
+			);
+			debugMode
+				? console.log(
+						"Match Making -> Added to Queue, Will notify when match made."
+				  )
+				: "";
+			res.status(200).json({
+				message: "Added to Queue, Will notify when match made.",
+			});
+			return;
+		} catch (err) {
+			debugMode ? console.log("Match Making -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+	}
 
-  let matchFound = true;
-  let userMatched = null;
+	let matchFound = true;
+	let userMatched = null;
 
-  // found.queue.forEach((waitingUser) => {
-  // 	found.parameters.forEach((parameter) => {
-  // 		if(parameter.type == "num"){
-  // 			if(waitingUser.parameters[parameter.name] )
-  // 		}
-  // 		else {
-
-  // 		}
-  // 	});
-  // });
+	found.queue.forEach((waitingUser) => {
+		matchFound = true;
+		found.parameters.forEach((parameter) => {
+			if (parameter.type == "num") {
+				if (
+					Math.abs(
+						parseInt(waitingUser.parameters[parameter.name]) -
+							parseInt(userParameters[parameter.name])
+					) > parameter.offset
+				) {
+					if (parameter.same) {
+						matchFound = false;
+						return;
+					}
+				} else {
+					if (!parameter.same) {
+						matchFound = false;
+						return;
+					}
+				}
+			} else {
+				if (
+					waitingUser.parameters[parameter.name] ==
+					userParameters[parameter.name]
+				) {
+					if (!parameter.same) {
+						matchFound = false;
+						return;
+					}
+				} else {
+					if (parameter.same) {
+						matchFound = false;
+						return;
+					}
+				}
+			}
+		});
+		console.log(matchFound);
+		if (matchFound) {
+			userMatched = waitingUser;
+			return;
+		}
+	});
+	if (matchFound) {
+		
+		debugMode ? console.log("Match Making -> Match Found !!") : "";
+		res.status(200).json({ message: "Match Found !!" });
+		return;
+	} else {
+		try {
+			found = await community.updateOne(
+				{ name: communityName },
+				{
+					$push: {
+						queue: {
+							username: username,
+							parameters: userParameters,
+						},
+					},
+				}
+			);
+		} catch (err) {
+			debugMode ? console.log("Match Making -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+		debugMode
+			? console.log(
+					"Match Making -> Added you to Queue, Will notify when match made."
+			  )
+			: "";
+		res.status(200).json({
+			message: "Added you to Queue, Will notify when match made.",
+		});
+		return;
+	}
 };
 // router.post("/match");
