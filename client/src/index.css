@@ -17,9 +17,10 @@
   }
 
   .theme-dark {
-    --color-fill: #1B1D2A; /*navbar*/
+    --color-fill: #111111; /*navbar*/
     --color-fill-base: #1B1D2A; /*post-bg*/
     --color-fill-bg: #0a0909; /*bg*/
+    
 
     --color-text-primary: #F7F8FA; /*normal text*/
     --color-text-muted: #DDDDC8; /*below heading text*/

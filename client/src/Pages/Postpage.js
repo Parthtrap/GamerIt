@@ -279,7 +279,7 @@ export default function Postpage() {
   function CommentChainBuilder(obj, layer) {
     // console.log(obj, layer);
     let mystyle = {
-      "padding-left": 20 * layer + "px",
+      "padding-left": 30 * layer + "px",
     };
 
     console.log(obj);
