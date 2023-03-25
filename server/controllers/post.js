@@ -8,8 +8,9 @@ const debugMode = true;
 
 // Create a Post
 export const createPost = async (req, res) => {
-	const { username, title, content, fileSrc, type, community } = req.body;
-	if (!username || !title || !content || !fileSrc || !community) {
+	const { username, title, content, fileSrc, type, community, tags } =
+		req.body;
+	if (!username || !title || !content || !community || !tags) {
 		debugMode ? console.log("Incomplete Request !!") : "";
 		res.status(400).json({ message: "Incomplete Request !!" });
 		return;
@@ -22,7 +23,7 @@ export const createPost = async (req, res) => {
 		type,
 		likeUsers: [],
 		community: community,
-		tags: [],
+		tags,
 		comments: [],
 		reports: [],
 		createdAt: Date.now(),
