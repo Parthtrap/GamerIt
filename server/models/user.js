@@ -23,6 +23,13 @@ const NoteSchema = new mongoose.Schema({
 	createdAt: Date,
 });
 
+// Schema for Notification
+const notificationSchema = new mongoose.Schema({
+	title: String,
+	communityName: String,
+	createdAt: Date,
+});
+
 // Schema for User
 const userSchema = new mongoose.Schema({
 	username: { type: String, required: true, unique: true },
@@ -39,6 +46,7 @@ const userSchema = new mongoose.Schema({
 	followingUsers: [String],
 	followsCount: Number,
 	font: String,
+	notifications: [notificationSchema],
 	createdAt: Date,
 });
 
