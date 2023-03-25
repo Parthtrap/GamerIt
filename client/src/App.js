@@ -65,6 +65,26 @@ const App = () => {
                   </div>
                 }
               />
+              <Route
+                exact
+                path="/match/:id"
+                element={
+                  <div className="flex ">
+                    <MatchPage />
+                    <Sidebar />
+                  </div>
+                }
+              />
+              <Route
+                exact
+                path="/notes/:id"
+                element={
+                  <div className="flex ">
+                    <Notes />
+                    <Sidebar />
+                  </div>
+                }
+              />
               <Route exact path="*" element={<Navigate to="/" />} />
             </Routes>
           </>
