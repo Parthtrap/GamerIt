@@ -1,10 +1,12 @@
 /** @format */
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthContext from "../Context/AuthContext";
 import PostListCard from "./Components/PostListCard";
+import PostListCardBig from "./Components/PostListCardBig";
+import NewMyModal from "./Components/NewRequestmodel";
 
 function Communitypage() {
   const param = useParams();
@@ -17,8 +19,27 @@ function Communitypage() {
     tagline: "Loading...",
   });
   const [CommunityPostList, setCommunityPostList] = useState([]);
-  const [userInfo, setUserInfo] = useState({});
+  const [userData, setUserData] = useState({
+    username: "Loading...",
+    email: "Loading...",
+    gender: "Loading",
+    dateofbirth: Date.now(),
+    notes: [],
+    likedcommunities: [],
+    likedposts: [],
+    isadmin: false,
+});
   const [followed, setFollowed] = useState(false);
+
+  const toggleRef = useRef(document.createElement("input"));
+  const [toggle, setToggle] = useState(false);
+
+  const [request, setRequest] = useState(false);
+
+  function onClose(e) {
+    e.preventDefault();
+    setRequest(false);
+  }
 
   return (
     <div className="bg-background w-full min-h-[41rem] mt-16">
@@ -71,7 +92,7 @@ function Communitypage() {
                       <p>Submit interesting and specific facts that you just found out 
                       (not broad information you looked up, Today Learned is not /r/wikipedia).</p>
                       <p className="mt-4 text-tmuted">Followed Community: {userData.likedcommunities.length}</p>
-                      <p className="text-tmuted">Posts: {UserPostList.length}</p>
+                      <p className="text-tmuted">Posts: {CommunityPostList.length}</p>
                   </div>
 
               </div>
@@ -92,9 +113,9 @@ function Communitypage() {
           </div>
 
           <div className="">
-              {toggle ? postSchema.map((post) => {
+              {toggle ? CommunityPostList.map((post) => {
                   return <PostListCard key={post._id} post={post} />;
-              }): postSchema.map((post) => {
+              }): CommunityPostList.map((post) => {
                   return <PostListCardBig key={post._id} post={post} />;
               })}
           </div>
