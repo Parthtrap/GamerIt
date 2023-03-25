@@ -32,9 +32,9 @@ export default function Editenotemodel(props) {
     return(
         <div className="">
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-25 z-100 backdrop-blur-sm">
-                <div className="container p-2 mx-auto mt-16 border border-gray-700 rounded-lg shadow-md bg-fill md:max-w-xl">
+                <div className="container p-2 pb-7 mx-auto mt-16 border border-gray-700 rounded-lg shadow-md bg-fill md:max-w-xl">
                     
-                    <div className="flex  justify-end">
+                    <div className=" w-fit ml-auto">
                         {/*close button*/}
                         <button type="button"
                             onClick={props.onClose}
@@ -59,7 +59,7 @@ export default function Editenotemodel(props) {
                         <div className="flex gap-4">
 
                             <div onClick={addSubnote}
-                            className="flex p-2 hover:bg-black hover:bg-opacity-5 rounded shadow">
+                            className="bg-base hover:bg-background text-tprimary flex p-2  hover:bg-opacity-5 rounded shadow">
                                 <svg className="my-auto" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                                 </svg>
@@ -67,7 +67,7 @@ export default function Editenotemodel(props) {
                             </div>
 
                             <div onClick={addCheckedSubnote}
-                            className="flex p-2 hover:bg-black hover:bg-opacity-5 rounded shadow">
+                            className="bg-base  hover:bg-background text-tprimary flex p-2  hover:bg-opacity-5 rounded shadow">
                                 <svg className="my-auto" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                                 </svg>
@@ -94,8 +94,8 @@ export default function Editenotemodel(props) {
                             console.log(subnotes);
                             props.onClose(e);
                         }}
-                        className="text-tprimary bg-base px-5 py-2 mx-5 text-sm font-medium text-center rounded-full focus:outline-none md:mx-16">
-                        Create Note
+                        className="text-tprimary hover:bg-background bg-base px-5 py-2 mx-5 text-sm font-medium text-center rounded-full focus:outline-none md:mx-16">
+                        Save Note
                     </button>
 
                 </div>
