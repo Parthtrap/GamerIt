@@ -24,7 +24,7 @@ const queueSchema = new mongoose.Schema({
 
 // Schema for Community
 const communitySchema = new mongoose.Schema({
-	name: { type: String, required: true, unique: true },
+	name: { type: String, required: true, unique: true, trim: true },
 	profilePic: String,
 	bannerPic: String,
 	followerCount: Number,
