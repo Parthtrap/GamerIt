@@ -20,11 +20,12 @@ import Communitypage from "./Pages/Communitypage";
 import CreatePostPage from "./Pages/CreatePostPage";
 import MatchPage from "./Pages/Components/NewRequestmodel";
 import Notes from "./Pages/Components/Notes";
+import Postpage from "./Pages/Postpage";
 
 const App = () => {
   const auth = useContext(AuthContext);
   return auth.isFetched ? (
-    <>
+    <div className="theme-dark">
       {
         auth.isLoggedIn ? (
           <>
@@ -40,8 +41,8 @@ const App = () => {
                 exact
                 path="/"
                 element={
-                  <div className="flex">
-                    <Homepage/>
+                  <div className="flex ">
+                    <Homepage />
                     <Sidebar />
                   </div>
                 }
@@ -83,6 +84,16 @@ const App = () => {
                 element={
                   <div className="flex ">
                     <Notes />
+                    <Sidebar />
+                  </div>
+                }
+              />
+              <Route
+                exact
+                path="/post/:id"
+                element={
+                  <div className="flex ">
+                    <Postpage />
                     <Sidebar />
                   </div>
                 }
@@ -130,7 +141,7 @@ const App = () => {
           </>
         )
       }
-    </>
+    </div>
   ) : (
     <>
       Loading
