@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Tags from "./Tags";
 
 export default function PostListCardBig(props) {
 
@@ -14,11 +15,13 @@ export default function PostListCardBig(props) {
                     <h5 className="text-tprimary mb-2 text-2xl font-bold tracking-tight  ">Noteworthy technology acquisitions 2021</h5>
                 </Link>
                 <p className="text-tmuted mb-3 font-normal  ">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
+
+                <Tags/>
                 
-                <div className="flex">
+                <div className="flex mt-2.5 items-start justify-between">
 
                     {/*like icon */}
-                    <span className="text-tprimary">
+                    <span className="text-tprimary flex flex-row">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -36,7 +39,7 @@ export default function PostListCardBig(props) {
                     {props.post.likeUsers.length}
                     </span>
 
-                    <span className="text-tprimary">
+                    <span className="text-tprimary flex flex-row">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

@@ -21,6 +21,7 @@ import CreatePostPage from "./Pages/CreatePostPage";
 import MatchPage from "./Pages/Components/NewRequestmodel";
 import Notes from "./Pages/Components/Notes";
 import Postpage from "./Pages/Postpage";
+import NewNotificationModel from "./Pages/Components/NewNotificationModel";
 
 const App = () => {
   const auth = useContext(AuthContext);
@@ -99,6 +100,7 @@ const App = () => {
                 }
               />
               <Route exact path="*" element={<Navigate to="/" />} />
+              <Route exact path="/notifications" element={<NewNotificationModel />} />
             </Routes>
           </>
         ) : (
