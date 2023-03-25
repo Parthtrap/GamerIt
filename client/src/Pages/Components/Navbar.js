@@ -1,9 +1,9 @@
 /** @format */
 
 import React, { useContext, useState } from "react";
+
 import { Link } from "react-router-dom";
 import AuthContext from "../../Context/AuthContext";
-
 import NewCommunityModel from "./NewCommunityModel";
 
 function Navbar() {
@@ -26,7 +26,6 @@ function Navbar() {
         {request ? <NewCommunityModel onClose={onClose}/> : <></>}
           <div className="flex items-center justify-between py-4 md:block">
             <div className="md:hidden">
-            
               <button
                 className="text-tprimary focus:border-gray-400 p-2 rounded-md outline-none  focus:border"
                 onClick={() => {
@@ -69,7 +68,7 @@ function Navbar() {
 
             {/*LOGO*/}
             <Link to="/">
-              <h2 className="text-tprimary text-2xl font-bold ">GAMERIT</h2>
+            <h2 className="text-tprimary text-2xl font-bold ">GAMERIT</h2>
             </Link>
 
             {/* right side dropdown button*/}
@@ -125,7 +124,7 @@ function Navbar() {
             <ul className="items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0">
               {auth.isLoggedIn ? (
                 <>
-                  {isAdmin ? 
+                {isAdmin ? 
                   <li  className="text-tprimary hover:text-tmuted">
                     <Link onClick={() => (setRequest(true))} >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -134,19 +133,34 @@ function Navbar() {
                     </Link>
                   </li> 
                   : <></>}
-                  
+                <li className="text-tprimary hover:text-tmuted">
+                    <Link to="/">Home</Link>
+                  </li>
+                 <li className="text-tprimary hover:text-tmuted">
+                    <Link to="/calender">Plans</Link>
+                  </li>
+                  <li className="text-tprimary hover:text-tmuted">
+                    <Link to="/todos">To-do List</Link>
+                  </li>
                   <li className="text-tprimary hover:text-tmuted">
                     <Link to="#" onClick={auth.logout}>
                       Logout
                     </Link>
                   </li>
+                  <li className="text-red-500 hover:text-tmuted">
+                    <Link to="/help">Help</Link>
+                  </li>
                 </>
               ) : (
                 <>
                   <li className="text-tprimary hover:text-tmuted">
+                    <Link to="/">Home</Link>
+                  </li>
+                 
+                  <li className="text-tprimary hover:text-tmuted">
                     <Link to="/login">Login</Link>
                   </li>
-                  <li className="text-tprimary hover:text-tmuted">
+                  <li className="text-red-500 hover:text-tmuted">
                     <Link to="/help">Help</Link>
                   </li>
                 </>
