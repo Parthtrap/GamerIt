@@ -13,6 +13,7 @@ import EmailVerifyPage from "./Pages/Authentication/EmailVerifyPage";
 import VerifyOtpPage from "./Pages/Authentication/verifyOtpPage";
 import NotFound from "./Pages/NotFound";
 import ResetPassPage from "./Pages/Authentication/ResetPassPage";
+import Profilepage from "./Pages/Profilepage";
 
 const App = () => {
   const auth = useContext(AuthContext);
@@ -52,8 +53,8 @@ const App = () => {
                 path="/profile/:id"
                 element={
                   <div className="flex ">
-                    <ProfilePage />
-                    <Sidebar />
+                    <Profilepage />
+                    {/* <Sidebar /> */}
                   </div>
                 }
               />
