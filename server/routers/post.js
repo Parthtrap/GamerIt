@@ -3,6 +3,9 @@ import {
 	createPost,
 	deletePost,
 	getPosts,
+	likePost,
+	reportPost,
+	unlikePost,
 	updateComment,
 } from "../controllers/post.js";
 const router = express.Router();
@@ -17,16 +20,13 @@ router.delete("/", deletePost);
 router.post("/comment", updateComment);
 
 // Like a Post
-router.post("/like");
+router.post("/like", likePost);
 
 // Unlike a Post
-router.post("/unlike");
+router.delete("/like", unlikePost);
 
 // Report a Post
-router.post("/report");
-
-// Unreport a Post
-router.delete("/report");
+router.post("/report", reportPost);
 
 // Search a Post by Title
 // Search a Post by User

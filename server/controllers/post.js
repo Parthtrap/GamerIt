@@ -3,6 +3,7 @@
 import mongoose from "mongoose";
 import community from "../models/community.js";
 import post from "../models/post.js";
+import user from "../models/user.js";
 const debugMode = true;
 
 // Create a Post
@@ -136,13 +137,115 @@ export const getPosts = async (req, res) => {
 };
 
 // Like a Post
-export const likePost = async (req, res) => {};
+export const likePost = async (req, res) => {
+	const { username, postId } = req.body;
+	let found;
+	try {
+		found = await post.findOne({
+			_id: new mongoose.Types.ObjectId(postId),
+		});
+		if (!found) {
+			debugMode ? console.log("Like Post -> Post Not Found !!") : "";
+			res.status(400).json({ message: "Post Not Found !!" });
+			return;
+		}
+		if (found.likeUsers.includes(username)) {
+			debugMode ? console.log("Like Post -> Like Post Sucessfully") : "";
+			res.status(200).json({ message: "Like Post Sucessfully" });
+			return;
+		}
+		found = await post.updateOne(
+			{ _id: new mongoose.Types.ObjectId(postId) },
+			{ $push: { likeUsers: username } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Like Post -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+
+	debugMode ? console.log("Like Post -> Successfully Liked the Post") : "";
+	res.status(200).json({ message: "Successfully Liked the Post" });
+	return;
+};
 
 // Unlike a Post
+export const unlikePost = async (req, res) => {
+	const { username, postId } = req.body;
+	let found;
+	try {
+		found = await post.findOne({
+			_id: new mongoose.Types.ObjectId(postId),
+		});
+		if (!found) {
+			debugMode ? console.log("Unlike Post -> Post Not Found !!") : "";
+			res.status(400).json({ message: "Post Not Found !!" });
+			return;
+		}
+		if (!found.likeUsers.includes(username)) {
+			debugMode
+				? console.log("Unlike Post -> Unlike Post Sucessfully")
+				: "";
+			res.status(200).json({ message: "Unlike Post Sucessfully" });
+			return;
+		}
+		found = await post.updateOne(
+			{ _id: new mongoose.Types.ObjectId(postId) },
+			{ $pull: { likeUsers: username } }
+		);
+	} catch (err) {
+		debugMode ? console.log("Unlike Post -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+
+	debugMode
+		? console.log("Unlike Post -> Successfully Unliked the Post")
+		: "";
+	res.status(200).json({ message: "Successfully Unliked the Post" });
+	return;
+};
 
 // Report a Post
-
-// Unreport a Post
+export const reportPost = async (req, res) => {
+	const { postId, username, reason } = req.body;
+	if (!postId || !username || !reason) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	let found, temp;
+	try {
+		found = await user.findOne({ username });
+		if (!found) {
+			debugMode ? console.log("Report Post -> No Such user Exists") : "";
+			res.status(400).json({ message: "No Such user Exists" });
+			return;
+		}
+		found = await post.updateOne(
+			{
+				_id: new mongoose.Types.ObjectId(postId),
+			},
+			{
+				$push: {
+					reports: {
+						userId: username,
+						reason,
+						createdAt: Date.now(),
+					},
+				},
+			}
+		);
+	} catch (err) {
+		debugMode ? console.log("Report Post -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	console.log(found);
+	debugMode ? console.log("Report Post -> Post Reported Sucessfully") : "";
+	res.status(200).json({ message: "Post Reported Sucessfully" });
+	return;
+};
 
 // Search a Post by Title
 
