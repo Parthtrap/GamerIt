@@ -43,8 +43,8 @@
   }
 
   .theme-light {
-    --color-fill: #F5F5F7; /*post-bg*/
-    --color-fill-base: #E6EBEE; /*navbar*/
+    --color-fill: #454545; /*navbar*/
+    --color-fill-base: #F5F5F7; /*post-bg*/
     --color-fill-bg: #FFFFFF; /*bg*/
 
     --color-text-primary: #1D1D1F; /*normal text*/
@@ -56,15 +56,15 @@
   }
 
   .theme-green {
-    --color-fill: #31EC56; /*navbar*/
-    --color-fill-base: #F8FAFC; /*post-bg*/
-    --color-fill-bg: #EF036C; /*bg*/
+    --color-fill: #F8FAFC; /*navbar*/
+    --color-fill-base: #EF036C; /*post-bg*/
+    --color-fill-bg: #31EC56; /*bg*/
 
-    --color-text-primary: #F8FAFC; /*normal text*/
-    --color-text-muted: #c83c74; /*below heading text*/
-    --color-text-link: #31EC56; /*link text*/
+    --color-text-primary: #000000; /*normal text*/
+    --color-text-muted: #FEFFFE; /*below heading text*/
+    --color-text-link: #1472D0; /*link text*/
 
-    --color-button-accent: #F8FAFC; /*button colour*/
+    --color-button-accent: #EE72F8; /*button colour*/
     --color-button-accent-hover: #F8FAFC; /*button hover colour*/
   }
 

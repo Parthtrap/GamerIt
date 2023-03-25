@@ -7,6 +7,7 @@ import AuthContext from "../Context/AuthContext";
 import PostListCard from "./Components/PostListCard";
 import PostListCardBig from "./Components/PostListCardBig";
 import NewMyModal from "./Components/NewRequestmodel";
+import CreatePostSearchBar from "./Components/CreatePostSearchBar";
 
 function Communitypage() {
   const param = useParams();
@@ -118,7 +119,9 @@ function Communitypage() {
               </label>
           </div>
 
-          <div className="">
+          <div className="mt-6">
+            <CreatePostSearchBar />
+          <div >
               {toggle ? CommunityPostList.map((post) => {
                   return <PostListCard key={post._id} post={post} />;
               }): CommunityPostList.map((post) => {
@@ -129,6 +132,7 @@ function Communitypage() {
           </div>
 
           {request ? <NewMyModal onClose={onClose}/> : <></>}
+      </div>
       </div>
   );
 }
