@@ -1,3 +1,160 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --color-fill: #e18dae; /*div col*/
+    --color-fill-base: #c83c74; /*dark div col*/
+    --color-fill-bg: #d5b4c1; /*bg colour*/
+
+    --color-text-primary: #000000; /*normal text*/
+    --color-text-muted: #FFDA6E; /*below heading text*/
+    --color-text-link: #ffffff; /*link text*/
+
+    --color-button-accent: #c83c74; /*button colour*/
+    --color-button-accent-hover: #d5b4c1; /*button hover colour*/
+  }
+
+  theme-dark {
+    --color-fill: #1B1D2A; /*navbar*/
+    --color-fill-base: #1B1D2A; /*post-bg*/
+    --color-fill-bg: #0a0909; /*bg*/
+
+    --color-text-primary: #F7F8FA; /*normal text*/
+    --color-text-muted: #DDDDC8; /*below heading text*/
+    --color-text-link: #1B1DAA; /*link text*/
+
+    --color-button-accent: #657EF8; /*button colour*/
+    --color-button-accent-hover: #363F7E; /*button hover colour*/
+  }
+
+  theme-red {
+    --color-fill: #111111; /*navbar*/
+    --color-fill-base: #C7F459; /*post-bg*/
+    --color-fill-bg: #7C37E8; /*bg*/
+
+    --color-text-primary: ##F7F8FA; /*normal text*/
+    --color-text-muted: #DDDDC8; /*below heading text*/
+    --color-text-link: #1B1DAA; /*link text*/
+
+    --color-button-accent: #FF4655; /*button colour*/
+    --color-button-accent-hover: #0F1923; /*button hover colour*/
+  }
+
+  theme-light {
+    --color-fill: #454545; /*navbar*/
+    --color-fill-base: #F5F5F7; /*post-bg*/
+    --color-fill-bg: #FFFFFF; /*bg*/
+
+    --color-text-primary: #1D1D1F; /*normal text*/
+    --color-text-muted: #909091; /*below heading text*/
+    --color-text-link: #1472D0; /*link text*/
+
+    --color-button-accent: #E6EBEE; /*button colour*/
+    --color-button-accent-hover: #F8FAFC; /*button hover colour*/
+  }
+
+  theme-green {
+    --color-fill: #F8FAFC; /*navbar*/
+    --color-fill-base: #EF036C; /*post-bg*/
+    --color-fill-bg: #31EC56; /*bg*/
+
+    --color-text-primary: #000000; /*normal text*/
+    --color-text-muted: #FEFFFE; /*below heading text*/
+    --color-text-link: #1472D0; /*link text*/
+
+    --color-button-accent: #EE72F8; /*button colour*/
+    --color-button-accent-hover: #F8FAFC; /*button hover colour*/
+  }
+
+ 
+}
+@layer base {
+  input[type=number].appearance-none::-webkit-inner-spin-button,
+  input[type=number].appearance-none::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type=number].appearance-none {
+    -moz-appearance:textfield;
+  }
+}
+
+@font-face {
+    font-family: 'Reenie Beanie';
+    src: url('../public/font/ReenieBeanie-Regular.ttf');
+  }
+  
+  * {
+    user-select: none;
+  }
+  
+  /* For Webkit-based browsers (Chrome, Safari and Opera) */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* For IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .stickeynote {
+    display: box;
+  
+    line-clamp: 3;
+    box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .tofade {
+    animation: transitionIn 1s;
+  }
+  
+  .RightIn {
+    animation: rightIn 2s;
+  }
+  
+  @keyframes transitionIn {
+    from {
+      opacity: 0;
+      transform: rotateX(-10deg);
+    }
+  
+    to {
+      opacity: 1;
+      transform: rotateX(0);
+    }
+  }
+  
+  @keyframes rightIn {
+    from {
+      opacity: 0;
+      width: 0;
+      transform: translateX(50px);
+    }
+  
+    to {
+      opacity: 1;
+      width: 100%;
+      transform: translateX(0px);
+    }
+  }
+  
+  html::-webkit-scrollbar {
+    width: 16px;
+  }
+  
+  html::-webkit-scrollbar-track {
+    background-color: #272729;
+  }
+  
+  html::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(180deg, #3f0071 25%, #fb2576 99%);
+    box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+    border-radius: 50px;
+    overflow: hidden;
+  }
+  

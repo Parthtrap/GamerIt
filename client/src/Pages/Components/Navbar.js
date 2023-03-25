@@ -14,7 +14,7 @@ function Navbar() {
           <div className="flex items-center justify-between py-4 md:block">
             <div className="md:hidden">
               <button
-                className="text-primary focus:border-gray-400 p-2 rounded-md outline-none  focus:border"
+                className="text-tprimary focus:border-gray-400 p-2 rounded-md outline-none  focus:border"
                 onClick={() => {
                   setNavbar(!navbar);
                   setSidebar(false);
@@ -52,8 +52,8 @@ function Navbar() {
                 )}
               </button>
             </div>
-              
-            {/*LOGO*/ }
+
+            {/*LOGO*/}
             <Link to="/">
               <h2 className="text-tprimary text-2xl font-bold ">GAMEIT</h2>
             </Link>
@@ -109,7 +109,7 @@ function Navbar() {
             }`}
           >
             <ul className="items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0">
-            {auth.isLoggedIn ? (
+              {auth.isLoggedIn ? (
                 <>
                   <li className="text-tprimary hover:text-tmuted">
                     <Link to="#" onClick={auth.logout}>
