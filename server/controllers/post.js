@@ -128,7 +128,7 @@ export const getPosts = async (req, res) => {
 		try {
 			const query = ".*" + value + ".*";
 			postList = await post
-				.find({ title: { $regex: query } })
+				.find({ title: { $regex: query, $options: "i" } })
 				.sort({ createdAt: 1 });
 			console.log(postList);
 		} catch (err) {
@@ -139,7 +139,9 @@ export const getPosts = async (req, res) => {
 	} else if (field == "community") {
 		try {
 			postList = await post
-				.find({ community: { $regex: ".*" + value + ".*" } })
+				.find({
+					community: { $regex: ".*" + value + ".*", $options: "i" },
+				})
 				.sort({ createdAt: 1 });
 		} catch (err) {
 			debugMode ? console.log("Get All Posts -> " + err.message) : "";
@@ -280,7 +282,10 @@ export const getCommunityPosts = async (req, res) => {
 		try {
 			const query = ".*" + value + ".*";
 			postList = await post
-				.find({ community: name, title: { $regex: query } })
+				.find({
+					community: name,
+					title: { $regex: query, $options: "i" },
+				})
 				.sort({ createdAt: 1 });
 			console.log(postList);
 		} catch (err) {

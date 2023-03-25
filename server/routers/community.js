@@ -29,7 +29,7 @@ router.post("/", createCommunity);
 router.delete("/", deleteCommunity);
 
 // Add tag
-router.get("/tag", addTag);
+router.post("/tag", addTag);
 
 // Delete tag
 router.delete("/tag", deleteTag);

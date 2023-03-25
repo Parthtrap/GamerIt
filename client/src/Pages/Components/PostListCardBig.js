@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Tags from "./Tags";
 
 export default function PostListCardBig(props) {
   const navigate = useNavigate();
@@ -42,6 +43,13 @@ export default function PostListCardBig(props) {
         <div className="text-s text-tmuted">
           <span id="username">u/{props.post.username}</span>
         </div>
+
+        <div className="flex gap-3">
+          {props.post.tags.map((tag) =>{
+            return <Tags key={tag._id} tag={tag}/>;
+          })}
+        </div> 
+
         <h5 className="text-tprimary mb-2 text-2xl font-bold tracking-tight  ">
           {props.post.title}
         </h5>
