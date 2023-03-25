@@ -21,6 +21,7 @@ import CreatePostPage from "./Pages/CreatePostPage";
 import MatchPage from "./Pages/Components/NewRequestmodel";
 import Notes from "./Pages/Components/Notes";
 import Postpage from "./Pages/Postpage";
+import NewNotificationModel from "./Pages/Components/NewNotificationModel";
 
 const App = () => {
   const auth = useContext(AuthContext);
@@ -41,7 +42,7 @@ const App = () => {
                 exact
                 path="/"
                 element={
-                  <div className="flex ">
+                  <div className="flex  theme-dark">
                     <Homepage />
                     <Sidebar />
                   </div>
@@ -52,7 +53,7 @@ const App = () => {
                 exact
                 path="/community/:name"
                 element={
-                  <div className="flex ">
+                  <div className="flex theme-dark">
                     <Communitypage/>
                     <Sidebar/>
                   </div>
@@ -62,7 +63,7 @@ const App = () => {
                 exact
                 path="/profile/:name"
                 element={
-                  <div className="flex ">
+                  <div className="flex theme-dark">
                     <Profilepage />
                     <Sidebar />
                   </div>
@@ -72,7 +73,7 @@ const App = () => {
                 exact
                 path="/match/:id"
                 element={
-                  <div className="flex ">
+                  <div className="flex theme-dark">
                     <MatchPage />
                     <Sidebar />
                   </div>
@@ -82,7 +83,7 @@ const App = () => {
                 exact
                 path="/notes/:id"
                 element={
-                  <div className="flex ">
+                  <div className="flex theme-dark">
                     <Notes />
                     <Sidebar />
                   </div>
@@ -92,13 +93,14 @@ const App = () => {
                 exact
                 path="/post/:id"
                 element={
-                  <div className="flex ">
+                  <div className="flex theme-dark">
                     <Postpage />
                     <Sidebar />
                   </div>
                 }
               />
               <Route exact path="*" element={<Navigate to="/" />} />
+              <Route exact path="/notifications" element={<NewNotificationModel />} />
             </Routes>
           </>
         ) : (

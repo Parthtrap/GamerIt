@@ -5,6 +5,7 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../Context/AuthContext";
 import NewCommunityModel from "./NewCommunityModel";
+import NewNotificationModel from "./NewNotificationModel";
 
 function Navbar() {
   const [navbar, setNavbar] = useState(false);
@@ -14,16 +15,25 @@ function Navbar() {
   const [isAdmin, setIsAdmin] = useState(true);
   const [request, setRequest] = useState(false);
 
+  const [notificationHandler, setNotificationHandler] = useState(false);
+
   function onClose(e) {
     e.preventDefault();
     setRequest(false);
   }
+
+  function onCloseNotificationClick(e) {
+  
+    setNotificationHandler(false);
+  }
+  
 
   return (
     <nav className="bg-fill shadow-base fixed top-0 z-50 w-full shadow-sm ">
       <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex ">
         <div className="">
         {request ? <NewCommunityModel onClose={onClose}/> : <></>}
+        
           <div className="flex items-center justify-between py-4 md:block">
             <div className="md:hidden">
               <button
@@ -141,6 +151,11 @@ function Navbar() {
                   </li>
                   <li className="text-tprimary hover:text-tmuted">
                     <Link to="/todos">To-do List</Link>
+                  </li>
+                  <li className="text-tprimary hover:text-tmuted">
+                    <Link onClick={() => (setNotificationHandler(true))} >
+                      <Link to="/notifications">Notifications</Link>
+                    </Link>
                   </li>
                   <li className="text-tprimary hover:text-tmuted">
                     <Link to="#" onClick={auth.logout}>
