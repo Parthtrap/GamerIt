@@ -24,7 +24,8 @@ By WhatTheCodeDoin?
   5) FireBase Storage
   6) Javascript
 
-  
+## API Documentation
+[https://documenter.getpostman.com/view/24014851/2s93RNyEpn](https://documenter.getpostman.com/view/24014851/2s93RNyEpn)
 
 ## Contributors:
 
