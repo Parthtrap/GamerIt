@@ -25,8 +25,7 @@ function Communitypage() {
   const [isModerator, setisModerator] = useState(false);
   const [reload, setReload] = useState(false);
 
-  function onClose(e) {
-    e.preventDefault();
+  function onClose() {
     setRequest(false);
   }
   const communityName = useParams().name;
@@ -292,7 +291,7 @@ function Communitypage() {
           </div>
         </div>
 
-        {request ? <NewMyModal onClose={onClose} /> : <></>}
+        {request ? <NewMyModal onClose={onClose} community={communityDetails} /> : <></>}
       </div>
     </div>
   );
