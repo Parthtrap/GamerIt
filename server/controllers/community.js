@@ -574,7 +574,7 @@ export const deleteParameter = async (req, res) => {
 params = {
 	username: String
 	name: String
-	value: String
+	value: Strings
 }
 */
 // Co-op MatchMaking Request

@@ -59,7 +59,7 @@ function classNames(...classes) {
   
 }
 
-export default function Example() {
+export default function CalenderApp() {
     // const auth  = useContext(AuthContext);
     // const [meetings, setMeetings] = useState([]);
   let today = startOfToday();
