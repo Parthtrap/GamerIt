@@ -22,7 +22,7 @@ import MatchPage from "./Pages/Components/NewRequestmodel";
 import Notes from "./Pages/Components/Notes";
 import Postpage from "./Pages/Postpage";
 import NewNotificationModel from "./Pages/Components/NewNotificationModel";
-import Example from "./Pages/Components/CalenderApp";
+import CalenderApp from "./Pages/Components/CalenderApp";
 
 const App = () => {
 	const auth = useContext(AuthContext);
@@ -51,7 +51,7 @@ const App = () => {
 						<Route
 							exact
 							path="/calender"
-							element={<calenderApp />}
+							element={<CalenderApp />}
 						/>
 						<Route
 							exact

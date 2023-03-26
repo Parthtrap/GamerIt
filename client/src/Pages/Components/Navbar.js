@@ -158,7 +158,7 @@ function Navbar() {
                     <Link to="/calender">Plans</Link>
                   </li>
                   <li className="text-tprimary hover:text-tmuted">
-                    <Link to="/todos">To-do List</Link>
+                    <Link to="/notes">Notes</Link>
                   </li>
                 
                   {auth.notifications.length>=1?
