@@ -2,7 +2,9 @@
 
 import React, { useContext, useState } from "react";
 
+
 import { Link } from "react-router-dom";
+
 import AuthContext from "../../Context/AuthContext";
 import NewCommunityModel from "./NewCommunityModel";
 import NewNotificationModel from "./NewNotificationModel";
@@ -130,82 +132,77 @@ function Navbar() {
 					</div>
 				</div>
 
-				<div>
-					{/* left side wala */}
-					<div
-						className={`flex-1 justify-self-center pb-3 mt-1 md:block md:pb-0 md:mt-0 ${
-							navbar ? "block" : "hidden"
-						}`}
-					>
-						<ul className="items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0">
-							{auth.isLoggedIn ? (
-								<>
-									{auth.isAdmin ? (
-										<li className="text-tprimary hover:text-tmuted">
-											<Link
-												onClick={() => setRequest(true)}
-											>
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													className="h-5 w-5"
-													viewBox="0 0 20 20"
-													fill="currentColor"
-												>
-													<path
-														fillRule="evenodd"
-														d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-														clipRule="evenodd"
-													/>
-												</svg>
-											</Link>
-										</li>
-									) : (
-										<></>
-									)}
-									<li className="text-tprimary hover:text-tmuted">
-										<Link to="/">Home</Link>
-									</li>
-									<li className="text-tprimary hover:text-tmuted">
-										<Link to="/calender">Plans</Link>
-									</li>
-									<li className="text-tprimary hover:text-tmuted">
-										<Link to="/notes">Notes</Link>
-									</li>
-									<li className="text-tprimary hover:text-tmuted">
-										<Link
-											onClick={() =>
-												setNotificationHandler(
-													!notificationHandler
-												)
-											}
-										>
-											Notifications
-										</Link>
-									</li>
-									<li className="text-tprimary hover:text-tmuted">
-										<Link to="#" onClick={auth.logout}>
-											Logout
-										</Link>
-									</li>
-									<li className="text-red-500 hover:text-tmuted">
-										<Link to="/help">Help</Link>
-									</li>
-								</>
-							) : (
-								<>
-									<li className="text-tprimary hover:text-tmuted">
-										<Link to="/">Home</Link>
-									</li>
-
-									<li className="text-tprimary hover:text-tmuted">
-										<Link to="/login">Login</Link>
-									</li>
-									<li className="text-red-500 hover:text-tmuted">
-										<Link to="/help">Help</Link>
-									</li>
-								</>
-							)}
-							{/* {auth.isLoggedIn ? (
+        <div>
+          {/* left side wala */}
+          <div
+            className={`flex-1 justify-self-center pb-3 mt-1 md:block md:pb-0 md:mt-0 ${
+              navbar ? "block" : "hidden"
+            }`}
+          >
+            <ul className="items-center justify-center space-y-4 md:flex md:space-x-6 md:space-y-0">
+              {auth.isLoggedIn ? (
+                <>
+                {auth.isAdmin ? 
+                  <li  className="text-tprimary hover:text-tmuted">
+                    <Link onClick={() => (setRequest(true))} >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
+                    </svg>
+                    </Link>
+                  </li> 
+                  : <></>}
+                <li className="text-tprimary hover:text-tmuted">
+                    <Link to="/">Home</Link>
+                  </li>
+                 <li className="text-tprimary hover:text-tmuted">
+                    <Link to="/calender">Plans</Link>
+                  </li>
+                  <li className="text-tprimary hover:text-tmuted">
+                    <Link to="/todos">To-do List</Link>
+                  </li>
+                
+                  {auth.notifications.length>=1?
+                    (<li className="text-tprimary relative hover:text-tmuted">
+                      
+                    <Link onClick={() => (setNotificationHandler(!notificationHandler))} >
+                      Notifications
+                      <span class="relative inline-flex top-0 right-0 h-3 w-3">
+  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+  <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+</span>
+                    </Link>
+                  </li>):
+                  (
+                    <li className="text-tprimary hover:text-tmuted">
+                    <button onClick={() => alert('No new notification')}>Notification</button>
+                     
+                     </li>
+                  )
+                  }
+                  <li className="text-tprimary hover:text-tmuted">
+                    <Link to="#" onClick={auth.logout}>
+                      Logout
+                    </Link>
+                  </li>
+                  <li className="text-red-500 hover:text-tmuted">
+                    <Link to="/help">Help</Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="text-tprimary hover:text-tmuted">
+                    <Link to="/">Home</Link>
+                  </li>
+                 
+                  <li className="text-tprimary hover:text-tmuted">
+                    <Link to="/login">Login</Link>
+                  </li>
+                  <li className="text-red-500 hover:text-tmuted">
+                    <Link to="/help">Help</Link>
+                  </li>
+                </>
+              )}
+              {/* {auth.isLoggedIn ? (
                 <>
                   <li className="text-tprimary hover:text-tmuted">
                     <Link

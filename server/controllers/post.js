@@ -297,3 +297,32 @@ export const getCommunityPosts = async (req, res) => {
 	debugMode ? console.log("Get All Posts -> Got all Posts !!") : "";
 	res.status(200).json(postList);
 };
+
+// Get Post by ID
+export const getPostById = async (req, res) => {
+	let found;
+	const { postId } = req.query;
+	if (!postId) {
+		debugMode ? console.log("Incomplete Request !!") : "";
+		res.status(400).json({ message: "Incomplete Request !!" });
+		return;
+	}
+	try {
+		found = await post.findOne({
+			_id: new mongoose.Types.ObjectId(postId),
+		});
+		if (!found) {
+			debugMode
+				? console.log("Find Post By ID -> No Such Post Exists!!")
+				: "";
+			res.status(400).json({ message: "No Such Post Exists!!" });
+			return;
+		}
+	} catch (err) {
+		debugMode ? console.log("Find Post By ID -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	debugMode ? console.log("Get Post by ID -> Got THE Post !!") : "";
+	res.status(200).json(found);
+};
