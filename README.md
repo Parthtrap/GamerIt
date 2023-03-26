@@ -13,7 +13,7 @@ By WhatTheCodeDoin?
   [https://youtu.be/dQw4w9WgXcQ](https://youtu.be/Qm0BPTKqym8)
   
 ## Presentation Link:
-  <a href="https://cutt.ly/Hack36_23_ppt"> PPT link here </a>
+  [PPT Link](https://drive.google.com/file/d/1m1AriT8eDP2q2D3QhalNyRt8e_B60Jr8/view?usp=share_link)
   
 
 ## Technology Stack:
