@@ -2,7 +2,9 @@
 
 import React, { useContext, useState } from "react";
 
+
 import { Link } from "react-router-dom";
+
 import AuthContext from "../../Context/AuthContext";
 import NewCommunityModel from "./NewCommunityModel";
 import NewNotificationModel from "./NewNotificationModel";
@@ -25,8 +27,6 @@ function Navbar() {
     e.preventDefault();
     setNotificationHandler(false);
   }
-  
-
   return (
     <nav className="bg-fill shadow-base fixed top-0 z-50 w-full shadow-sm ">
       <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex ">
@@ -151,11 +151,25 @@ function Navbar() {
                   <li className="text-tprimary hover:text-tmuted">
                     <Link to="/todos">To-do List</Link>
                   </li>
-                  <li className="text-tprimary hover:text-tmuted">
+                
+                  {auth.notifications.length>=1?
+                    (<li className="text-tprimary relative hover:text-tmuted">
+                      
                     <Link onClick={() => (setNotificationHandler(!notificationHandler))} >
                       Notifications
+                      <span class="relative inline-flex top-0 right-0 h-3 w-3">
+  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+  <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+</span>
                     </Link>
-                  </li>
+                  </li>):
+                  (
+                    <li className="text-tprimary hover:text-tmuted">
+                    <button onClick={() => alert('No new notification')}>Notification</button>
+                     
+                     </li>
+                  )
+                  }
                   <li className="text-tprimary hover:text-tmuted">
                     <Link to="#" onClick={auth.logout}>
                       Logout
