@@ -10,9 +10,11 @@ const CreatePostSearchBar = () => {
                 <input type="text" placeholder="Create Post" className="bg-fill text-tprimary border-solid border-2 border-baccent  w-full block flex-grow h-10 px-2 text-lg rounded-l-xl  focus:outline-none " />
                 
                 {/* search icon */}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path style={{fill:"blue"}} stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                <button  className="text-tprimary flex relative border-solid border-2 border-x-0 border-baccent items-center justify-center w-10 h-10 text-2xl  bg-base hover:text-fill hover:bg-fill focus:outline-none focus:text-fill focus:bg-fill-base">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="blue" stroke-width="2">
+                <path  stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
+                </button>
 
                 {/* creat post link button */}
                 <Link to='/createPost' className="text-tprimary flex relative border-solid border-2 rounded-r-xl border-baccent items-center justify-center w-10 h-10 text-2xl  bg-base hover:text-fill hover:bg-fill focus:outline-none focus:text-fill focus:bg-fill-base">
