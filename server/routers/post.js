@@ -3,6 +3,7 @@ import {
 	createPost,
 	deletePost,
 	getCommunityPosts,
+	getPostById,
 	getPosts,
 	likePost,
 	reportPost,
@@ -36,5 +37,8 @@ router.get("/community", getCommunityPosts);
 // Search a Post by User
 // Search a Post by Tag
 router.get("/", getPosts);
+
+// Get Post by ID
+router.get("/id", getPostById);
 
 export default router;
