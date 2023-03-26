@@ -8,8 +8,9 @@ const debugMode = true;
 
 // Create a Post
 export const createPost = async (req, res) => {
-	const { username, title, content, fileSrc, type, community } = req.body;
-	if (!username || !title || !content || !fileSrc || !community) {
+	const { username, title, content, fileSrc, type, community, tags } =
+		req.body;
+	if (!username || !title || !content || !community || !tags) {
 		debugMode ? console.log("Incomplete Request !!") : "";
 		res.status(400).json({ message: "Incomplete Request !!" });
 		return;
@@ -22,7 +23,7 @@ export const createPost = async (req, res) => {
 		type,
 		likeUsers: [],
 		community: community,
-		tags: [],
+		tags,
 		comments: [],
 		reports: [],
 		createdAt: Date.now(),
@@ -127,7 +128,7 @@ export const getPosts = async (req, res) => {
 		try {
 			const query = ".*" + value + ".*";
 			postList = await post
-				.find({ title: { $regex: query } })
+				.find({ title: { $regex: query, $options: "i" } })
 				.sort({ createdAt: 1 });
 			console.log(postList);
 		} catch (err) {
@@ -138,7 +139,9 @@ export const getPosts = async (req, res) => {
 	} else if (field == "community") {
 		try {
 			postList = await post
-				.find({ community: { $regex: ".*" + value + ".*" } })
+				.find({
+					community: { $regex: ".*" + value + ".*", $options: "i" },
+				})
 				.sort({ createdAt: 1 });
 		} catch (err) {
 			debugMode ? console.log("Get All Posts -> " + err.message) : "";
@@ -261,8 +264,36 @@ export const reportPost = async (req, res) => {
 	return;
 };
 
-// Search a Post by Title
-
-// Search a Post by Tag
-
-// Search a Post by User
+// Community Posts
+export const getCommunityPosts = async (req, res) => {
+	let postList;
+	const { name, value } = req.query;
+	if (!value) {
+		try {
+			postList = await post
+				.find({ community: name })
+				.sort({ createdAt: 1 });
+		} catch (err) {
+			debugMode ? console.log("Get All Posts -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+	} else {
+		try {
+			const query = ".*" + value + ".*";
+			postList = await post
+				.find({
+					community: name,
+					title: { $regex: query, $options: "i" },
+				})
+				.sort({ createdAt: 1 });
+			console.log(postList);
+		} catch (err) {
+			debugMode ? console.log("Get All Posts -> " + err.message) : "";
+			res.status(500).json({ message: err.message });
+			return;
+		}
+	}
+	debugMode ? console.log("Get All Posts -> Got all Posts !!") : "";
+	res.status(200).json(postList);
+};

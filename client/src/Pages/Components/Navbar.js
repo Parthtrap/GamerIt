@@ -10,118 +10,127 @@ import NewCommunityModel from "./NewCommunityModel";
 import NewNotificationModel from "./NewNotificationModel";
 
 function Navbar() {
-  const [navbar, setNavbar] = useState(false);
-  const [sidebar, setSidebar] = useState(false);
-  const auth = useContext(AuthContext);
+	const [navbar, setNavbar] = useState(false);
+	const [sidebar, setSidebar] = useState(false);
+	const auth = useContext(AuthContext);
 
-  const [request, setRequest] = useState(false);
+	const [request, setRequest] = useState(false);
 
-  const [notificationHandler, setNotificationHandler] = useState(false);
+	const [notificationHandler, setNotificationHandler] = useState(false);
 
-  function onClose(e) {
-    e.preventDefault();
-    setRequest(false);
-  }
+	function onClose(e) {
+		e.preventDefault();
+		setRequest(false);
+	}
 
-  function onCloseNotificationClick(e) {
-    e.preventDefault();
-    setNotificationHandler(false);
-  }
-  return (
-    <nav className="bg-fill shadow-base fixed top-0 z-50 w-full shadow-sm ">
-      <div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex ">
-        <div className="">
-        {request ? <NewCommunityModel onClose={onClose}/> : <></>}
-        {notificationHandler ? <NewNotificationModel onCloseNotificationClick={onCloseNotificationClick}/> : <></>}
-          <div className="flex items-center justify-between py-4 md:block">
-            <div className="md:hidden">
-              <button
-                className="text-tprimary focus:border-gray-400 p-2 rounded-md outline-none  focus:border"
-                onClick={() => {
-                  setNavbar(!navbar);
-                  setSidebar(false);
-                }}
-              >
-                {/* left side dropdown button*/}
-                {navbar ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  </svg>
-                )}
-              </button>
-            </div>
+	function onCloseNotificationClick(e) {
+		e.preventDefault();
+		setNotificationHandler(false);
+	}
 
-            {/*LOGO*/}
-            <Link to="/">
-            <h2 className="text-tprimary text-2xl font-bold ">GAMERIT</h2>
-            </Link>
+	return (
+		<nav className="bg-fill shadow-base fixed top-0 z-50 w-full shadow-sm ">
+			<div className="justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex ">
+				<div className="">
+					{request ? <NewCommunityModel onClose={onClose} /> : <></>}
+					{notificationHandler ? (
+						<NewNotificationModel
+							onCloseNotificationClick={onCloseNotificationClick}
+						/>
+					) : (
+						<></>
+					)}
+					<div className="flex items-center justify-between py-4 md:block">
+						<div className="md:hidden">
+							<button
+								className="text-tprimary focus:border-gray-400 p-2 rounded-md outline-none  focus:border"
+								onClick={() => {
+									setNavbar(!navbar);
+									setSidebar(false);
+								}}
+							>
+								{/* left side dropdown button*/}
+								{navbar ? (
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										className="w-4 h-4"
+										viewBox="0 0 20 20"
+										fill="currentColor"
+									>
+										<path
+											fillRule="evenodd"
+											d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+											clipRule="evenodd"
+										/>
+									</svg>
+								) : (
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										className="w-4 h-4"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										strokeWidth={2}
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M4 6h16M4 12h16M4 18h16"
+										/>
+									</svg>
+								)}
+							</button>
+						</div>
 
-            {/* right side dropdown button*/}
-            <div className="hidden">
-              <button
-                className=" text-primary focus:border-gray-400 p-2 rounded-md outline-none  focus:border"
-                onClick={() => {
-                  setSidebar(!sidebar);
-                  setNavbar(false);
-                }}
-              >
-                {sidebar ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  </svg>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
+						{/*LOGO*/}
+						<Link to="/">
+							<h2 className="text-tprimary text-2xl font-bold ">
+								GAMERIT
+							</h2>
+						</Link>
+
+						{/* right side dropdown button*/}
+						<div className="hidden">
+							<button
+								className=" text-primary focus:border-gray-400 p-2 rounded-md outline-none  focus:border"
+								onClick={() => {
+									setSidebar(!sidebar);
+									setNavbar(false);
+								}}
+							>
+								{sidebar ? (
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										className="w-4 h-4"
+										viewBox="0 0 20 20"
+										fill="currentColor"
+									>
+										<path
+											fillRule="evenodd"
+											d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+											clipRule="evenodd"
+										/>
+									</svg>
+								) : (
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										className="w-4 h-4"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+										strokeWidth={2}
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M4 6h16M4 12h16M4 18h16"
+										/>
+									</svg>
+								)}
+							</button>
+						</div>
+					</div>
+				</div>
 
         <div>
           {/* left side wala */}
@@ -261,14 +270,14 @@ function Navbar() {
                   </li>
                 </>
               )} */}
-            </ul>
-          </div>
+						</ul>
+					</div>
 
-          {/* right side wala menu */}
-        </div>
-      </div>
-    </nav>
-  );
+					{/* right side wala menu */}
+				</div>
+			</div>
+		</nav>
+	);
 }
 
 export default Navbar;

@@ -25,133 +25,151 @@ import NewNotificationModel from "./Pages/Components/NewNotificationModel";
 import Example from "./Pages/Components/CalenderApp";
 
 const App = () => {
-  const auth = useContext(AuthContext);
-  console.log(auth);
-  return auth.isFetched ? (
-    <div className="theme-dark">
-      {
-        auth.isLoggedIn ? (
-          <>
-            <ToastContainer
-              autoClose={1000}
-              position={toast.POSITION.BOTTOM_RIGHT}
-              hideProgressBar
-              theme="dark"
-            />
-            <Navbar isLoggedIn={true} />
-            <Routes>
-              <Route
-                exact
-                path="/"
-                element={
-                  <div className="flex  theme-dark">
-                    <Homepage />
-                    <Sidebar />
-                  </div>
-                }
-              />
-              <Route exact path="/createPost" element={<CreatePostPage />} />
-              <Route
-                exact
-                path="/community/:name"
-                element={
-                  <div className="flex theme-dark">
-                    <Communitypage/>
-                    <Sidebar/>
-                  </div>
-                }
-              />
-              <Route
-                exact
-                path="/profile/:name"
-                element={
-                  <div className="flex theme-dark">
-                    <Profilepage />
-                    <Sidebar />
-                  </div>
-                }
-              />
-              <Route
-                exact
-                path="/match/:id"
-                element={
-                  <div className="flex theme-dark">
-                    <MatchPage />
-                    <Sidebar />
-                  </div>
-                }
-              />
-              <Route
-                exact
-                path="/notes/:id"
-                element={
-                  <div className="flex theme-dark">
-                    <Notes />
-                    <Sidebar />
-                  </div>
-                }
-              />
-              <Route
-                exact
-                path="/post/:id"
-                element={
-                  <div className="flex theme-dark">
-                    <Postpage />
-                    <Sidebar />
-                  </div>
-                }
-              />
-              <Route exact path="*" element={<Navigate to="/" />} />
-              <Route exact path="/notifications" element={<NewNotificationModel />} />
-              <Route exact path="/calender" element={<Example />} />
-            </Routes>
-          </>
-        ) : (
-          <>
-            <ToastContainer
-              autoClose={1000}
-              position={toast.POSITION.BOTTOM_RIGHT}
-              hideProgressBar
-              theme="dark"
-            />
-            <Navbar isLoggedIn={false} />
-            <Routes>
-              <Route
-                exact
-                path="/"
-                element={
-                  <div className="flex">
-                    <Homepage/>
-                    <Sidebar />
-                  </div>
-                }
-              />
-              <Route exact path="/login" element={<LoginPage />} />
-              <Route exact path="/signup" element={<Signup />} />
-              <Route exact path="/verifyEmail" element={<EmailVerifyPage />} />
-              <Route exact path="/verifyOTP" element={<VerifyOtpPage />} />
-              <Route exact path="/resetPassword" element={<ResetPassPage />} />
-              <Route
-                exact
-                path="/community/:id"
-                element={
-                  <div className="flex ">
-                    <Communitypage/>
-                    <Sidebar/>
-                  </div>
-                }
-              />
-              <Route exact path="*" element={<NotFound />} />
-            </Routes>
-          </>
-        )
-      }
-    </div>
-  ) : (
-    <>
-      Loading
-    </>
-  );
-}
+	const auth = useContext(AuthContext);
+	return auth.isFetched ? (
+		<div className="theme-dark">
+			{auth.isLoggedIn ? (
+				<>
+					<ToastContainer
+						autoClose={1000}
+						position={toast.POSITION.BOTTOM_RIGHT}
+						hideProgressBar
+						theme="dark"
+					/>
+					<Navbar isLoggedIn={true} />
+					<Routes>
+						<Route
+							exact
+							path="/"
+							element={
+								<div className="flex  theme-dark">
+									<Homepage />
+									<Sidebar />
+								</div>
+							}
+						/>
+						<Route
+							exact
+							path="/calender"
+							element={<calenderApp />}
+						/>
+						<Route
+							exact
+							path="/createPost"
+							element={<CreatePostPage />}
+						/>
+						<Route
+							exact
+							path="/community/:name"
+							element={
+								<div className="flex theme-dark">
+									<Communitypage />
+									<Sidebar />
+								</div>
+							}
+						/>
+						<Route
+							exact
+							path="/profile/:name"
+							element={
+								<div className="flex theme-dark">
+									<Profilepage />
+									<Sidebar />
+								</div>
+							}
+						/>
+						<Route
+							exact
+							path="/match/:id"
+							element={
+								<div className="flex theme-dark">
+									<MatchPage />
+									<Sidebar />
+								</div>
+							}
+						/>
+						<Route
+							exact
+							path="/notes"
+							element={
+								<div className="flex theme-dark">
+									<Notes />
+								</div>
+							}
+						/>
+						<Route
+							exact
+							path="/post/:id"
+							element={
+								<div className="flex theme-dark">
+									<Postpage />
+									<Sidebar />
+								</div>
+							}
+						/>
+						<Route exact path="*" element={<Navigate to="/" />} />
+						<Route
+							exact
+							path="/notifications"
+							element={<NewNotificationModel />}
+						/>
+					</Routes>
+				</>
+			) : (
+				<>
+					<ToastContainer
+						autoClose={1000}
+						position={toast.POSITION.BOTTOM_RIGHT}
+						hideProgressBar
+						theme="dark"
+					/>
+					<Navbar isLoggedIn={false} />
+					<Routes>
+						<Route
+							exact
+							path="/"
+							element={
+								<div className="flex">
+									<Homepage />
+									<Sidebar />
+								</div>
+							}
+						/>
+						<Route exact path="/login" element={<LoginPage />} />
+						<Route exact path="/signup" element={<Signup />} />
+						<Route
+							exact
+							path="/verifyEmail"
+							element={<EmailVerifyPage />}
+						/>
+						<Route
+							exact
+							path="/verifyOTP"
+							element={<VerifyOtpPage />}
+						/>
+						<Route
+							exact
+							path="/resetPassword"
+							element={<ResetPassPage />}
+						/>
+						<Route
+							exact
+							path="/community/:id"
+							element={
+								<div className="flex ">
+									<Communitypage />
+									<Sidebar />
+								</div>
+							}
+						/>
+						<Route exact path="*" element={<NotFound />} />
+					</Routes>
+				</>
+			)}
+		</div>
+	) : (
+		<>Loading</>
+	);
+};
 
 export default App;

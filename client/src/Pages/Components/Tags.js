@@ -1,10 +1,13 @@
 import React from 'react'
 
-const Tags = () => {
+const Tags = (props) => {
+    const mystyle = {
+        "background-color": props.tag.color
+    }
     return (
-        <div className='flex w-4 h-8 mb-6 '>
-            <button type="button" className=" inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-tprimary bg-baccenthover rounded-lg hover:bg-baccent ">
-                Tags
+        <div className=''>
+            <button style={mystyle} type="button" className={` px-2 py-1 inline-flex items-center text-sm font-medium text-center text-tprimary rounded-full hover:bg-baccent `}>
+                {props.tag.name}
             </button>
         </div>
 

@@ -54,6 +54,23 @@ export const getAllCommunities = async (req, res) => {
 	res.status(200).json(communityList);
 };
 
+export const searchCommunity = async (req, res) => {
+	let communityList;
+	const { name } = req.query;
+
+	try {
+		communityList = await community.find({
+			name: { $regex: ".*" + name + ".*" },
+		});
+	} catch (err) {
+		debugMode ? console.log("Search Community -> " + err.message) : "";
+		res.status(500).json({ message: err.message });
+		return;
+	}
+	debugMode ? console.log("Search Communities -> Search Communities !!") : "";
+	res.status(200).json(communityList);
+};
+
 // Create a Community
 export const createCommunity = async (req, res) => {
 	// console.log(req);
@@ -230,6 +247,7 @@ export const deleteTag = async (req, res) => {
 // Edit Community Profile Pic
 export const updateCommunityProfilePic = async (req, res) => {
 	const { name, profilepic } = req.body;
+	console.log(req.body);
 	if (!name || !profilepic) {
 		debugMode ? console.log("Incomplete Request !!") : "";
 		res.status(400).json({ message: "Incomplete Request !!" });
@@ -271,7 +289,7 @@ export const updateCommunityProfilePic = async (req, res) => {
 				"Update Community Profile Pic -> Community Profile Pic Updated !!"
 		  )
 		: "";
-	res.status(201).json({
+	res.status(200).json({
 		message: "Community Profile Pic Updated Sucessfully !!",
 	});
 };

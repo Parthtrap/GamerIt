@@ -23,7 +23,7 @@ export default function Commentitem(prop) {
           const replystring = replyRef.current.value;
         }
     };
-
+    
     const onReply = (e)=>{
         e.preventDefault();
         // reply aad ho gaya bhiya idhar kya kar rahe ho
@@ -77,13 +77,13 @@ export default function Commentitem(prop) {
             </div>
 
             {/* input field for reply */}
-            <div className="relative flex my-4">
+            <div className = {`relative  my-4  ${replystate ? "":"hidden" } `}>
                 {/*reply input field*/}
                 <input
                     onKeyDown={_handleKeyDown}
                     ref={replyRef}
                     className="bg-base text-tprimary w-full px-4 py-3  placeholder-tmuted rounded-lg  focus:outline-none"
-                    placeholder="Write something to Roland…"
+                    placeholder="Write something to Roland AGAIN…"
                 />
 
                 {/*reply button */}
@@ -109,7 +109,7 @@ export default function Commentitem(prop) {
                     />
                     </svg>
                 </button>
-                </div>
+            </div>
 
 
         </div>

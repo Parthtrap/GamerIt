@@ -10,6 +10,7 @@ import {
 	makeModerator,
 	matchMaking,
 	removeModerator,
+	searchCommunity,
 	updateCommunityBannerPic,
 	updateCommunityProfilePic,
 } from "../controllers/community.js";
@@ -18,6 +19,9 @@ const router = express.Router();
 // Get All Community or by name
 router.get("/", getAllCommunities);
 
+// Search Community or by name
+router.get("/search", searchCommunity);
+
 // Create a Community
 router.post("/", createCommunity);
 
@@ -25,7 +29,7 @@ router.post("/", createCommunity);
 router.delete("/", deleteCommunity);
 
 // Add tag
-router.get("/tag", addTag);
+router.post("/tag", addTag);
 
 // Delete tag
 router.delete("/tag", deleteTag);

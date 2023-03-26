@@ -1,11 +1,14 @@
+import { async } from "@firebase/util";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function CommunityListCard(props) {
-
+    const navigate = useNavigate();
+    const openCommunityButtonHandler = async ()=>{
+        navigate(`/community/${props.community.name}`);
+    }
     return (
-        <Link to={"/community/" + props.community.name}>
-            <div className="flex items-center p-3 my-4 rounded-xl bg-fill outline outline-1 outline-neutral-600 hover:outline hover:outline-1 hover:outline-white">
+            <div onClick={openCommunityButtonHandler} className="flex items-center p-3 my-4 rounded-xl bg-fill outline outline-1 outline-neutral-600 hover:outline hover:outline-1 hover:outline-white">
 
                 {/*image*/}
                 <div>
@@ -22,6 +25,5 @@ export default function CommunityListCard(props) {
                 </div>
 
             </div>
-        </Link>
     );
 }

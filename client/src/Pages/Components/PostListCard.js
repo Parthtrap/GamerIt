@@ -3,6 +3,7 @@
 import { async } from "@firebase/util";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Tags from "./Tags";
 
 function PostListCard(props) {
   const navigate = useNavigate();
@@ -65,16 +66,24 @@ function PostListCard(props) {
           </span>
         </div>
 
-        <div className="grow">
+        <div className="flex flex-col gap-1">
           <div className="text-m text-tlink">
             <span id="community">g/{props.post.community}</span>
           </div>
           <div className="text-s text-tmuted">
             <span id="username">u/{props.post.username}</span>
           </div>
+
+          <div className="flex gap-3">
+            {props.post.tags.map((tag) =>{
+              return <Tags key={tag._id} tag={tag}/>;
+            })}
+          </div>
+          
           <div className="text-xl font-bold text-tprimary">
             {props.post.title}
           </div>
+          
           <div className="text-tprimary truncate">{props.post.content}</div>
         </div>
       </div>
