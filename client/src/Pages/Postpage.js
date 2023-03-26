@@ -1,15 +1,18 @@
-import { useParams } from "react-router-dom";
+/** @format */
+
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useContext, useEffect, useState, useRef } from "react";
 //import defalt_pfp from "./../../Assets/default_pfp.png"
 import Commentitem from "./Components/Commentitem";
 import { Link } from "react-router-dom";
 //import AuthContext from "../Authentication/AuthContext";
 import { toast } from "react-toastify";
+import AuthContext from "../Context/AuthContext";
 
 export default function Postpage() {
   const params = useParams();
-  //const auth = useContext(AuthContext);
-  const auth = {};
+  const navigate = useNavigate();
+  const auth = useContext(AuthContext);
   const postID = params.id;
   const [postDetails, setPostDetails] = useState({
     title: "Loading...",
@@ -114,15 +117,10 @@ export default function Postpage() {
 
   useEffect(() => {
     const UpdateUser = async () => {
-      const searchQuery = JSON.stringify({ email: auth.userEmail });
       try {
-        const response = await fetch("http://localhost:5000/api/user/get", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: searchQuery,
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_SERVER_ROOT_URI}/api/user/?username=${auth.userName}`
+        );
 
         const responseData = await response.json();
         if (response.status === 201) {
@@ -146,37 +144,35 @@ export default function Postpage() {
     if (auth.isLoggedIn) UpdateUser();
 
     const fetchPost = async () => {
-      const searchQuery = JSON.stringify({
-        id: params.id,
-      });
       try {
-        const response = await fetch("http://localhost:5000/api/post/get", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: searchQuery,
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_SERVER_ROOT_URI}/api/post/id?postId=${postID}`
+        );
 
         const responseData = await response.json();
 
         if (response.status === 500) {
-        } else if (response.status === 404) {
-          setPostDetails({
-            title: "No user Found",
-            content: "No User No Content",
-            likes: -100,
-            comments: [],
-            postingtime: "2022-11-10T06:10:35.656Z",
-            community: "Unknown",
-            ownerId: "NoUser@NULL.404",
-            ownerUserName: "Error 404",
-          });
+        } else if (response.status === 400) {
+          alert(responseData.message);
+          navigate("/");
+          return;
         }
-        if (response.status === 201) {
-          setPostDetails(responseData);
+        if (response.status === 200) {
+          setPostDetails({
+            title: responseData.title,
+            content: responseData.content,
+            likes: responseData.likeUsers.length,
+            comments: responseData.comments,
+            postingtime: responseData.createdAt,
+            community: responseData.community,
+            ownerUserName: responseData.username,
+          });
+          return;
         } else {
           console.log(responseData.message);
+          alert("Unable to connect");
+          navigate("/");
+          return;
         }
       } catch (err) {
         toast.error("Unable to connect to the server");
@@ -336,7 +332,7 @@ export default function Postpage() {
                 </span>{" "}
               </Link>
               Posted by{" "}
-              <Link to={"/profile/" + postDetails.ownerId}>
+              <Link to={"/profile/" + postDetails.ownerUserName}>
                 <span className="text-tprimary ">
                   u/{postDetails.ownerUserName}
                 </span>{" "}
@@ -400,9 +396,11 @@ export default function Postpage() {
         <div className="bg-tmuted w-full h-[1px] mt-4 "></div>
 
         {commentsssss.map((ee) => {
-          return <div className="flex flex-col gap-0 ">
-            {CommentChainBuilder(ee, 0)}
-          </div>;
+          return (
+            <div className="flex flex-col gap-0 ">
+              {CommentChainBuilder(ee, 0)}
+            </div>
+          );
         })}
       </div>
     </div>
