@@ -36,7 +36,7 @@ Team Name: WhatTheCodeDoing?
 * [Gaurav Jain](https://github.com/Gauarv-Jain)
 * [Ritik Vaidyasen](https://github.com/vaidyasen)
 * [Ayan Habib Seikh](https://github.com/ayansk2002)
-* [Ayan Habib Seikh](https://github.com/Ariyan-Sk)
+* [Ariyan Habib Seikh](https://github.com/Ariyan-Sk)
 
 
 ### Made at:
