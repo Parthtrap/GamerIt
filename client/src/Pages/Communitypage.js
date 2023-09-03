@@ -99,35 +99,28 @@ function Communitypage() {
   }, [communityName, reload]);
 
   const uploadFiles = async (file) => {
-    if (!file) return;
 
     try {
+      if (!file) throw Error("file not found");
       const storageRef = ref(storage, `/files/${file.name}`);
       console.log(file, storageRef);
 
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      const uploadTask = await uploadBytesResumable(storageRef, file);
 
       console.log(uploadTask);
-      let url = null;
 
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          console.log(snapshot);
-          const prog = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(
-            (downUrl) => {
-              console.log("file uploaded");
-              url = downUrl;
-            }
-          );
-        }
-      );
-      return url;
+      // uploadTask.on("state_changed", (snapshot) => {
+			//   console.log(snapshot);
+			//   const prog = Math.round(
+			//     (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+			//   );
+			//   setProgress(prog);
+			// });
+
+			const url = await getDownloadURL(uploadTask.ref);
+			console.log("image uploaded");
+			console.log(url);
+			return url;
     } catch (err) {
       console.log(err);
       return false;
@@ -146,10 +139,13 @@ function Communitypage() {
       toast.error("File size should be less then 2.5 MB");
       return;
     }
-    const fileUrl = await uploadFiles(file);
+    const fileUrl = await toast.promise(uploadFiles(file),{
+      pending: "Uploading...",
+      success: "Uploaded 👌",
+      error: "Failed to upload image. Try again",
+    });
     console.log(fileUrl);
     if (!fileUrl) {
-      toast.error("Failed to upload file. Try again");
       return;
     }
 
@@ -189,12 +185,13 @@ function Communitypage() {
         <div className="flex items-center justify-between space-x-4">
           <div className="flex items-center space-x-4">
             <div />
-            <label for="profilePic">
+            <label htmlFor="profilePic">
               <img
                 className="w-20 h-20 rounded-full "
                 src={communityDetails.profilePic}
               />
-              {isModerator ? (
+            </label>
+            {isModerator ? (
                 <>
                   <input
                     id="profilePic"
@@ -208,7 +205,6 @@ function Communitypage() {
               ) : (
                 <></>
               )}
-            </label>
 
             <div className=" text-4xl font-medium ">
               <div className="text-tprimary">{communityDetails.name}</div>
