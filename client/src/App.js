@@ -1,28 +1,30 @@
+import { useContext } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
+
+import "react-toastify/dist/ReactToastify.css";
+import "./index.css";
 
 import Navbar from "./Pages/Components/Navbar";
 import LoginPage from "./Pages/Authentication/LoginPage";
 import Signup from "./Pages/Authentication/SignupPage";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "./index.css";
-import { useContext } from "react";
 import AuthContext from "./Context/AuthContext";
-import EmailVerifyPage from "./Pages/Authentication/EmailVerifyPage";
-import VerifyOtpPage from "./Pages/Authentication/verifyOtpPage";
-import NotFound from "./Pages/NotFound";
-import ResetPassPage from "./Pages/Authentication/ResetPassPage";
-import Profilepage from "./Pages/Profilepage";
-import Homepage from "./Pages/Homepage";
-import Sidebar from "./Pages/Components/SideBar";
+import CalenderApp from "./Pages/Components/CalenderApp";
 import Communitypage from "./Pages/Communitypage";
 import CreatePostPage from "./Pages/CreatePostPage";
+import EmailVerifyPage from "./Pages/Authentication/EmailVerifyPage";
+import Homepage from "./Pages/Homepage";
 import MatchPage from "./Pages/Components/NewRequestmodel";
-import Notes from "./Pages/Components/Notes";
-import Postpage from "./Pages/Postpage";
 import NewNotificationModel from "./Pages/Components/NewNotificationModel";
-import CalenderApp from "./Pages/Components/CalenderApp";
+import Notes from "./Pages/Components/Notes";
+import NotFound from "./Pages/NotFound";
+import Postpage from "./Pages/Postpage";
+import Profilepage from "./Pages/Profilepage";
+import ResetPassPage from "./Pages/Authentication/ResetPassPage";
+import Sidebar from "./Pages/Components/SideBar";
+import VerifyOtpPage from "./Pages/Authentication/verifyOtpPage";
+
+import { ToastContainer, toast } from "react-toastify";
 
 const App = () => {
 	const auth = useContext(AuthContext);
@@ -154,10 +156,20 @@ const App = () => {
 						/>
 						<Route
 							exact
-							path="/community/:id"
+							path="/community/:name"
 							element={
 								<div className="flex ">
 									<Communitypage />
+									<Sidebar />
+								</div>
+							}
+						/>
+						<Route
+							exact
+							path="/post/:id"
+							element={
+								<div className="flex theme-dark">
+									<Postpage />
 									<Sidebar />
 								</div>
 							}
