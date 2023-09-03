@@ -349,8 +349,8 @@ function CreatePostPage() {
                 </>
               ) : (
                 <>
-                  {console.log(fileInputValue.type)}
-                  <video src={fileInputValue.url} />
+                  {console.log(fileInputValue)}
+                  <video src={fileInputValue.url} controls/>
                 </>
               )}
 

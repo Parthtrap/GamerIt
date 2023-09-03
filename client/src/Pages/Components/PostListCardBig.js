@@ -26,10 +26,25 @@ export default function PostListCardBig(props) {
       {props.post.fileSrc !== "" ? (
         <>
           <div className="bg-black flex justify-center items-center">
-            <img
-              className=" bg-center h-[25vw] rounded-t-lg]"
-              src={props.post.fileSrc}
-            />
+            
+          {props.post.type.search("video") != -1 ? (
+            <>
+              <video
+                id="postVideo"
+                className=" bg-center h-[25vw] rounded-t-lg]"
+                src={props.post.fileSrc}
+                controls
+              />
+            </>
+          ) : (
+            <>
+              <img
+                id="postImage"
+                className=" bg-center h-[25vw] rounded-t-lg]"
+                src={props.post.fileSrc}
+              />
+            </>
+          )}
           </div>
         </>
       ) : (
