@@ -24,12 +24,10 @@ function CreatePostPage() {
   const fileInputRef = useRef();
 
   const uploadFiles = async (file) => {
-    
-
     try {
-	  if (!file) {
-		throw Error("File not found");
-	  }
+      if (!file) {
+        throw Error("File not found");
+      }
       const storageRef = ref(storage, `/files/${file.name}`);
       console.log(file, storageRef);
 
@@ -51,7 +49,7 @@ function CreatePostPage() {
       return url;
     } catch (err) {
       console.log(err);
-	  return false;
+      return false;
     }
   };
 
@@ -79,7 +77,7 @@ function CreatePostPage() {
             success: "Uploaded 👌",
             error: "Failed to upload file. Try again",
           });
-		  if(fileUrl) return;
+          if (!fileUrl) return;
           type = fileInputValue.type;
         }
         const postData = JSON.stringify({
@@ -350,7 +348,7 @@ function CreatePostPage() {
               ) : (
                 <>
                   {console.log(fileInputValue)}
-                  <video src={fileInputValue.url} controls/>
+                  <video src={fileInputValue.url} controls />
                 </>
               )}
 
